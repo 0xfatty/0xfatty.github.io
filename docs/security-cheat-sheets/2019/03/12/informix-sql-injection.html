@@ -1,0 +1,593 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Informix SQL Injection - iam.chi</title>
+<meta name="description" content="Some useful syntax reminders for SQL Injection into Informix databases…">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="Informix SQL Injection">
+<meta property="og:url" content="http://localhost:4000/security-cheat-sheets/2019/03/12/informix-sql-injection.html">
+
+
+  <meta property="og:description" content="Some useful syntax reminders for SQL Injection into Informix databases…">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-03-12T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/security-cheat-sheets/2019/03/12/informix-sql-injection.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Informix SQL Injection">
+    <meta itemprop="description" content="Some useful syntax reminders for SQL Injection into Informix databases…">
+    <meta itemprop="datePublished" content="2019-03-12T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Informix SQL Injection
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Some useful syntax reminders for SQL Injection into Informix databases…</p>
+
+<p>Below are some tabulated notes on how to do many of thing you’d normally do via SQL injection.  All tests were performed on Informix Dynamic Server Express Edition 11.5 for Windows.  The Informix download page is <a href="http://www.ibm.com/developerworks/downloads/im/dsexp/?S_TACT=105AGX11&amp;S_CMP=LP">here</a>.</p>
+
+<p>I’m not planning to write one for MS Access, but there’s a great <a href="http://nibblesec.org/files/MSAccessSQLi/MSAccessSQLi.html">MS Access Cheat Sheet here</a>.</p>
+
+<table border="1"><tbody><tr><td>Version</td><td>SELECT DBINFO(‘version’, ‘full’) FROM systables WHERE tabid = 1; SELECT DBINFO(‘version’, ‘server-type’) FROM systables WHERE tabid = 1; SELECT DBINFO(‘version’, ‘major’), DBINFO(‘version’, ‘minor’), DBINFO(‘version’, ‘level’) FROM systables WHERE tabid = 1; SELECT DBINFO(‘version’, ‘os’) FROM systables WHERE tabid = 1; — T=Windows, U=32 bit app on 32-bit Unix, H=32-bit app running on 64-bit Unix, F=64-bit app running on 64-bit unix</td></tr><tr><td>Comments</td><td>select 1 FROM systables WHERE tabid = 1; — comment</td></tr><tr><td>Current User</td><td>SELECT USER FROM systables WHERE tabid = 1; select CURRENT_ROLE FROM systables WHERE tabid = 1;</td></tr><tr><td>List Users</td><td>select username, usertype, password from sysusers;</td></tr><tr><td>List Password Hashes</td><td>TODO</td></tr><tr><td>List Privileges</td><td>select tabname, grantor, grantee, tabauth FROM systabauth join systables on systables.tabid = systabauth.tabid; — which tables are accessible by which users select procname, owner, grantor, grantee from sysprocauth join sysprocedures on sysprocauth.procid = sysprocedures.procid; — which procedures are accessible by which users</td></tr><tr><td>List DBA Accounts</td><td>TODO</td></tr><tr><td>Current Database</td><td>SELECT DBSERVERNAME FROM systables where tabid = 1; — server name</td></tr><tr><td>List Databases</td><td>select name, owner from sysdatabases;</td></tr><tr><td>List Columns</td><td>select tabname, colname, owner, coltype FROM syscolumns join systables on syscolumns.tabid = systables.tabid;</td></tr><tr><td>List Tables</td><td>select tabname, owner FROM systables; select tabname, viewtext FROM sysviews&nbsp; join systables on systables.tabid = sysviews.tabid;</td></tr><tr><td>List Stored Procedures</td><td>select procname, owner FROM sysprocedures;</td></tr><tr><td>Find Tables From Column Name</td><td>select tabname, colname, owner, coltype FROM syscolumns join systables on syscolumns.tabid = systables.tabid where colname like ‘%pass%’;</td></tr><tr><td>Select Nth Row</td><td>select first 1 tabid from (select first 10 tabid from systables order by tabid) as sq order by tabid desc; — selects the 10th row</td></tr><tr><td>Select Nth Char</td><td>SELECT SUBSTRING(‘ABCD’ FROM 3 FOR 1) FROM systables where tabid = 1; — returns ‘C’</td></tr><tr><td>Bitwise AND</td><td>select bitand(6, 1) from systables where tabid = 1; — returns 0 select bitand(6, 2) from systables where tabid = 1; — returns 2</td></tr><tr><td>ASCII Value -&gt; Char</td><td>TODO</td></tr><tr><td>Char -&gt; ASCII Value</td><td>select ascii(‘A’) from systables where tabid = 1;</td></tr><tr><td>Casting</td><td>select cast(’123′ as integer) from systables where tabid = 1; select cast(1 as char) from systables where tabid = 1;</td></tr><tr><td>String Concatenation</td><td>SELECT ‘A’ || ‘B’ FROM systables where tabid = 1; — returns ‘AB’ SELECT concat(‘A’, ‘B’) FROM systables where tabid = 1; — returns ‘AB’</td></tr><tr><td>String Length</td><td>SELECT tabname, length(tabname), char_length(tabname), octet_length(tabname) from systables;</td></tr><tr><td>If Statement</td><td>TODO</td></tr><tr><td>Case Statement</td><td>select tabid, case when tabid&gt;10 then “High” else ‘Low’ end from systables;</td></tr><tr><td>Avoiding Quotes</td><td>TODO</td></tr><tr><td>Time Delay</td><td>TODO</td></tr><tr><td>Make DNS Requests</td><td>TODO</td></tr><tr><td>Command Execution</td><td>TODO</td></tr><tr><td>Local File Access</td><td>TODO</td></tr><tr><td>Hostname, IP Address</td><td>SELECT DBINFO(‘dbhostname’) FROM systables WHERE tabid = 1; — hostname</td></tr><tr><td>Location of DB files</td><td>TODO</td></tr><tr><td>Default/System Databases</td><td>These are the system databases: sysmaster sysadmin* sysuser* sysutils*</td></tr></tbody></table>
+
+<p>* = don’t seem to contain anything / don’t allow readingInstalling Locally</p>
+
+<p>You can download <a href="http://www.ibm.com/developerworks/downloads/im/dsexp/?S_TACT=105AGX11&amp;S_CMP=LP">Informix Dynamic Server Express Edition 11.5 Trial</a> for Linux and Windows.</p>
+
+<p>Database ClientThere’s a <a href="http://www14.software.ibm.com/webapp/download/search.jsp?rs=ifxdl">database client SDK</a> available, but I couldn’t get the demo client working. I used <a href="http://squirrel-sql.sourceforge.net/">SQuirreL SQL Client Version 2.6.8</a> after installing the <a href="http://www14.software.ibm.com/webapp/download/search.jsp?go=y&amp;rs=ifxjdbc">Informix JDBC drivers</a> (“emerge dev-java/jdbc-informix” on Gentoo).Logging in from command line</p>
+
+<p>If you get local admin rights on a Windows box and have a GUI logon:</p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>Click: Start</td>
+          <td>All Programs</td>
+          <td>IBM Informix Dynamic Server 11.50</td>
+          <td>someservername.  This will give you a command prompt with various Environment variables set properly.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Run dbaccess.exe from your command prompt.  This will bring up a text-based GUI that allows you to browse databases.</li>
+</ul>
+
+<p>The following were set on my test system.  This may help if you get command line access, but can’t get a GUI – you’ll need to change “testservername”:</p>
+
+<p>set INFORMIXDIR=C:PROGRA~1IBMIBMINF~111.50
+set INFORMIXSERVER=testservername
+set ONCONFIG=ONCONFIG.testservername
+set PATH=C:PROGRA~1IBMIBMINF~111.50bin;C:WINDOWSsystem32;C:WINDOWS;C:WINDOWSSystem32Wbem;C:PROGRA~1ibmgsk7bin;C:PROGRA~1ibmgsk7lib;C:Program FilesIBMInformixClien-SDKbin;C:Program Filesibmgsk7bin;C:Program Filesibmgsk7lib
+set CLASSPATH=C:PROGRA~1IBMIBMINF~111.50extendkrakatoakrakatoa.jar;C:PROGRA~1IBMIBMINF~111.50xtendkrakatoajdbc.jar;
+set DBTEMP=C:PROGRA~1IBMIBMINF~111.50infxtmp
+set CLIENT_LOCALE=EN_US.CP1252
+set DB_LOCALE=EN_US.8859-1
+set SERVER_LOCALE=EN_US.CP1252
+set DBLANG=EN_US.CP1252
+mode con codepage select=1252</p>
+
+<p>Identifying on the network</p>
+
+<p>My default installation listened on two TCP ports: 9088 and 9099.  When I created a new “server name”, this listened on 1526/TCP by default.  Nmap 4.76 didn’t identify these ports as Informix:</p>
+
+<p>$ sudo nmap -sS -sV 10.0.0.1 -p- -v –version-all … 1526/tcp open  pdap-np? 9088/tcp open  unknown 9089/tcp open  unknown</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-12T00:00:00-05:00">March 12, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Informix+SQL+Injection%20http%3A%2F%2Flocalhost%3A4000%2Fsecurity-cheat-sheets%2F2019%2F03%2F12%2Finformix-sql-injection.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsecurity-cheat-sheets%2F2019%2F03%2F12%2Finformix-sql-injection.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsecurity-cheat-sheets%2F2019%2F03%2F12%2Finformix-sql-injection.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/penetration-testing-guides/2019/03/12/enumeration.html" class="pagination--pager" title="Enumeration
+">Previous</a>
+    
+    
+      <a href="/security-cheat-sheets/2019/03/12/ingres-sql-injection.html" class="pagination--pager" title="Ingres SQL Injection
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

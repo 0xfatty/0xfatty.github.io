@@ -1,0 +1,90 @@
+---
+title: "Discovery & Probing"
+date: "2019-03-12"
+categories: 
+  - "penetration-testing-guides"
+---
+
+- - Default Port Lists
+        - [Windows](http://www.vulnerabilityassessment.co.uk/ports.htm)
+        - [\*nix](http://www.vulnerabilityassessment.co.uk/ports.htm)
+    - Enumeration tools and techniques - The vast majority can be used generically, however, certain bespoke application require there own specific toolsets to be used. Default passwords are platform and vendor specific
+        - General Enumeration Tools
+            - [nmap](http://www.insecure.org)
+                - nmap -n -A -PN -p- -T Agressive -iL nmap.targetlist -oX nmap.syn.results.xml
+                - nmap -sU -PN -v -O -p 1-30000 -T polite -iL nmap.targetlist > nmap.udp.results
+                - nmap -sV -PN -v -p 21,22,23,25,53,80,443,161 -iL nmap.targets > nmap.version.results
+                - nmap -A -sS -PN -n --script:all ip\_address --reason
+                - grep "appears to be up" nmap\_saved\_filename | awk -F\\( '{print $2}' | awk -F\\) '{print $1}' > ip\_list
+            - [netcat](http://netcat.sourceforge.net/)
+                - nc -v -n IP\_Address port
+                - nc -v -w 2 -z IP\_Address port\_range/port\_number
+            - [amap](http://www.thc.org/releases.php)
+                - amap -bqv 192.168.1.1 80
+                - amap \[-A|-B|-P|-W\] \[-1buSRHUdqv\] \[\[-m\] -o <file>\] \[-D <file>\] \[-t/-T sec\] \[-c cons\] \[-C retries\] \[-p proto\] \[-i <file>\] \[target port \[port\] ...\]
+            - [xprobe2](http://xprobe.sourceforge.net/)
+                - xprobe2 192.168.1.1
+            - [sinfp](http://sourceforge.net/project/showfiles.php?group_id=167489)
+                - ./sinfp.pl -i -p
+            - [nbtscan](http://www.packetstormsecurity.nl)
+                - nbtscan \[-v\] \[-d\] \[-e\] \[-l\] \[-t timeout\] \[-b bandwidth\] \[-r\] \[-q\] \[-s separator\] \[-m retransmits\] (-f filename) | (<scan\_range>)
+            - [hping](http://www.hping.org/download.html)
+                - hping ip\_address
+            - [scanrand](http://www.doxpara.com/read.php/code/paketto.html)
+                - scanrand ip\_address:all
+            - [unicornscan](http://www.unicornscan.org)
+                - unicornscan \[options \`b:B:d:De:EFhi:L:m:M:pP:q:r:R:s:St:T:w:W:vVZ:' \] IP\_ADDRESS/ CIDR\_NET\_MASK: S-E
+            - [netenum](http://www.phenoelit.de/irpas/)
+                - netenum network/netmask timeout
+            - [fping](http://www.fping.com/) fping -a -d hostname/ (Network/Subnet\_Mask)
+        - Firewall Specific Tools
+            - [firewalk](http://www.packetfactory.net/Projects/)
+                - firewalk -p \[protocol\] -d \[destination\_port\] -s \[source\_port\] \[internal\_IP\] \[gateway\_IP\]
+            - [ftester](http://dev.inversepath.com/trac/ftester)
+                - host 1 ./ftestd -i eth0 -v host 2 ./ftest -f ftest.conf -v -d 0.01 then ./freport ftest.log ftestd.log
+        
+    - Active Hosts
+        - Open TCP Ports
+        - Closed TCP Ports
+        - Open UDP Ports
+        - Closed UDP Ports
+        - Service Probing
+            - SMTP Mail Bouncing
+            - Banner Grabbing
+                - Other
+                - HTTP
+                    - Commands
+                        - JUNK / HTTP/1.0
+                        - HEAD / HTTP/9.3
+                        - OPTIONS / HTTP/1.0
+                        - HEAD / HTTP/1.0
+                    - Extensions
+                        - WebDAV
+                        - ASP.NET
+                        - Frontpage
+                        - OWA
+                        - IIS ISAPI
+                        - PHP
+                        - OpenSSL
+                - HTTPS
+                    - Use stunnel to encapsulate traffic.
+                - SMTP
+                - POP3
+                - FTP
+                    - If banner altered, attempt anon logon and execute: 'quote help' and 'syst' commands.
+        - ICMP Responses
+            - Type 3 (Port Unreachable)
+            - Type 8 (Echo Request)
+            - Type 13 (Timestamp Request)
+            - Type 15 (Information Request)
+            - Type 17 (Subnet Address Mask Request)
+            - Responses from broadcast address
+        - Source Port Scans
+            - TCP/UDP 53 (DNS)
+            - TCP 20 (FTP Data)
+            - TCP 80 (HTTP)
+            - TCP/UDP 88 (Kerberos)
+        - Firewall Assessment
+            - Firewalk
+            - TCP/UDP/ICMP responses
+        - OS Fingerprint

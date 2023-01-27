@@ -1,0 +1,640 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>X Forwarded for SQL injection - iam.chi</title>
+<meta name="description" content="Author: Nikos Danopoulos, Ghost Labs">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="X Forwarded for SQL injection">
+<meta property="og:url" content="http://localhost:4000/cases-study/2019/05/23/xforwardedsqli.html">
+
+
+  <meta property="og:description" content="Author: Nikos Danopoulos, Ghost Labs">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-05-23T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/cases-study/2019/05/23/xforwardedsqli.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="X Forwarded for SQL injection">
+    <meta itemprop="description" content="Author: Nikos Danopoulos, Ghost Labs">
+    <meta itemprop="datePublished" content="2019-05-23T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">X Forwarded for SQL injection
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Author: Nikos Danopoulos, Ghost Labs</p>
+
+<p> </p>
+
+<p>Last year, on May, I was assigned a Web Application test of a regular customer. As the test was <a href="https://resources.infosecinstitute.com/what-are-black-box-grey-box-and-white-box-penetration-testing/">blackbox</a> one of the few entry points - if not the only - was a login page. The tight scoping range and the staticity of the Application did not provide many options.</p>
+
+<p>After spending some time on the enumeration phase by trying to find hidden files/directories, leaked credentials online, common credentials, looking for vulnerable application components and more I was driven to a dead end.</p>
+
+<p>No useful information were received, the enumeration phase had finished and no process had been made. Moreover, every fuzzing attempt on the login parameters didn’t not trigger any interesting responses.</p>
+
+<h2 id="identifying-the-entry-point"><strong>Identifying the entry point</strong></h2>
+
+<p>A very useful Burp Suite Extension is Bypass WAF. To find out how this extension works, have a quick look <a href="https://portswigger.net/bappstore/ae2611da3bbc4687953a1f4ba6a4e04c">here</a>. Briefly, this extension is used to bypass a Web Application firewall by inserting specific headers on our HTTP Requests. <strong><a href="https://en.wikipedia.org/wiki/X-Forwarded-For">X-Forwarded-For</a></strong> is one of the them. What this header is also known for though is for the frequent use by the developers to store the IP Data of the client.</p>
+
+<p>The following backend SQL statement is a vulnerable example of this:</p>
+
+<p>mysql_query(“SELECT username, password FROM users-data WHERE username=’“.sanitize($_POST[‘username’]).”’ AND password=’“.md5($_POST[‘password’]).”’ AND ip_adr=’“.ipadr().”’”);</p>
+
+<p><em>More info here: <a href="https://resources.infosecinstitute.com/sql-injection-http-headers/#gref">SQL Injection through HTTP Headers</a></em></p>
+
+<p>Where <strong>ipadr()</strong> is a function that reads the $_SERVER[‘HTTP_X_FORWARDED_FOR’] value (X-Forwarded-For header) and by applying some regular expression decides whether to store the value or not.</p>
+
+<p>For the web application I was testing, it turned out to have a similar vulnerability. The provided X-Forwarded-For header was not properly validated, it was parsed as a SQL statement and there was the entry point.</p>
+
+<p>Moreover, it was not mandatory to send a POST request to the login page and inject the payload through the header. The header was read and evaluated on the index page, by just requesting the “/” directory.</p>
+
+<p>Due to the application’s structure, I was not able to trigger any visible responses from the payloads. That made the Injection a Blind, Time Based one. Out of several and more complex payloads - mainly for debugging purposes - the final, initial, payload was:</p>
+
+<p>“XOR(if(now()=sysdate(),sleep(6),0))OR”</p>
+
+<p><img src="images/sql-injection-blog-post-1.png" alt="sql injection picture" /></p>
+
+<p>And it was triggered by a similar request:</p>
+
+<p>GET / HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.21
+X-Forwarded-For: “XOR(if(now()=sysdate(),sleep(6),0))OR”
+X-Requested-With: XMLHttpRequest
+Referer: http://internal.customer.info/
+Host: internal.customer.info
+Connection: close
+Accept-Encoding: gzip,deflate
+Accept: /</p>
+
+<p>The response was delayed, the sleep value was incremented to validate the finding and indeed, the injection point was ready.</p>
+
+<p>As sqlmap couldn’t properly insert the injection point inside the XOR payload, an initial manual enumeration was done. The next information extracted was the Database Length. That would allow me to later identify the Database Name too. Here is the payload used:</p>
+
+<p>“XOR(if(now()=sysdate(),sleep(6),0))OR”</p>
+
+<p><img src="images/sql-injection-blog-post-2.png" alt="​​SQL injection picture" /></p>
+
+<p>Of course, Burp Intruder was used to gradually increment the database length value. It turned out that the Database Length is 30. To find the Database Name Burp Intruder was used again with the following payload:</p>
+
+<p>“XOR(if(MID(database(),1,1)=’§position§’,sleep(9),0))OR”</p>
+
+<p><img src="images/sql-injection-blog-post-3.png" alt="​​SQL injection picture" /></p>
+
+<p>To automate this in an attack the following payload was used:</p>
+
+<p>“XOR(if(MID(database(),1,§number§)=’§character§’,sleep(2),0))OR”</p>
+
+<p>During the attack I noticed that the first 3 characters are the same with the first character of the domain name I am testing. The domain were 20 character long. I paused the intruder attack, went back to repeater and verified like this:</p>
+
+<p>“XOR(if(MID(database(),1,20)=’‘,sleep(4),0))OR”</p>
+
+<p>Indeed, the server delayed to respond indicating that the 15 first characters of the Database Name are the same as the domain name. The database name was 30 characters long. I had to continue the attack but this time with a different payload, starting the attack from character 21, in order to find the full database name. After a few minutes, the full database name was extracted. Format: “**<domain-name>\_<subdomain-name>\_493** ” With the database name I then attempted to enumerate table names.</subdomain-name></domain-name></p>
+
+<p>Similarly, a char-by-char bruteforce attacks is required to find the valid names.</p>
+
+<p>To do this I loaded the information_schema.tables table that provides information about all the databases’ tables.  I filtered only the current’s database related tables by using the WHERE clause:</p>
+
+<p>“XOR(if(Ascii(substring((​ Select​ table_name ​from information_schema.tables ​where​ table_schema=​database​() limit 0​,1),​1,1))=​ ‘100’​, sleep​(5​),​0))​OR​”*/</p>
+
+<p><img src="images/sql-injection-blog-post-4.png" alt="​​SQL injection picture" /></p>
+
+<p>As the previous payload was the initial one, I simplified it to this:</p>
+
+<p>“XOR(if((substring((​ Select​ table_name ​ from​ information_schema.tables
+where​ table_schema=​database​() ​limit​ ​0,1),​1,1))=​’a’​, sleep​(3),​0))​ OR​ “*/</p>
+
+<p>Again, the payload was parsed to Burp Intruder to automate the process. After a few minutes the first tables were discovered:</p>
+
+<p><img src="images/sql-injection-blog-post-5.png" alt="​​SQL injection picture" /></p>
+
+<p><img src="images/sql-injection-blog-post-6.png" alt="​​SQL injection picture" /></p>
+
+<p>After enumerating about 20 Tables Names I decided to try again my luck with SQLmap. As several tables where discovered, one of them was used to help sqlmap understand the injection point and continue the attack. Payload used in sqlmap: <code class="language-plaintext highlighter-rouge">XOR(select 1 from cache where 1=1 and 1=1*)OR</code> By that time I managed to properly set the injection point and I forced sqlmap to just extract the column names and data from the interesting tables.</p>
+
+<p><img src="images/sql-injection-blog-post-7.png" alt="​​SQL injection picture" /></p>
+
+<p><img src="images/sql-injection-blog-post-8.png" alt="​​SQL injection picture" /></p>
+
+<p><strong>Notes and Conclusion</strong></p>
+
+<p>At the end of the injection the whole database along with the valuable column information was received. The customer was notified immediately and the attack was reproduced as a proof of concept.</p>
+
+<p>Sometimes manual exploitation - especially blind, time based attacks - may seem tedious. As shown, it is also sometimes difficult to automate a detected injection attack. The best thing that can be done on such cases is to manually attack until all the missing information for the automation of the attack are collected.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-05-23T00:00:00-05:00">May 23, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=X+Forwarded+for+SQL+injection%20http%3A%2F%2Flocalhost%3A4000%2Fcases-study%2F2019%2F05%2F23%2Fxforwardedsqli.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcases-study%2F2019%2F05%2F23%2Fxforwardedsqli.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcases-study%2F2019%2F05%2F23%2Fxforwardedsqli.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/cases-study/2019/05/23/web-application-penetration-testing.html" class="pagination--pager" title="Web Application Penetration Testing
+">Previous</a>
+    
+    
+      <a href="/security-research/2019/05/29/cve-2019-12584-12585-command-injection-vulnerability-on-pfsense-2-4-4-release-p3.html" class="pagination--pager" title="CVE-2019-[12584-12585] : Command Injection Vulnerability on pfSense 2.4.4-RELEASE-p3
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

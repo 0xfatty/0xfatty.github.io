@@ -1,0 +1,135 @@
+---
+title: "VoIP Security"
+date: "2019-03-12"
+categories: 
+  - "penetration-testing-guides"
+---
+
+ 
+
+- Sniffing Tools
+    - [AuthTool](http://www.hackingvoip.com/sec_tools.html)
+    - [Cain & Abel](http://www.oxid.it/cain.html)
+    - [Etherpeek](http://www.wildpackets.com/products/etherpeek/overview)
+    - [NetDude](http://netdude.sourceforge.net/)
+    - [Oreka](http://oreka.sourceforge.net/)
+    - [PSIPDump](http://sourceforge.net/projects/psipdump)
+    - [SIPomatic](http://www.linphone.org/?lang=us&rubrique=1)
+    - [SIPv6 Analyzer](http://pcs.csie.nctu.edu.tw/%7Eyhsung/sipv6_analyzer/)
+    - [UCSniff](http://sourceforge.net/project/showfiles.php?group_id=238065)
+    - [VoiPong](http://www.enderunix.org/voipong/index.php)
+    - [VOMIT](http://vomit.xtdnet.nl/)
+    - [Wireshark](http://www.wireshark.org/)
+    - [WIST - Web Interface for SIP Trace](http://www.devel-it.org/index.php?modulo=projetos&id=2)
+- Scanning and Enumeration Tools
+    - [enumIAX](http://sourceforge.net/projects/enumiax/)
+    - [fping](http://www.fping.com/)
+    - [IAX Enumerator](http://www.tippingpoint.com/security/materials/enumiax-0.4a.tar.gz)
+    - [iWar](http://www.softwink.com/iwar/)
+    - [Nessus](http://www.nessus.org/)
+    - [Nmap](http://www.insecure.org)
+    - [SIP Forum Test Framework (SFTF)](https://www.sipfoundry.org/sftf)
+    - [SIPcrack](http://remote-exploit.org/index.php/Sipcrack)
+    - [sipflanker](http://code.google.com/p/sipflanker/)
+        - python sipflanker.py 192.168.1-254
+    - [SIP-Scan](http://www.hackingvoip.com/sec_tools.html)
+    - [SIP.Tastic](http://www.isecpartners.com/sip_tastic.html)
+    - [SIPVicious](http://sipvicious.googlecode.com/)
+    - [SiVuS](http://www.vopsecurity.org/html/tools.html)
+    - SMAP
+        - smap IP\_Address/Subnet\_Mask
+        - smap -o IP\_Address/Subnet\_Mask
+        - smap -l IP\_Address
+    - [snmpwalk](http://net-snmp.sourceforge.net/docs/man/snmpwalk.html)
+    - [VLANping](http://www.hackingvoip.com/sec_tools.html)
+    - [VoIPAudit](http://www.voipshield.com/)
+    - [VoIP GHDB Entries](http://www.hackingvoip.com/google.html)
+    - [VoIP Voicemail Database](http://www.hackingvoip.com/voicemail.html)
+- Packet Creation and Flooding Tools
+    - [H.323 Injection Files](http://www.isecpartners.com/h_323_injection_files.html)
+    - [H225regreject](http://www.isecpartners.com/h225regreject.html)
+    - [IAXHangup](http://www.isecpartners.com/iaxhangup.html)
+    - [IAXAuthJack](http://www.isecpartners.com/iaxauthjack.html)
+    - [IAX.Brute](http://www.isecpartners.com/iax_brute.html)
+    - [IAXFlooder](http://www.hackingvoip.com/sec_tools.html)
+        - ./iaxflood sourcename destinationname numpackets
+    - [INVITE Flooder](http://www.hackingvoip.com/sec_tools.html)
+        - ./inviteflood interface target\_user target\_domain ip\_address\_target no\_of\_packets
+    - [kphone-ddos](http://skora.net/voip/voip.html)
+    - [RTP Flooder](http://www.hackingvoip.com/sec_tools.html)
+    - [rtpbreak](http://xenion.reactive-search.com/?page_id=7)
+    - [Scapy](http://www.secdev.org/projects/scapy/)
+    - [Seagull](http://gull.sourceforge.net/doc/sip.html)
+    - [SIPBomber](http://www.metalinkltd.com/downloads.php)
+    - [SIPNess](http://www.ortena.com/files/Messenger.zip)
+    - [SIPp](http://sipp.sourceforge.net/)
+    - [SIPsak](http://sipsak.org/)
+        - Tracing paths: - sipsak -T -s sip:usernaem@domain
+        - Options request:- sipsak -vv -s sip:username@domain
+        - Query registered bindings:- sipsak -I -C empty -a password -s sip:username@domain
+    - [SIP-Send-Fun](http://www.security-scans.de/index.php?where=ssf)
+    - [SIPVicious](http://sipvicious.googlecode.com/)
+    - [Spitter](http://www.hackingvoip.com/sec_tools.html)
+    - [TFTP Brute Force](http://www.hackingvoip.com/)
+        - perl tftpbrute.pl <tftpserver> <filelist> <maxprocesses>
+    - [UDP Flooder](http://www.hackingvoip.com/tools/udpflood.tar.gz)
+        - ./udpflood source\_ip target\_destination\_ip src\_port dest\_port no\_of\_packets
+    - [UDP Flooder (with VLAN Support)](http://www.hackingvoip.com/tools/udpfloodVLAN.tar.gz)
+        - ./udpflood source\_ip target\_destination\_ip src\_port dest\_port TOS user\_priority VLAN ID no\_of\_packets
+    - [Voiphopper](http://voiphopper.sourceforge.net/)
+- Fuzzing Tools
+    - [Asteroid](http://swik.net/asteroid)
+    - [Codenomicon VoIP Fuzzers](http://www.codenomicon.com/products/telecommunications/)
+    - Fuzzy Packet
+    - [Mu Security VoIP Fuzzing Platform](http://www.musecurity.com/products/protocol_usecase.html#voip)
+    - [ohrwurm RTP Fuzzer](http://mazzoo.de/blog/2006/08/25#ohrwurm)
+    - [PROTOS H.323 Fuzzer](http://www.ee.oulu.fi/research/ouspg/protos/testing/c07/h2250v4/index.html#download)
+    - [PROTOS SIP Fuzzer](http://www.ee.oulu.fi/research/ouspg/protos/testing/c07/sip/)
+    - [SIP Forum Test Framework (SFTF)](https://www.sipfoundry.org/sftf)
+    - [Sip-Proxy](http://sourceforge.net/projects/sipproxy)
+    - [Spirent ThreatEx](http://www.spirentcom.com/general/docview.cfm?D=4663)
+- Signaling Manipulation Tools
+    - [AuthTool](http://www.hackingvoip.com/tools/authtool.tar.gz)
+        - ./authtool captured\_sip\_msgs\_file -d dictionary -r usernames\_passwords -v
+    - [BYE Teardown](http://www.hackingvoip.com/sec_tools.html)
+    - [Check Sync Phone Rebooter](http://www.hackingvoip.com/sec_tools.html)
+    - [RedirectPoison](http://www.hackingvoip.com/sec_tools.html)
+        - ./redirectpoison interface target\_source\_ip target\_source\_port "<contact\_information i.e. sip:100.77.50.52;line=xtrfgy>"
+    - [Registration Adder](http://www.hackingvoip.com/sec_tools.html)
+    - [Registration Eraser](http://www.hackingvoip.com/sec_tools.html)
+    - [Registration Hijacker](http://www.hackingvoip.com/sec_tools.html)
+    - [SIP-Kill](http://skora.net/voip/voip.html)
+    - [SIP-Proxy-Kill](http://skora.net/voip/voip.html)
+    - [SIP-RedirectRTP](http://skora.net/voip/voip.html)
+    - [SipRogue](http://www.hackingvoip.com/sec_tools.html)
+    - [vnak](http://www.isecpartners.com/vnak.html)
+- Media Manipulation Tools
+    - [RTP InsertSound](http://www.hackingvoip.com/sec_tools.html)
+        - ./rtpinsertsound interface source\_rtp\_ip source\_rtp\_port destination\_rtp\_ip destination\_rtp\_port file
+    - [RTP MixSound](http://www.hackingvoip.com/sec_tools.html)
+        - ./rtpmixsound interface source\_rtp\_ip source\_rtp\_port destination\_rtp\_ip destination\_rtp\_port file
+    - [RTPProxy](http://skora.net/voip/voip.html)
+    - [RTPInject](http://www.isecpartners.com/rtpinject.html)
+- Generic Software Suites
+    - [OAT Office Communication Server Tool Assessment](http://voat.sourceforge.net/)
+    - [EnableSecurity VOIPPACK](http://enablesecurity.com/products/voippack/)
+        - Note: - Add-on for Immunity Canvas
+- References
+    - URL's
+        - Common Vulnerabilities and Exploits (CVE)
+            - Vulnerabilties and exploit information relating to these products can be found here: http://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=voip
+        - [Default Passwords](http://www.infosegura.net/passwords.htm)
+        - [Hacking Exposed VoIP](http://www.hackingvoip.com/index.php)
+            - Tool Pre-requisites
+                - [Hack Library](http://www.hackingvoip.com/tools/hack_library.tar.gz)
+                - [g711conversions](http://www.hackingvoip.com/tools/g711conversions.tar.gz)
+        - [VoIPsa](http://www.voipsa.org/)
+    - White Papers
+        - [An Analysis of Security Threats and Tools in SIP-Based VoIP Systems](http://www.colorado.edu/policylab/Papers/Univ_Colorado_VoIP_Vulner.pdf)
+        - [An Analysis of VoIP Security Threats and Tools](https://www.csialliance.org/news/events/voip/Jun2_session2_pres1_McGann.ppt)
+        - [Hacking VoIP Exposed](http://www.blackhat.com/presentations/bh-usa-06/BH-US-06-Endler.pdf)
+        - [Security testing of SIP implementations](http://www.mediateam.oulu.fi/publications/pdf/462.pdf)
+        - [SIP Stack Fingerprinting and Stack Difference Attacks](http://www.blackhat.com/presentations/bh-usa-06/BH-US-06-Scholz.pdf)
+        - [Two attacks against VoIP](http://www.securityfocus.com/infocus/1862)
+        - [VoIP Attacks!](http://www.dustintrammell.com/presentations/VoIP-Attacks.pdf)
+        - [VoIP Security Audit Program (VSAP)](http://www.isecpartners.com/vsap.html)

@@ -1,0 +1,311 @@
+---
+title: "Network Foot-printing"
+date: "2019-03-12"
+categories: 
+  - "penetration-testing-guides"
+---
+
+- - Whois is widely used for querying authoritative registries/ databases to discover the owner of a domain name, an IP address, or an autonomous system number of the system you are targeting.
+        - Authoratitive Bodies
+            - [IANA - Internet Assigned Numbers Authority](http://www.iana.com/)
+            - [ICANN - Internet Corporation for Assigned Names and Numbers.](http://www.icann.org/)
+            - [NRO - Number Resource Organisation](http://www.nro.net/)
+            - RIR - Regional Internet Registry
+                - [AFRINIC - African Network Information Centre](http://www.afrinic.net)
+                - [APNIC - Asia Pacific Network Information Centre](http://www.apnic.net/apnic-bin/whois.pl/)
+                    - National Internet Registry
+                        - [APJII](http://www.apjii.or.id/?lang=eng)
+                        - [CNNIC](http://www.cnnic.net.cn/en/index/index.htm)
+                        - [JPNIC](http://www.nic.ad.jp/)
+                        - [KRNIC](http://whois.nida.or.kr/)
+                        - [TWNIC](http://rs.twnic.net.tw/)
+                        - [VNNIC](http://www.vnnic.net.vn/)
+                - [ARIN - American Registry for Internet Numbers](http://ws.arin.net/whois)
+                - [LACNIC - Latin America & Caribbean Network Information Centre](http://www.lacnic.net/)
+                - [RIPE - Reseaux IP Européens—Network Coordination Centre](http://www.ripe.net/)
+        - Websites
+            - [Central Ops](http://centralops.net/co/)
+                - Domain Dossier
+                - Email Dossier
+            - [DNS Stuff](http://www.dnsstuff.com/)
+                - Online DNS one-stop shop, with the ability to perform a great deal of disparate DNS type queries.
+            - [Fixed Orbit](http://www.fixedorbit.com/)
+                - Autonomous System lookups and other online tools available.
+            - [Geektools](http://www.geektools.com/)
+            - [IP2Location](http://www.ip2location.com/%20)
+                - Allows limited free IP lookups to be performed, displaying geolocation information, ISP details and other pertinent information.
+            - [Kartoo](http://www.kartoo.com/)
+                - Metasearch engine that visually presents its results.
+            - [MyIPNeighbors.com](http://www.myipneighbors.com/)
+                - Excellent site that gives you details of shared domains on the IP queried/ conversely IP to DNS resolution
+            - [Netcraft](http://www.netcraft.com/)
+                - Online search tool allowing queries for host information.
+            - [Robtex](http://www.robtex.com/)
+                - Excellent website allowing DNS and AS lookups to be performed with a graphical display of the results with pointers, A, MX records and AS connectivity displayed.
+                - Note: - Can be unreliable with old entries (Use CentralOps to verify)
+            - [Traceroute.org](http://www.traceroute.org/)
+                - Website listing a large number links to online traceroute resources.
+            - [Wayback Machine](http://www.archive.org/index.php)
+                - Stores older versions of websites, making it a good comparison tool and excellent resource for previously removed data.
+            - [Whois.net](http://www.whois.net/)
+        - Tools
+            - [Cheops-ng](http://cheops-ng.sourceforge.net/)
+            - [Country whois](http://www.tamos.com/)
+            - [Domain Research Tool](http://www.domainresearchtool.com/)
+            - Firefox Plugins
+                - [AS Number](http://www.asnumber.networx.ch/)
+                - [Shazou](http://www.seisan.com/shazou)
+                - [Firecat Suite](http://www.security-database.com/)
+            - [Gnetutil](http://www.culte.org/projets/developpement/gnetutil/)
+            - [Goolag Scanner](http://www.goolag.org/download.html)
+            - [Greenwich](http://jodrell.net/projects/greenwich)
+            - [Maltego](http://www.paterva.com/)
+            - [GTWhois](http://www.geektools.com/tools.php)
+            - [Sam Spade](http://www.samspade.org/)
+            - [Smart whois](http://www.tamos.com/)
+            - [SpiderFoot](http://www.binarypool.com/spiderfoot/)
+    - Internet Search
+        - General Information
+            - [Web Investigator](http://www.webinvestigator.org/)
+            - [Tracesmart](http://www.tracesmart.co.uk/)
+            - [Friends Reunited](http://www.friendsreunited.co.uk/)
+            - [Ebay - profiles etc.](http://www.ebay.co.uk)
+        - Financial
+            - [EDGAR - Company information, including real-time filings. US](http://www.sec.gov/edgar/searchedgar/companysearch.html)
+            - [Google Finance - General Finance Portal](http://finance.google.com/finance)
+            - [Hoovers - Business Intelligence, Insight and Results. US and UK](http://www.hoovers.com/free/)
+            - [Companies House UK](http://www.companieshouse.gov.uk/)
+            - [Land Registry UK](http://www.landregisteronline.gov.uk/)
+        - Phone book/ Electoral Role Information
+            - [123people](http://www.123people.com/)
+                - http://www.123people.co.uk/s/firstname+lastname/world
+            - [192.com](http://www.192.com/search/)
+                - Electoral Role Search. UK
+            - [411](http://www.411.com/)
+                - Online White Pages and Yellow Pages. US
+            - [Abika](http://www.abika.com/)
+                - Background Check, Phone Number Lookup, Trace email, Criminal record, Find People, cell phone number search, License Plate Search. US
+            - BT.com. UK
+                - [Residential](http://www.thephonebook.bt.com/publisha.content/en/find/residential/residential_numbers.publisha)
+                - [Business](http://www.thephonebook.bt.com/publisha.content/en/find/business/business_numbers.publisha)
+            - [Pipl](http://pipl.com/)
+                - http://pipl.com/search/?FirstName=????&LastName=????&City=&State=&Country=UK&CategoryID=2&Interface=1
+                - http://pipl.com/search/?Email=john%40example.com&CategoryID=4&Interface=1
+                - http://pipl.com/search/?Username=????&CategoryID=5&Interface=1
+            - [Spokeo](http://www.spokeo.com/)
+                - http://www.spokeo.com/user?q=domain\_name
+                - http://www.spokeo.com/user?q=email\_address
+            - [Yasni](http://www.yasni.co.uk)
+                - http://www.yasni.co.uk/index.php?action=search&search=1&sh=&name=firstname+lastname&filter=Keyword
+            - [Zabasearch](http://www.zabasearch.com/%20)
+                - People Search Engine. US
+        - Generic Web Searching
+            - [Code Search](http://www.google.com/codesearch)
+            - Forum Entries
+            - [Google Hacking Database](http://johnny.ihackstuff.com/)
+            - Google
+                - Back end files
+                    - .exe / .txt / .doc / .ppt / .pdf / .vbs / .pl / .sh / .bat / .sql / .xls / .mdb / .conf
+                - Email Addresses
+                - Contact Details
+            - Newsgroups/forums
+            - Blog Search
+                - [Yammer](https://www.yammer.com/)
+                - [Google Blog Search](http://blogsearch.google.com/)
+                    - http://blogsearch.google.com/blogsearch?hl=en&ie=UTF-8&q=????&btnG=Search+Blogs
+                - [Technorati](http://technorati.com/)
+                    - http://technorati.com/search/\[query\]?language=n
+                - [Jaiku](http://www.jaiku.com/)
+                - [Present.ly](https://presentlyapp.com/)
+                - [Twitter Network Browser](http://www.neuroproductions.be/twitter_friends_network_browser/)
+            - Search Engine Comparison/ Aggregator Sites
+                - [Clusty](http://clusty.com/)
+                    - http://clusty.com/search?input-form=clusty-simple&v%3Asources=webplus&query=????
+                - [Grokker](http://grokker.com/)
+                    - http://live.grokker.com/grokker.html?query=?????&OpenSearch\_Yahoo=true&Wikipedia=true&numResults=250
+                - [Zuula](http://www.zuula.com/index.html)
+                    - http://www.zuula.com/SearchResult.jsp?bst=1&prefpg=1&st=????&x=0&y=0
+                - [Exalead](http://www.exalead.co.uk/search)
+                    - http://www.exalead.co.uk/search/results?q=????&x=0&y=0&%24mode=allweb&%24searchlanguages=en
+                - [Delicious](http://delicious.com/)
+                    - http://delicious.com/search?p=?????&u=&chk=&context=&fr=del\_icio\_us&lc=0
+        - Metadata Search
+            - Metadata can be found within various file formats. Dependant on the file types to be inspected, the more metadata can be extracted. Example metadata that can be extracted includes valid usernames, directory structures etc. make the review of documents/ images etc. relating to the target domain a valuable source of information.
+                - MetaData Visualisation Sites
+                    - [TouchGraph Google Browser](http://www.touchgraph.com/TGGoogleBrowser.html)
+                    - [Kartoo](http://www.kartoo.com/)
+                - Tools
+                    - [Bashitsu](http://code.google.com/p/bashitsu/)
+                        - svn checkout http://bashitsu.googlecode.com/svn/trunk/
+                        - cat filename | strings | bashitsu-extract-names
+                    - [Bintext](http://www.foundstone.com/us/resources/proddesc/bintext.htm)
+                    - [Exif Tool](http://www.sno.phy.queensu.ca/%7Ephil/exiftool/)
+                        - exiftool -common directory
+                        - exiftool -r -w .txt -common directory
+                    - FOCA
+                        - [Online Version](http://www.informatica64.com/foca/)
+                        - [Offline](http://www.informatica64.com/DownloadFOCA/)
+                    - [Hachoir](http://directory.fsf.org/project/hachoirparser/)
+                    - [Infocrobes](http://code.google.com/p/infocrobes/)
+                    - [Libextractor](http://www.vulnerabilityassessment.co.uk/www.gnunet.org/libextractor)
+                        - extract -b filename
+                        - extract filename
+                        - extract -B country\_code filename
+                    - [Metadata Extraction Tool](http://meta-extractor.sourceforge.net/)
+                        - extract.bat <arg1> <arg2> <arg3>
+                    - [Metagoofil](http://www.edge-security.com/metagoofil.php)
+                        - metagoofil -d target\_domain -l max\_no\_of\_files -f all ( or pdf,doc,xls,ppt) -o output\_file.html -t directory\_to\_download\_files\_to
+                    - [OOMetaExtractor](http://www.codeplex.com/OOMetaExtractor)
+                    - [The Revisionist](http://lcamtuf.coredump.cx/strikeout/)
+                        - ./therev '' @/directory
+                        - ./therev '' site.com
+                        - ./therev 'linux' microsoft.com en
+                    - [Wvware](http://wvware.sourceforge.net/)
+                - Wikipedia Metadata Search
+                    - [Wikiscanner](http://wikiscanner.virgil.gr/)
+                    - [Wikipedia username checker](http://wikiwatcher.virgil.gr/pmcu/)
+        - Social/ Business Networks
+            - The following sites are some of many social and business related networking entities that are in use today.  Dependant on the interests of the people you are researching it may be worth just exploring sites that they have a particular penchant based on prior knowledge from open source research, company biographies etc. i.e. Buzznet if they are interested in music/ pop culture, Flixter for movies etc.Finding a persons particular interests may make a potential client side attack more successful if you can find a related "hook" in any potential "spoofed" email sent for them to click on (A Spearphishing technique)
+                
+                Note: - This list is not exhaustive and has been limited to those with over 1 million members.
+                - Africa
+                    - [BlackPlanet](http://www.blackplanet.com/)
+                - Australia
+                    - [Bebo](http://www.bebo.com/)
+                - Belgium
+                    - [Netlog](http://en.netlog.com/)
+                - Holland
+                    - [Hyves](http://www.hyves.nl/)
+                - Hungary
+                    - [iWiW](http://www.iwiw.hu/)
+                - Iran
+                    - [Cloob](http://www.orkut.com/)
+                - Japan
+                    - [Mixi](http://mixi.jp/)
+                - Korea
+                    - [CyWorld](http://www.cyworld.co.kr/)
+                - Poland
+                    - [Grono](http://grono.net/)
+                    - [Nasza-klasa](http://nasza-klasa.pl/)
+                - Russia
+                    - [Odnoklassniki](http://odnoklassniki.ru/)
+                    - [Vkontakte](http://vkontakte.ru/)
+                - Sweden
+                    - [LunarStorm](http://www.lunarstorm.se/)
+                - UK
+                    - [FriendsReunited et al](http://www.friendsreunited.co.uk/)
+                    - [Badoo](http://www.badoo.com/)
+                    - [FaceParty](http://www.faceparty.com/)
+                - US
+                    - [Classmates](http://www.classmates.com/)
+                    - [Facebook](http://www.facebook.com/)
+                    - [Friendster](http://www.friendster.com/)
+                    - [MyLife.com (formerly Reunion.com)](http://www.mylife.com/)
+                    - [MySpace](http://www.myspace.com/)
+                    - [Windows Live Spaces](http://home.spaces.live.com/)
+                - Assorted
+                    - [Buzznet](http://www.buzznet.com/)
+                    - [Care2](http://www.care2.com/)
+                    - [Habbo](http://www.habbo.com/)
+                    - [Hi5](http://www.hi5.com/)
+                    - [Linkedin](http://www.linkedin.com/)
+                    - [MocoSpace](http://www.mocospace.com/)
+                    - [Naymz](http://www.naymz.com/)
+                    - [Orkut](http://www.orkut.com/)
+                    - [Passado](http://www.passado.com/)
+                    - [Tagged](http://www.tagged.com/)
+                    - [Twitter](http://twitter.com/)
+                    - [Windows Live Spaces](http://spaces.live.com/)
+                    - [Xanga](http://www.xanga.com/)
+                    - [Yahoo! 360°](http://360.yahoo.com/)
+                    - [Xing](http://www.xing.com/)
+                        - http://www.xing.com/app/search?op=universal&universal=????
+        - Resources
+            - [OSINT](http://onstrat.com/osint/)
+            - [International Directory of Search Engines](http://searchenginecolossus.com/)
+    - DNS Record Retrieval from publically available servers
+        - Types of Information Records
+            - SOA Records - Indicates the server that has authority for the domain.
+            - MX Records - List of a host's or domain's mail exchanger server(s).
+            - NS Records - List of a host's or domain's name server(s).
+            - A Records - An address record that allows a computer name to be translated to an IP address. Each computer has to have this record for its IP address to be located via DNS.
+            - PTR Records - Lists a host's domain name, host identified by its IP address.
+            - SRV Records - Service location record.
+            - HINFO Records - Host information record with CPU type and operating system.
+            - TXT Records - Generic text record.
+            - CNAME - A host's canonical name allows additional names/ aliases to be used to locate a computer.
+            - RP - Responsible person for the domain.
+        - Database Settings
+            - Version.bind
+            - Serial
+            - Refresh
+            - Retry
+            - Expiry
+            - Minimum
+        - Sub Domains
+        - Internal IP ranges
+            - Reverse DNS for IP Range
+        - Zone Transfer
+    - Social Engineering
+        - Remote
+            - Phone
+                - Scenarios
+                    - IT Department."Hi, it's Zoe from the helpdesk. I am doing a security audit of the networkand I need to re-synchronise the Active Directory usernames and passwords.This is so that your logon process in the morning receives no undue delays"If you are calling from a mobile number, explain that the helpdesk has beenissued a mobile phone for 'on call' personnel.
+                - Results
+                - Contact Details
+                    - Name
+                    - Phone number
+                    - Email
+                    - Room number
+                    - Department
+                    - Role
+            - Email
+                - Scenarios
+                    - Hi there, I am currently carrying out an Active Directory Health Checkfor TARGET COMPANY and require to re-synchronise some outstandingaccounts on behalf of the IT Service Desk. Please reply to medetailing the username and password you use to logon to your desktopin the morning. I have checked with MR JOHN DOE, the IT SecurityAdvisor and he has authorised this request. I will then populate thedatabase with your account details ready for re-synchronisation withActive Directory such that replication of your account will bere-established (this process is transparent to the user and sorequires no further action from yourself). We hope that this exercisewill reduce the time it takes for some users to logon to the network.Best Regards, Andrew Marks
+                    - Good Morning,The IT Department had a critical failure last night regarding remote access to the corporate network, this will only affect users that occasionally work from home.If you have remote access, please email me with your username and access requirements e.g. what remote access system did you use? VPN and IP address etc, and we will reset the system. We are also using this 'opportunity' to increase the remote access users, so if you believe you need to work from home occasionally, please email me your usernames so I can add them to the correct groups.If you wish to retain your current credentials, also send your password. We do not require your password to carry out the maintainence, but it will change if you do not inform us of it.We apologise for any inconvenience this failure has caused and are working to resolve it as soon as possible. We also thank you for your continued patience and help.Kindest regards,leeEMAIL SIGNATURE
+                - Software
+                - Results
+                - Contact Details
+                    - Name
+                    - Phone number
+                    - Email
+                    - Room number
+                    - Department
+                    - Role
+            - Other
+        - Local
+            - Personas
+                - Name
+                    - Suggest same 1st name.
+                - Phone
+                    - Give work mobile, but remember they have it!
+                - Email
+                    - Have a suitable email address
+                - Business Cards
+                    - Get cards printed
+            - Contact Details
+                - Name
+                - Phone number
+                - Email
+                - Room number
+                - Department
+                - Role
+            - Scenarios
+                - New IT employee
+                    - New IT employee."Hi, I'm the new guy in IT and I've been told to do a quick survey of users on the network. They give all the worst jobs to the new guys don't they? Can you help me out on this?"Get the following information, try to put a "any problems with it we can help with?" slant on it.UsernameDomainRemote access (Type - Modem/VPN)Remote email (OWA)Most used software?Any comments about the network?Any additional software you would like?What do you think about the security on the network? Password complexity etc.Now give reasons as to why they have complexity for passwords, try and get someone to give you their password and explain how you can make it more secure."Thanks very much and you'll see the results on the company boards soon."
+                - Fire Inspector
+                    - Turning up on the premise of a snap fire inspection, in line with the local government initiatives on fire safety in the workplace.Ensure you have a suitable appearance - High visibility jacket - Clipboard - ID card (fake).Check for:number of fire extinguishers, pressure, type.Fire exits, accessibility etc.Look for any information you can get. Try to get on your own, without supervision!
+            - Results
+            - Maps
+                - Satalitte Imagery
+                    - Google Maps
+                - Building layouts
+            - Other
+    - Dumpster Diving
+        - Rubbish Bins
+        - Contract Waste Removal
+        - Ebay ex-stock sales i.e. HDD
+    - Web Site copy
+        - [htttrack](http://www.httrack.com/)
+        - [teleport pro](http://www.tenmax.com/teleport/pro/home.htm)
+        - [Black Widow](http://www.softaward.com/1775.html)

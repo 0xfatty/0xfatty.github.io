@@ -53,3 +53,34 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# Site Author
+author:
+  name             : "Chi Tran"
+  avatar           : "/images/bio-photo.jpg"
+  bio              : "Hey! I am Chi &#124; Father of 2 &#124; Security Engineer &#124; I love cooking and spicy noodles."
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:research@ctrsec.io"
+    - label: "Linkedin"
+      icon: "fas fa-fw fa-link"
+      url: "https://www.linkedin.com/in/remote-code-execution/"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/imspciynoodles"
+
+
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: false
+      share: true
+      related: true

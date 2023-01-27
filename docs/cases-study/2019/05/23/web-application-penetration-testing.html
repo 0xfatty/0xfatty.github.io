@@ -1,0 +1,628 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Web Application Penetration Testing - iam.chi</title>
+<meta name="description" content="Web Application Penetration Testing">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="Web Application Penetration Testing">
+<meta property="og:url" content="http://localhost:4000/cases-study/2019/05/23/web-application-penetration-testing.html">
+
+
+  <meta property="og:description" content="Web Application Penetration Testing">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-05-23T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/cases-study/2019/05/23/web-application-penetration-testing.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Web Application Penetration Testing">
+    <meta itemprop="description" content="Web Application Penetration Testing">
+    <meta itemprop="datePublished" content="2019-05-23T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Web Application Penetration Testing
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Web Application Penetration Testing</p>
+
+<p>Phase 1 – History</p>
+
+<p>History of Internet - https://www.youtube.com/watch?v=9hIQjrMHTv4</p>
+
+<p>Phase 2 – Web and Server Technology</p>
+
+<p>Basic concepts of web applications, how they work and the HTTP protocol - https://www.youtube.com/watch?v=RsQ1tFLwldY&amp;t=7s HTML basics part 1 - https://www.youtube.com/watch?v=p6fRBGI_BY0 HTML basics part 2 - https://www.youtube.com/watch?v=Zs6lzuBVK2w Difference between static and dynamic website - https://www.youtube.com/watch?v=hlg6q6OFoxQ HTTP protocol Understanding - https://www.youtube.com/watch?v=JFZMyhRTVt0 Parts of HTTP Request -https://www.youtube.com/watch?v=pHFWGN-upGM Parts of HTTP Response - https://www.youtube.com/watch?v=c9sMNc2PrMU Various HTTP Methods - https://www.youtube.com/watch?v=PO7D20HsFsY Understanding URLS - https://www.youtube.com/watch?v=5Jr-_Za5yQM Intro to REST - https://www.youtube.com/watch?v=YCcAE2SCQ6k HTTP Request &amp; Response Headers - https://www.youtube.com/watch?v=vAuZwirKjWs What is a cookie - https://www.youtube.com/watch?v=I01XMRo2ESg HTTP Status codes - https://www.youtube.com/watch?v=VLH3FMQ5BIQ HTTP Proxy - https://www.youtube.com/watch?v=qU0PVSJCKcs Authentication with HTTP - https://www.youtube.com/watch?v=GxiFXUFKo1M HTTP basic and digest authentication - https://www.youtube.com/watch?v=GOnhCbDhMzk What is “Server-Side” - https://www.youtube.com/watch?v=JnCLmLO9LhA Server and client side with example - https://www.youtube.com/watch?v=DcBB2Fp8WNI What is a session - https://www.youtube.com/watch?v=WV4DJ6b0jhg&amp;t=202s Introduction to UTF-8 and Unicode - https://www.youtube.com/watch?v=sqPTR_v4qFA URL encoding - https://www.youtube.com/watch?v=Z3udiqgW1VA HTML encoding - https://www.youtube.com/watch?v=IiAfCLWpgII&amp;t=109s Base64 encoding - https://www.youtube.com/watch?v=8qkxeZmKmOY Hex encoding &amp; ASCII - https://www.youtube.com/watch?v=WW2SaCMnHdU</p>
+
+<p>Phase 3 – Setting up the lab with BurpSuite and bWAPP</p>
+
+<p>MANISH AGRAWAL</p>
+
+<p>Setup lab with bWAPP - https://www.youtube.com/watch?v=dwtUn3giwTk&amp;index=1&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Set up Burp Suite - https://www.youtube.com/watch?v=hQsT4rSa_v0&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV&amp;index=2 Configure Firefox and add certificate - https://www.youtube.com/watch?v=hfsdJ69GSV4&amp;index=3&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Mapping and scoping website - https://www.youtube.com/watch?v=H-_iVteMDRo&amp;index=4&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Spidering - https://www.youtube.com/watch?v=97uMUQGIe14&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV&amp;index=5 Active and passive scanning - https://www.youtube.com/watch?v=1Mjom6AcFyU&amp;index=6&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Scanner options and demo - https://www.youtube.com/watch?v=gANi4Kt7-ek&amp;index=7&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Introduction to password security - https://www.youtube.com/watch?v=FwcUhcLO9iM&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV&amp;index=8 Intruder - https://www.youtube.com/watch?v=wtMg9oEMTa8&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV&amp;index=9 Intruder attack types - https://www.youtube.com/watch?v=N5ndYPwddkQ&amp;index=10&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Payload settings - https://www.youtube.com/watch?v=5GpdlbtL-1Q&amp;index=11&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV Intruder settings - https://www.youtube.com/watch?v=B_Mu7jmOYnU&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV&amp;index=12</p>
+
+<p>ÆTHER SECURITY LAB</p>
+
+<p>No.1 Penetration testing tool - https://www.youtube.com/watch?v=AVzC7ETqpDo&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA&amp;index=1 Environment Setup - https://www.youtube.com/watch?v=yqnUOdr0eVk&amp;index=2&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA General concept - https://www.youtube.com/watch?v=udl4oqr_ylM&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA&amp;index=3 Proxy module - https://www.youtube.com/watch?v=PDTwYFkjQBE&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA&amp;index=4 Repeater module - https://www.youtube.com/watch?v=9Zh_7s5csCc&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA&amp;index=5 Target and spider module - https://www.youtube.com/watch?v=dCKPZUSOlr8&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA&amp;index=6 Sequencer and scanner module - https://www.youtube.com/watch?v=G-v581pXerE&amp;list=PLq9n8iqQJFDrwFe9AEDBlR1uSHEN7egQA&amp;index=7</p>
+
+<p>Phase 4 – Mapping the application and attack surface</p>
+
+<p>Spidering - https://www.youtube.com/watch?v=97uMUQGIe14&amp;list=PLv95pq8fEyuivHeZB2jeC435tU3_1YGzV&amp;index=5 Mapping application using robots.txt - https://www.youtube.com/watch?v=akuzgZ75zrk Discover hidden contents using dirbuster - https://www.youtube.com/watch?v=–nu9Jq07gA Dirbuster in detail - https://www.youtube.com/watch?v=2tOQC68hAcQ Discover hidden directories and files with intruder - https://www.youtube.com/watch?v=4Fz9mJeMNkI Identify application entry points - https://www.youtube.com/watch?v=IgJWPZ2OKO8&amp;t=34s Identify application entry points - https://www.owasp.org/index.php/Identify_application_entry_points_(OTG-INFO-006) Identify client and server technology - https://www.youtube.com/watch?v=B8jN_iWjtyM Identify server technology using banner grabbing (telnet) - https://www.youtube.com/watch?v=O67M-U2UOAg Identify server technology using httprecon - https://www.youtube.com/watch?v=xBBHtS-dwsM</p>
+
+<p>Phase 5 – Understanding and exploiting OWASP top 10 vulnerabilities</p>
+
+<p>A closer look at all owasp top 10 vulnerabilities - https://www.youtube.com/watch?v=avFR_Af0KGk</p>
+
+<p>IBM</p>
+
+<p>Injection - https://www.youtube.com/watch?v=02mLrFVzIYU&amp;index=1&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d Broken authentication and session management - https://www.youtube.com/watch?v=iX49fqZ8HGA&amp;index=2&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d Cross-site scripting - https://www.youtube.com/watch?v=x6I5fCupLLU&amp;index=3&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d Insecure direct object reference - https://www.youtube.com/watch?v=-iCyp9Qz3CI&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d&amp;index=4 Security misconfiguration - https://www.youtube.com/watch?v=cIplXL8idyo&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d&amp;index=5 Sensitive data exposure - https://www.youtube.com/watch?v=rYlzTQlF8Ws&amp;index=6&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d Missing functional level access controls - https://www.youtube.com/watch?v=VMv_gyCNGpk&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d&amp;index=7 Cross-site request forgery - https://www.youtube.com/watch?v=_xSFm3KGxh0&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d&amp;index=8 Using components with known vulnerabilities - https://www.youtube.com/watch?v=bhJmVBJ-F-4&amp;index=9&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d Unvalidated redirects and forwards - https://www.youtube.com/watch?v=L6bYKiLtSL8&amp;index=10&amp;list=PLoyY7ZjHtUUVLs2fy-ctzZDSPpawuQ28d</p>
+
+<p>F5 CENTRAL</p>
+
+<p>Injection - https://www.youtube.com/watch?v=rWHvp7rUka8&amp;index=1&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD Broken authentication and session management - https://www.youtube.com/watch?v=mruO75ONWy8&amp;index=2&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD Insecure deserialisation - https://www.youtube.com/watch?v=nkTBwbnfesQ&amp;index=8&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD Sensitive data exposure - https://www.youtube.com/watch?v=2RKbacrkUBU&amp;index=3&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD Broken access control - https://www.youtube.com/watch?v=P38at6Tp8Ms&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD&amp;index=5 Insufficient logging and monitoring - https://www.youtube.com/watch?v=IFF3tkUOF5E&amp;index=10&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD XML external entities - https://www.youtube.com/watch?v=g2ey7ry8_CQ&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD&amp;index=4 Using components with known vulnerabilities - https://www.youtube.com/watch?v=IGsNYVDKRV0&amp;index=9&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD Cross-site scripting - https://www.youtube.com/watch?v=IuzU4y-UjLw&amp;index=7&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD Security misconfiguration - https://www.youtube.com/watch?v=JuGSUMtKTPU&amp;index=6&amp;list=PLyqga7AXMtPPuibxp1N0TdyDrKwP9H_jD</p>
+
+<p>LUKE BRINER</p>
+
+<p>Injection explained - https://www.youtube.com/watch?v=1qMggPJpRXM&amp;index=1&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X Broken authentication and session management - https://www.youtube.com/watch?v=fKnG15BL4AY&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=2 Cross-site scripting - https://www.youtube.com/watch?v=ksM-xXeDUNs&amp;index=3&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X Insecure direct object reference - https://www.youtube.com/watch?v=ZodA76-CB10&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=4 Security misconfiguration - https://www.youtube.com/watch?v=DfFPHKPCofY&amp;index=5&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X Sensitive data exposure - https://www.youtube.com/watch?v=Z7hafbGDVEE&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=6 Missing functional level access control - https://www.youtube.com/watch?v=RGN3w831Elo&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=7 Cross-site request forgery - https://www.youtube.com/watch?v=XRW_US5BCxk&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=8 Components with known vulnerabilities - https://www.youtube.com/watch?v=pbvDW9pJdng&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=9 Unvalidated redirects and forwards - https://www.youtube.com/watch?v=bHTglpgC5Qg&amp;list=PLpNYlUeSK_rkrrBox-xvSkm5lgaDqKa0X&amp;index=10</p>
+
+<p>Phase 6 – Bypassing client-side controls</p>
+
+<p>What is hidden forms in HTML - https://www.youtube.com/watch?v=orUoGsgaYAE Bypassing hidden form fields using tamper data - https://www.youtube.com/watch?v=NXkGX2sPw7I Bypassing hidden form fields using Burp Suite (Purchase application) - https://www.youtube.com/watch?v=xahvJyUFTfM Changing price on eCommerce website using parameter tampering - https://www.youtube.com/watch?v=A-ccNpP06Zg Understanding cookie in detail - https://www.youtube.com/watch?v=_P7KN8T1boc&amp;list=PLWPirh4EWFpESKWJmrgQwmsnTrL_K93Wi&amp;index=18 Cookie tampering with tamper data- https://www.youtube.com/watch?v=NgKXm0lBecc Cookie tamper part 2 - https://www.youtube.com/watch?v=dTCt_I2DWgo Understanding referer header in depth using Cisco product - https://www.youtube.com/watch?v=GkQnBa3C7WI&amp;t=35s Introduction to ASP.NET viewstate - https://www.youtube.com/watch?v=L3p6Uw6SSXs ASP.NET viewstate in depth - https://www.youtube.com/watch?v=Fn_08JLsrmY Analyse sensitive data in ASP.NET viewstate - https://msdn.microsoft.com/en-us/library/ms972427.aspx?f=255&amp;MSPPError=-2147217396</p>
+
+<p>Phase 7 – Attacking authentication/login</p>
+
+<p>Attacking login panel with bad password - Guess username password for the website and try different combinations Brute-force login panel - https://www.youtube.com/watch?v=25cazx5D_vw Username enumeration - https://www.youtube.com/watch?v=WCO7LnSlskE Username enumeration with bruteforce password attack - https://www.youtube.com/watch?v=zf3-pYJU1c4 Authentication over insecure HTTP protocol - https://www.youtube.com/watch?v=ueSG7TUqoxk Authentication over insecure HTTP protocol - https://www.youtube.com/watch?v=_WQe36pZ3mA Forgot password vulnerability - case 1 - https://www.youtube.com/watch?v=FEUidWWnZwU Forgot password vulnerability - case 2 - https://www.youtube.com/watch?v=j7-8YyYdWL4 Login page autocomplete feature enabled - https://www.youtube.com/watch?v=XNjUfwDmHGc&amp;t=33s Testing for weak password policy - https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007) Insecure distribution of credentials - When you register in any website or you request for a password reset using forgot password feature, if the website sends your username and password over the email in cleartext without sending the password reset link, then it is a vulnerability.</p>
+
+<p>Phase 8 – Phase 8 - Attacking access controls (IDOR, Priv esc, hidden files and directories)</p>
+
+<p>Completely unprotected functionalities</p>
+
+<p>Finding admin panel - https://www.youtube.com/watch?v=r1k2lgvK3s0 Finding admin panel and hidden files and directories - https://www.youtube.com/watch?v=Z0VAPbATy1A Finding hidden webpages with dirbusater - https://www.youtube.com/watch?v=–nu9Jq07gA&amp;t=5s</p>
+
+<p>Insecure direct object reference IDOR case 1 - https://www.youtube.com/watch?v=gci4R9Vkulc IDOR case 2 - https://www.youtube.com/watch?v=4DTULwuLFS0 IDOR case 3 (zomato) - https://www.youtube.com/watch?v=tCJBLG5Mayo</p>
+
+<p>Privilege escalation What is privilege escalation - https://www.youtube.com/watch?v=80RzLSrczmc Privilege escalation - Hackme bank - case 1 - https://www.youtube.com/watch?v=g3lv__87cWM Privilege escalation - case 2 - https://www.youtube.com/watch?v=-i4O_hjc87Y</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Phase 9 – Attacking data stores (Various types of injection attacks - SQL</td>
+      <td>MySQL</td>
+      <td>NoSQL</td>
+      <td>Oracle, etc.)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Bypassing login panel</p>
+
+<p>Basics of MySQL - https://www.youtube.com/watch?v=yPu6qV5byu4 Bypassing login panel -case 1 - https://www.youtube.com/watch?v=TSqXkkOt6oM Bypass login panel - case 2 - https://www.youtube.com/watch?v=J6v_W-LFK1c</p>
+
+<p>SQL injection</p>
+
+<p>Part 1 - Install SQLi lab - https://www.youtube.com/watch?v=NJ9AA1_t1Ic&amp;index=23&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 2 - SQL lab series - https://www.youtube.com/watch?v=TA2h_kUqfhU&amp;index=22&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 3 - SQL lab series - https://www.youtube.com/watch?v=N0zAChmZIZU&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=21 Part 4 - SQL lab series - https://www.youtube.com/watch?v=6pVxm5mWBVU&amp;index=20&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 5 - SQL lab series - https://www.youtube.com/watch?v=0tyerVP9R98&amp;index=19&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 6 - Double query injection - https://www.youtube.com/watch?v=zaRlcPbfX4M&amp;index=18&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 7 - Double query injection cont.. - https://www.youtube.com/watch?v=9utdAPxmvaI&amp;index=17&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 8 - Blind injection boolean based - https://www.youtube.com/watch?v=u7Z7AIR6cMI&amp;index=16&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 9 - Blind injection time based - https://www.youtube.com/watch?v=gzU1YBu_838&amp;index=15&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 10 - Dumping DB using outfile - https://www.youtube.com/watch?v=ADW844OA6io&amp;index=14&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 11 - Post parameter injection error based - https://www.youtube.com/watch?v=6sQ23tqiTXY&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=13 Part 12 - POST parameter injection double query based - https://www.youtube.com/watch?v=tjFXWQY4LuA&amp;index=12&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 13 - POST parameter injection blind boolean and time based - https://www.youtube.com/watch?v=411G-4nH5jE&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=10 Part 14 - Post parameter injection in UPDATE query - https://www.youtube.com/watch?v=2FgLcPuU7Vw&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=11 Part 15 - Injection in insert query - https://www.youtube.com/watch?v=ZJiPsWxXYZs&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=9 Part 16 - Cookie based injection - https://www.youtube.com/watch?v=-A3vVqfP8pA&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=8 Part 17 - Second order injection -https://www.youtube.com/watch?v=e9pbC5BxiAE&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=7 Part 18 - Bypassing blacklist filters - 1 - https://www.youtube.com/watch?v=5P-knuYoDdw&amp;index=6&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 19 - Bypassing blacklist filters - 2 - https://www.youtube.com/watch?v=45BjuQFt55Y&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=5 Part 20 - Bypassing blacklist filters - 3 - https://www.youtube.com/watch?v=c-Pjb_zLpH0&amp;index=4&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro Part 21 - Bypassing WAF - https://www.youtube.com/watch?v=uRDuCXFpHXc&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=2 Part 22 - Bypassing WAF - Impedance mismatch - https://www.youtube.com/watch?v=ygVUebdv_Ws&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=3 Part 23 - Bypassing addslashes - charset mismatch - https://www.youtube.com/watch?v=du-jkS6-sbo&amp;list=PLkiAz1NPnw8qEgzS7cgVMKavvOAdogsro&amp;index=1</p>
+
+<p>NoSQL injection Abusing NoSQL databases - https://www.youtube.com/watch?v=lcO1BTNh8r8 Making cry - attacking NoSQL for pentesters - https://www.youtube.com/watch?v=NgsesuLpyOg</p>
+
+<p>Xpath injection Detailed introduction - https://www.youtube.com/watch?v=2_UyM6Ea0Yk&amp;t=3102s Practical 1 - bWAPP - https://www.youtube.com/watch?v=6tV8EuaHI9M Practical 2 - Mutillidae - https://www.youtube.com/watch?v=fV0qsqcScI4 Practical 3 - webgoat - https://www.youtube.com/watch?v=5ZDSPVp1TpM</p>
+
+<p>LDAP injection Introduction and practical 1 - https://www.youtube.com/watch?v=-TXFlg7S9ks Practical 2 - https://www.youtube.com/watch?v=wtahzm_R8e4</p>
+
+<p>Phase 10 – Attacking back-end components (OS command injection, XMl interpreters, mail services, etc.)</p>
+
+<p>OS command injection OS command injection in bWAPP - https://www.youtube.com/watch?v=qLIkGJrMY9k</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-05-23T00:00:00-05:00">May 23, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Web+Application+Penetration+Testing%20http%3A%2F%2Flocalhost%3A4000%2Fcases-study%2F2019%2F05%2F23%2Fweb-application-penetration-testing.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcases-study%2F2019%2F05%2F23%2Fweb-application-penetration-testing.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcases-study%2F2019%2F05%2F23%2Fweb-application-penetration-testing.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/bug-hunting/2019/05/23/vulnerabilities-list.html" class="pagination--pager" title="Vulnerabilities List
+">Previous</a>
+    
+    
+      <a href="/cases-study/2019/05/23/xforwardedsqli.html" class="pagination--pager" title="X Forwarded for SQL injection
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

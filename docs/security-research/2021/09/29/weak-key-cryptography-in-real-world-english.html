@@ -1,0 +1,739 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world” - iam.chi</title>
+<meta name="description" content="I. SUMMARY">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”">
+<meta property="og:url" content="http://localhost:4000/security-research/2021/09/29/weak-key-cryptography-in-real-world-english.html">
+
+
+  <meta property="og:description" content="I. SUMMARY">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-29T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/security-research/2021/09/29/weak-key-cryptography-in-real-world-english.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”">
+    <meta itemprop="description" content="I. SUMMARY">
+    <meta itemprop="datePublished" content="2021-09-29T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h3 id="i-summary">I. SUMMARY</h3>
+
+<p>Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.</p>
+
+<h3 id="ii-analysis">II. ANALYSIS</h3>
+
+<p><strong>1.</strong> <strong>QR DATA</strong> Through news channels and social medias, we were able to find a sample COVID pass as below:</p>
+
+<p>1 - Vehicle type</p>
+
+<p>2 - License plate</p>
+
+<p>3 - Seat #</p>
+
+<p>4 - Vehicle operator</p>
+
+<p>5 - Citizen ID</p>
+
+<p>6 - Authorized zone</p>
+
+<p>7 - Valid from/to (date)</p>
+
+<p>8 - Valid from/to (time)</p>
+
+<p><img src="images/1.jpg" alt="" /> Source: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html">https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html</a></p>
+
+<p>As the QR code was not hidden, we were able to decode its information:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==</td>
+      <td>**10505</td>
+      <td>3</td>
+      <td>06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09</td>
+      <td>4_PHÒNG CẢNH SÁT GIAO THÔNG</td>
+      <td>02439424451</td>
+      <td>29G1–391.89</td>
+      <td> </td>
+      <td>Vùng 1</td>
+      <td>Nguyễn Ánh Ngọc</td>
+      <td> </td>
+      <td>09:00–20:00</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The decoded string above contains information about the requester, zone ID/passes provider (i.e. <strong>10505</strong>). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.</p>
+
+<p><strong>2.</strong> <strong>VALIDATION METHOD</strong></p>
+
+<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named “<strong>Kiểm soát đi đường</strong>” a.k.a “<strong>Vehicle Operating Control</strong>” (Translated as best as I can)</p>
+
+<blockquote>
+  <p><strong><em>Download link (now removed)</em></strong>: <a href="https://play.google.com/store/apps/details?id=com.qrca">https://play.google.com/store/apps/details?id=com.qrca</a></p>
+</blockquote>
+
+<p>Let’s go through the application workflow:</p>
+
+<p><img src="images/12.png" alt="" /></p>
+
+<p> </p>
+
+<p>The above workflow is server-less, meaning it does not need any servers during the application process. Hence, there would be an obvious pros: the system would never be overloaded. However, the huge cons here is: the application trusts its clients 100% which is not ideal.</p>
+
+<p>Not validating the data on server side means one thing: If the Private Key from one (1) zone was leaked, anyone would be able to generate valid passes.</p>
+
+<p><strong>3.</strong> <strong>DEEPER DIVE INTO THE WORKFLOW</strong> The original data was retrieved from the QR:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==</td>
+      <td>**10505</td>
+      <td>3</td>
+      <td>06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09</td>
+      <td>4_PHÒNG CẢNH SÁT GIAO THÔNG</td>
+      <td>02439424451</td>
+      <td>29G1–391.89</td>
+      <td> </td>
+      <td>Vùng 1</td>
+      <td>Nguyễn Ánh Ngọc</td>
+      <td> </td>
+      <td>09:00–20:00</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This contains: “<strong>10505</strong>” - zone ID/passes provider, named “<strong>Police Department</strong>”.</p>
+
+<p>Once the application received the QR data, it would take the data string from zone ID to the end, then do the following steps:</p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>Removing **“</td>
+          <td>”,**</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Removing special characters</li>
+  <li>English Alphabetized Vietnamese chars (i.e.: ê -&gt; e)</li>
+  <li>Lowercase transformation</li>
+</ul>
+
+<p><img src="images/3.jpg" alt="" /></p>
+
+<p>Input string process</p>
+
+<p>The data became:</p>
+
+<p><strong>10505</strong>3060907090809090910091109120913091409150916091709180919092009<strong>4_phongcanhsatgiaothong</strong>02439424451<strong>29g139189</strong>vung1<strong>nguyenanhngoc</strong>09002000</p>
+
+<p>Next, the data was hashed using a custom hashing algorithm developed by <strong>lachongtech.</strong> The algorithm pseudocode is below:</p>
+
+<p><strong>Hashcode</strong> = 0
+Count = 0
+For char in String:
+Count += 1
+<strong>Hashcode</strong> += char * Count
+<strong>Hashcode</strong> = (1988 * <strong>Hashcode</strong> — 1910) / 2</p>
+
+<p>Once the data went through above hashing process, it then became a new format: “<strong>682673275</strong>”</p>
+
+<ul>
+  <li>This is the first cons in the application workflow. The fact that the above hashcode was quite easy to reproduce led to possible Collision attacks, meaning there could be other strings having the same hashcode.</li>
+</ul>
+
+<p><img src="images/4.jpg" alt="" /></p>
+
+<p>The data, after getting through hashcode process, will then be validated using hard-coded Public key in the application. However, we found all hard-coded Public keys were using RSA 512. Obviously, RSA 512-bits key was proven breakable years ago.</p>
+
+<p>After spending few hours doing research, we found an interesting research paper: <strong>Factoring as a Service</strong></p>
+
+<p><img src="images/5.jpg" alt="" /></p>
+
+<blockquote>
+  <p>Reference: <a href="https://seclab.upenn.edu/projects/faas/faas.pdf">https://seclab.upenn.edu/projects/faas/faas.pdf</a></p>
+</blockquote>
+
+<p>The authors utilized the “cloud power” to crack one (1) RSA 512-bit key within a few hours instead of using a single machine. And looks like it’s doable. Luckily, the authors also published their research as well as code repo.</p>
+
+<blockquote>
+  <p>Link: <a href="https://github.com/eniac/faas">https://github.com/eniac/faas</a></p>
+</blockquote>
+
+<p>Although the code was provided, we took around 2 days to get this running since the code was written back in 2015. Some libraries are not currently supported forced us to make several changes on the code. The project was then running smoothly.</p>
+
+<h3 id="iii-state-of-the-art">III. STATE OF THE ART</h3>
+
+<p>The most interesting thing, I believe, not about the bug, but about setting up cracking environment.</p>
+
+<h3 id="1-setting-up-the-environment">1. Setting up the environment</h3>
+
+<ul>
+  <li>As I mentioned above, the code was written back in 2015 by a group of Professors and Researchers from the University of Pennsylvania. A 7 years old tool, in fact, is no longer compatible with current libraries and software versions. Hence, it took time to setup and dry-run. Most of the time we spent on debugging, finding compatible libraries versions.</li>
+  <li>The result came back great as we were able to crack a sample 100 chars length RSA.</li>
+</ul>
+
+<p><img src="images/6.jpg" alt="" /> Setting up EC2 instances</p>
+
+<h3 id="2-cracking-the-real-key">2. Cracking the real key</h3>
+
+<p>Jumping back to the application, hard-coded public keys have 155 chars in length (RSA 512-bits). This means, cracking them would need more than 1 cloud instance and super time consuming.</p>
+
+<p>We used a total of 16 EC2 instances x 36 CPUs x 60 GiB Memory for each key. Once the script is run, the only thing we would do is waiting and hoping it will not return any FATAL errors.</p>
+
+<p>Surprisingly, roughly 9 hours later, we were able to get the result</p>
+
+<p><img src="images/7.jpg" alt="" /></p>
+
+<h3 id="3-cost">3. Cost</h3>
+
+<p>We spent ~$250 USD to crack 2 RSA 512-bits keys in 9 hours (+ sample key - 100 chars)</p>
+
+<p><img src="images/8-scaled.jpg" alt="" />We then tried to optimize the entire process by re-using generated sieves for other keys but unsuccessful. I also reached out to one of the authors and was told to store these sieves in a database. However, due to several reasons, we did not try further.</p>
+
+<p><img src="images/9.jpg" alt="" /></p>
+
+<h3 id="4-generating-qr-code-using-found-private-key">4. Generating QR code using found Private Key</h3>
+
+<p>Once we got the key factors, we were able to calculate the original Private Key and generate several valid COVID passes.</p>
+
+<h3 id="iv-demo">IV. DEMO</h3>
+
+<h3><img src="images/10.png" alt="" /></h3>
+
+<p>Generating QR Code</p>
+
+<p> </p>
+
+<p><img src="images/11.png" alt="" /></p>
+
+<p>Valid COVID pass</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-09-29T00:00:00-05:00">September 29, 2021</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BEnglish%5D+How+I+faked+tons+of+COVID+passes+%E2%80%94+%E2%80%9CWeak+Key+Cryptography+in+real+world%E2%80%9D%20http%3A%2F%2Flocalhost%3A4000%2Fsecurity-research%2F2021%2F09%2F29%2Fweak-key-cryptography-in-real-world-english.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsecurity-research%2F2021%2F09%2F29%2Fweak-key-cryptography-in-real-world-english.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsecurity-research%2F2021%2F09%2F29%2Fweak-key-cryptography-in-real-world-english.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/security-research/2021/09/17/weak-rsa-in-realworld-vietnamese.html" class="pagination--pager" title="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”
+">Previous</a>
+    
+    
+      <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" class="pagination--pager" title="Python Deserialization on Integrated AWS DDB Flask App
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

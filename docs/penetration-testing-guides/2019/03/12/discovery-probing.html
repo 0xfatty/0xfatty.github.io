@@ -1,0 +1,741 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Discovery &amp; Probing - iam.chi</title>
+<meta name="description" content="Default Port Lists     - Windows     - *nix                    Enumeration tools and techniques - The vast majority can be used generically, however, certain bespoke application require there own specific toolsets to be used. Default passwords are platform and vendor specific                            General Enumeration Tools                                    nmap                                            nmap -n -A -PN -p- -T Agressive -iL nmap.targetlist -oX nmap.syn.results.xml                       nmap -sU -PN -v -O -p 1-30000 -T polite -iL nmap.targetlist &gt; nmap.udp.results                       nmap -sV -PN -v -p 21,22,23,25,53,80,443,161 -iL nmap.targets &gt; nmap.version.results                       nmap -A -sS -PN -n –script:all ip_address –reason                                                                                                                                       grep “appears to be up” nmap_saved_filename                               awk -F\( ‘{print $2}’                               awk -F\) ‘{print $1}’ &gt; ip_list                                                                                                                                                                   netcat                                            nc -v -n IP_Address port                       nc -v -w 2 -z IP_Address port_range/port_number                                                           amap                                            amap -bqv 192.168.1.1 80                                                                                                                                       amap [-A                               -B                               -P                               -W] [-1buSRHUdqv] [[-m] -o \] \[-D \] \[-t/-T sec\] \[-c cons\] \[-C retries\] \[-p proto\] \[-i \] \[target port \[port\] ...\]                                                                                                                                                                   xprobe2                                            xprobe2 192.168.1.1                                                           sinfp                                            ./sinfp.pl -i -p                                                           nbtscan                                                                                                                                                            nbtscan [-v] [-d] [-e] [-l] [-t timeout] [-b bandwidth] [-r] [-q] [-s separator] [-m retransmits] (-f filename)                               (&lt;scan_range&gt;)                                                                                                                                                                   hping                                            hping ip_address                                                           scanrand                                            scanrand ip_address:all                                                           unicornscan                                            unicornscan [options `b:B:d:De:EFhi:L:m:M:pP:q:r:R:s:St:T:w:W:vVZ:’ ] IP_ADDRESS/ CIDR_NET_MASK: S-E                                                           netenum                                            netenum network/netmask timeout                                                           fping fping -a -d hostname/ (Network/Subnet_Mask)                                               Firewall Specific Tools                                    firewalk                                            firewalk -p [protocol] -d [destination_port] -s [source_port] [internal_IP] [gateway_IP]                                                           ftester                                            host 1 ./ftestd -i eth0 -v host 2 ./ftest -f ftest.conf -v -d 0.01 then ./freport ftest.log ftestd.log                                                                                                           Active Hosts                            Open TCP Ports               Closed TCP Ports               Open UDP Ports               Closed UDP Ports               Service Probing                                    SMTP Mail Bouncing                   Banner Grabbing                                            Other                       HTTP                                                    Commands                                                            JUNK / HTTP/1.0                               HEAD / HTTP/9.3                               OPTIONS / HTTP/1.0                               HEAD / HTTP/1.0                                                                                   Extensions                                                            WebDAV                               ASP.NET                               Frontpage                               OWA                               IIS ISAPI                               PHP                               OpenSSL                                                                                                                               HTTPS                                                    Use stunnel to encapsulate traffic.                                                                       SMTP                       POP3                       FTP                                                    If banner altered, attempt anon logon and execute: ‘quote help’ and ‘syst’ commands.                                                                                                                                       ICMP Responses                                    Type 3 (Port Unreachable)                   Type 8 (Echo Request)                   Type 13 (Timestamp Request)                   Type 15 (Information Request)                   Type 17 (Subnet Address Mask Request)                   Responses from broadcast address                                               Source Port Scans                                    TCP/UDP 53 (DNS)                   TCP 20 (FTP Data)                   TCP 80 (HTTP)                   TCP/UDP 88 (Kerberos)                                               Firewall Assessment                                    Firewalk                   TCP/UDP/ICMP responses                                               OS Fingerprint">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="Discovery &amp; Probing">
+<meta property="og:url" content="http://localhost:4000/penetration-testing-guides/2019/03/12/discovery-probing.html">
+
+
+  <meta property="og:description" content="Default Port Lists     - Windows     - *nix                    Enumeration tools and techniques - The vast majority can be used generically, however, certain bespoke application require there own specific toolsets to be used. Default passwords are platform and vendor specific                            General Enumeration Tools                                    nmap                                            nmap -n -A -PN -p- -T Agressive -iL nmap.targetlist -oX nmap.syn.results.xml                       nmap -sU -PN -v -O -p 1-30000 -T polite -iL nmap.targetlist &gt; nmap.udp.results                       nmap -sV -PN -v -p 21,22,23,25,53,80,443,161 -iL nmap.targets &gt; nmap.version.results                       nmap -A -sS -PN -n –script:all ip_address –reason                                                                                                                                       grep “appears to be up” nmap_saved_filename                               awk -F\( ‘{print $2}’                               awk -F\) ‘{print $1}’ &gt; ip_list                                                                                                                                                                   netcat                                            nc -v -n IP_Address port                       nc -v -w 2 -z IP_Address port_range/port_number                                                           amap                                            amap -bqv 192.168.1.1 80                                                                                                                                       amap [-A                               -B                               -P                               -W] [-1buSRHUdqv] [[-m] -o \] \[-D \] \[-t/-T sec\] \[-c cons\] \[-C retries\] \[-p proto\] \[-i \] \[target port \[port\] ...\]                                                                                                                                                                   xprobe2                                            xprobe2 192.168.1.1                                                           sinfp                                            ./sinfp.pl -i -p                                                           nbtscan                                                                                                                                                            nbtscan [-v] [-d] [-e] [-l] [-t timeout] [-b bandwidth] [-r] [-q] [-s separator] [-m retransmits] (-f filename)                               (&lt;scan_range&gt;)                                                                                                                                                                   hping                                            hping ip_address                                                           scanrand                                            scanrand ip_address:all                                                           unicornscan                                            unicornscan [options `b:B:d:De:EFhi:L:m:M:pP:q:r:R:s:St:T:w:W:vVZ:’ ] IP_ADDRESS/ CIDR_NET_MASK: S-E                                                           netenum                                            netenum network/netmask timeout                                                           fping fping -a -d hostname/ (Network/Subnet_Mask)                                               Firewall Specific Tools                                    firewalk                                            firewalk -p [protocol] -d [destination_port] -s [source_port] [internal_IP] [gateway_IP]                                                           ftester                                            host 1 ./ftestd -i eth0 -v host 2 ./ftest -f ftest.conf -v -d 0.01 then ./freport ftest.log ftestd.log                                                                                                           Active Hosts                            Open TCP Ports               Closed TCP Ports               Open UDP Ports               Closed UDP Ports               Service Probing                                    SMTP Mail Bouncing                   Banner Grabbing                                            Other                       HTTP                                                    Commands                                                            JUNK / HTTP/1.0                               HEAD / HTTP/9.3                               OPTIONS / HTTP/1.0                               HEAD / HTTP/1.0                                                                                   Extensions                                                            WebDAV                               ASP.NET                               Frontpage                               OWA                               IIS ISAPI                               PHP                               OpenSSL                                                                                                                               HTTPS                                                    Use stunnel to encapsulate traffic.                                                                       SMTP                       POP3                       FTP                                                    If banner altered, attempt anon logon and execute: ‘quote help’ and ‘syst’ commands.                                                                                                                                       ICMP Responses                                    Type 3 (Port Unreachable)                   Type 8 (Echo Request)                   Type 13 (Timestamp Request)                   Type 15 (Information Request)                   Type 17 (Subnet Address Mask Request)                   Responses from broadcast address                                               Source Port Scans                                    TCP/UDP 53 (DNS)                   TCP 20 (FTP Data)                   TCP 80 (HTTP)                   TCP/UDP 88 (Kerberos)                                               Firewall Assessment                                    Firewalk                   TCP/UDP/ICMP responses                                               OS Fingerprint">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-03-12T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/penetration-testing-guides/2019/03/12/discovery-probing.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Discovery &amp; Probing">
+    <meta itemprop="description" content="            Default Port Lists    - Windows    - *nix                  Enumeration tools and techniques - The vast majority can be used generically, however, certain bespoke application require there own specific toolsets to be used. Default passwords are platform and vendor specific                          General Enumeration Tools                                  nmap                                          nmap -n -A -PN -p- -T Agressive -iL nmap.targetlist -oX nmap.syn.results.xml                      nmap -sU -PN -v -O -p 1-30000 -T polite -iL nmap.targetlist &gt; nmap.udp.results                      nmap -sV -PN -v -p 21,22,23,25,53,80,443,161 -iL nmap.targets &gt; nmap.version.results                      nmap -A -sS -PN -n –script:all ip_address –reason                                                                                                                                  grep “appears to be up” nmap_saved_filename                              awk -F\( ‘{print $2}’                              awk -F\) ‘{print $1}’ &gt; ip_list                                                                                                                                                            netcat                                          nc -v -n IP_Address port                      nc -v -w 2 -z IP_Address port_range/port_number                                                        amap                                          amap -bqv 192.168.1.1 80                                                                                                                                  amap [-A                              -B                              -P                              -W] [-1buSRHUdqv] [[-m] -o \] \[-D \] \[-t/-T sec\] \[-c cons\] \[-C retries\] \[-p proto\] \[-i \] \[target port \[port\] ...\]                                                                                                                                                            xprobe2                                          xprobe2 192.168.1.1                                                        sinfp                                          ./sinfp.pl -i -p                                                        nbtscan                                                                                                                                                      nbtscan [-v] [-d] [-e] [-l] [-t timeout] [-b bandwidth] [-r] [-q] [-s separator] [-m retransmits] (-f filename)                              (&lt;scan_range&gt;)                                                                                                                                                            hping                                          hping ip_address                                                        scanrand                                          scanrand ip_address:all                                                        unicornscan                                          unicornscan [options `b:B:d:De:EFhi:L:m:M:pP:q:r:R:s:St:T:w:W:vVZ:’ ] IP_ADDRESS/ CIDR_NET_MASK: S-E                                                        netenum                                          netenum network/netmask timeout                                                        fping fping -a -d hostname/ (Network/Subnet_Mask)                                            Firewall Specific Tools                                  firewalk                                          firewalk -p [protocol] -d [destination_port] -s [source_port] [internal_IP] [gateway_IP]                                                        ftester                                          host 1 ./ftestd -i eth0 -v host 2 ./ftest -f ftest.conf -v -d 0.01 then ./freport ftest.log ftestd.log                                                                                                    Active Hosts                          Open TCP Ports              Closed TCP Ports              Open UDP Ports              Closed UDP Ports              Service Probing                                  SMTP Mail Bouncing                  Banner Grabbing                                          Other                      HTTP                                                  Commands                                                          JUNK / HTTP/1.0                              HEAD / HTTP/9.3                              OPTIONS / HTTP/1.0                              HEAD / HTTP/1.0                                                                                Extensions                                                          WebDAV                              ASP.NET                              Frontpage                              OWA                              IIS ISAPI                              PHP                              OpenSSL                                                                                                                          HTTPS                                                  Use stunnel to encapsulate traffic.                                                                    SMTP                      POP3                      FTP                                                  If banner altered, attempt anon logon and execute: ‘quote help’ and ‘syst’ commands.                                                                                                                                ICMP Responses                                  Type 3 (Port Unreachable)                  Type 8 (Echo Request)                  Type 13 (Timestamp Request)                  Type 15 (Information Request)                  Type 17 (Subnet Address Mask Request)                  Responses from broadcast address                                            Source Port Scans                                  TCP/UDP 53 (DNS)                  TCP 20 (FTP Data)                  TCP 80 (HTTP)                  TCP/UDP 88 (Kerberos)                                            Firewall Assessment                                  Firewalk                  TCP/UDP/ICMP responses                                            OS Fingerprint                                          ">
+    <meta itemprop="datePublished" content="2019-03-12T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Discovery &amp; Probing
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <ul>
+  <li>
+    <ul>
+      <li>Default Port Lists
+    - <a href="http://www.vulnerabilityassessment.co.uk/ports.htm">Windows</a>
+    - <a href="http://www.vulnerabilityassessment.co.uk/ports.htm">*nix</a>
+        <ul>
+          <li>Enumeration tools and techniques - The vast majority can be used generically, however, certain bespoke application require there own specific toolsets to be used. Default passwords are platform and vendor specific
+            <ul>
+              <li>General Enumeration Tools
+                <ul>
+                  <li><a href="http://www.insecure.org">nmap</a>
+                    <ul>
+                      <li>nmap -n -A -PN -p- -T Agressive -iL nmap.targetlist -oX nmap.syn.results.xml</li>
+                      <li>nmap -sU -PN -v -O -p 1-30000 -T polite -iL nmap.targetlist &gt; nmap.udp.results</li>
+                      <li>nmap -sV -PN -v -p 21,22,23,25,53,80,443,161 -iL nmap.targets &gt; nmap.version.results</li>
+                      <li>nmap -A -sS -PN -n –script:all ip_address –reason</li>
+                      <li>
+                        <table>
+                          <tbody>
+                            <tr>
+                              <td>grep “appears to be up” nmap_saved_filename</td>
+                              <td>awk -F\( ‘{print $2}’</td>
+                              <td>awk -F\) ‘{print $1}’ &gt; ip_list</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a href="http://netcat.sourceforge.net/">netcat</a>
+                    <ul>
+                      <li>nc -v -n IP_Address port</li>
+                      <li>nc -v -w 2 -z IP_Address port_range/port_number</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.thc.org/releases.php">amap</a>
+                    <ul>
+                      <li>amap -bqv 192.168.1.1 80</li>
+                      <li>
+                        <table>
+                          <tbody>
+                            <tr>
+                              <td>amap [-A</td>
+                              <td>-B</td>
+                              <td>-P</td>
+                              <td>-W] [-1buSRHUdqv] [[-m] -o <file>\] \[-D <file>\] \[-t/-T sec\] \[-c cons\] \[-C retries\] \[-p proto\] \[-i <file>\] \[target port \[port\] ...\]</file></file></file></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a href="http://xprobe.sourceforge.net/">xprobe2</a>
+                    <ul>
+                      <li>xprobe2 192.168.1.1</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://sourceforge.net/project/showfiles.php?group_id=167489">sinfp</a>
+                    <ul>
+                      <li>./sinfp.pl -i -p</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.packetstormsecurity.nl">nbtscan</a>
+                    <ul>
+                      <li>
+                        <table>
+                          <tbody>
+                            <tr>
+                              <td>nbtscan [-v] [-d] [-e] [-l] [-t timeout] [-b bandwidth] [-r] [-q] [-s separator] [-m retransmits] (-f filename)</td>
+                              <td>(&lt;scan_range&gt;)</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.hping.org/download.html">hping</a>
+                    <ul>
+                      <li>hping ip_address</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.doxpara.com/read.php/code/paketto.html">scanrand</a>
+                    <ul>
+                      <li>scanrand ip_address:all</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.unicornscan.org">unicornscan</a>
+                    <ul>
+                      <li>unicornscan [options `b:B:d:De:EFhi:L:m:M:pP:q:r:R:s:St:T:w:W:vVZ:’ ] IP_ADDRESS/ CIDR_NET_MASK: S-E</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.phenoelit.de/irpas/">netenum</a>
+                    <ul>
+                      <li>netenum network/netmask timeout</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://www.fping.com/">fping</a> fping -a -d hostname/ (Network/Subnet_Mask)</li>
+                </ul>
+              </li>
+              <li>Firewall Specific Tools
+                <ul>
+                  <li><a href="http://www.packetfactory.net/Projects/">firewalk</a>
+                    <ul>
+                      <li>firewalk -p [protocol] -d [destination_port] -s [source_port] [internal_IP] [gateway_IP]</li>
+                    </ul>
+                  </li>
+                  <li><a href="http://dev.inversepath.com/trac/ftester">ftester</a>
+                    <ul>
+                      <li>host 1 ./ftestd -i eth0 -v host 2 ./ftest -f ftest.conf -v -d 0.01 then ./freport ftest.log ftestd.log</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Active Hosts
+            <ul>
+              <li>Open TCP Ports</li>
+              <li>Closed TCP Ports</li>
+              <li>Open UDP Ports</li>
+              <li>Closed UDP Ports</li>
+              <li>Service Probing
+                <ul>
+                  <li>SMTP Mail Bouncing</li>
+                  <li>Banner Grabbing
+                    <ul>
+                      <li>Other</li>
+                      <li>HTTP
+                        <ul>
+                          <li>Commands
+                            <ul>
+                              <li>JUNK / HTTP/1.0</li>
+                              <li>HEAD / HTTP/9.3</li>
+                              <li>OPTIONS / HTTP/1.0</li>
+                              <li>HEAD / HTTP/1.0</li>
+                            </ul>
+                          </li>
+                          <li>Extensions
+                            <ul>
+                              <li>WebDAV</li>
+                              <li>ASP.NET</li>
+                              <li>Frontpage</li>
+                              <li>OWA</li>
+                              <li>IIS ISAPI</li>
+                              <li>PHP</li>
+                              <li>OpenSSL</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>HTTPS
+                        <ul>
+                          <li>Use stunnel to encapsulate traffic.</li>
+                        </ul>
+                      </li>
+                      <li>SMTP</li>
+                      <li>POP3</li>
+                      <li>FTP
+                        <ul>
+                          <li>If banner altered, attempt anon logon and execute: ‘quote help’ and ‘syst’ commands.</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>ICMP Responses
+                <ul>
+                  <li>Type 3 (Port Unreachable)</li>
+                  <li>Type 8 (Echo Request)</li>
+                  <li>Type 13 (Timestamp Request)</li>
+                  <li>Type 15 (Information Request)</li>
+                  <li>Type 17 (Subnet Address Mask Request)</li>
+                  <li>Responses from broadcast address</li>
+                </ul>
+              </li>
+              <li>Source Port Scans
+                <ul>
+                  <li>TCP/UDP 53 (DNS)</li>
+                  <li>TCP 20 (FTP Data)</li>
+                  <li>TCP 80 (HTTP)</li>
+                  <li>TCP/UDP 88 (Kerberos)</li>
+                </ul>
+              </li>
+              <li>Firewall Assessment
+                <ul>
+                  <li>Firewalk</li>
+                  <li>TCP/UDP/ICMP responses</li>
+                </ul>
+              </li>
+              <li>OS Fingerprint</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-12T00:00:00-05:00">March 12, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Discovery+%26+Probing%20http%3A%2F%2Flocalhost%3A4000%2Fpenetration-testing-guides%2F2019%2F03%2F12%2Fdiscovery-probing.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fpenetration-testing-guides%2F2019%2F03%2F12%2Fdiscovery-probing.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fpenetration-testing-guides%2F2019%2F03%2F12%2Fdiscovery-probing.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/tools/2019/03/12/dfir.html" class="pagination--pager" title="DFIR
+">Previous</a>
+    
+    
+      <a href="/penetration-testing-guides/2019/03/12/enumeration.html" class="pagination--pager" title="Enumeration
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

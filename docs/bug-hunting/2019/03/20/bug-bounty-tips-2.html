@@ -1,0 +1,862 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Bug Bounty Tips (2) - iam.chi</title>
+<meta name="description" content="Author: Shankar R">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="Bug Bounty Tips (2)">
+<meta property="og:url" content="http://localhost:4000/bug-hunting/2019/03/20/bug-bounty-tips-2.html">
+
+
+  <meta property="og:description" content="Author: Shankar R">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-03-20T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/bug-hunting/2019/03/20/bug-bounty-tips-2.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Chi Tran</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Hey! I am Chi | Father of 2 | Security Engineer | I love cooking and spicy noodles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/remote-code-execution/" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspciynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Bug Bounty Tips (2)">
+    <meta itemprop="description" content="Author: Shankar R">
+    <meta itemprop="datePublished" content="2019-03-20T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Bug Bounty Tips (2)
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><strong>Author: Shankar R</strong></p>
+
+<p><strong>How to make a good report !!</strong></p>
+
+<p>We can find ton of write-ups for this section but one of my favorite is</p>
+
+<p>https://youtu.be/XAjpilWbSSQ</p>
+
+<p><strong>The importance of Impact:</strong></p>
+
+<p>Many researchers are looking for a bug on the target if they found a small vulnerabilities then they have reported to the target. Sometimes report will be marked as N/A even it is valid one. That will be very frustrated to the researcher(they feels like they wasted time with this target).</p>
+
+<p>Always kindly think about the impact and how to increase the impact of the bug and we should explain about the real time attack scenario that should we need to concentrate while hunting.</p>
+
+<p><strong>Why N/A for valid bugs !!</strong></p>
+
+<p>If you find a valid bug(like SQLi, RCE,OS Command Injections) on the target it should be high impact as per the attacker’s or researcher’s perspective but the organizations are having some standards to identify and fix the bugs</p>
+
+<p><strong><em>For example:</em></strong> The bug was SQLi found on one of the domain from the target. Once the report is placed then they will start investigating the bug. If the target is not a critical asset based on their view or the business impact is very low because of that SQLi and sometimes the fixing cost is more than the impact of the SQLi. So that time SQLi will be closed as N/A(Not Applicable) You can see those types of report closed as N/A even it is a valid IDOR or Rate Limiting Bugs in facebook Bug bounty<strong>(They closed my IDOR was closed as NA)</strong></p>
+
+<p>Thanks to <a href="https://www.facebook.com/parthiban3md"><em>Parthiban J</em></a> sir to share these of type of information with me.</p>
+
+<p><strong>How long we need to spend for recon ?</strong>(ignore this if you are getting bored in this section)</p>
+
+<p>Basically I spend minimum 3 days(<em>Usually more than 20 hours because I am not a full time bug bounty hunter)</em> to collect information about my target(Based on the Target). But this is not enough time to the recon, this is the main part to attack or find a bug on target domain.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*gCusVKMEwWrlpb8gPF0GjQ.jpeg" alt="" /></p>
+
+<p>Don’t jump to other targets before you finish your proper recon. If you jump to other targets with the minimum efforts then there is no opportunity to find a good bugs.</p>
+
+<p><strong>How to Increase the Impact ??</strong></p>
+
+<p>This part will help you to get an idea to increase the impact of the low hanging fruits</p>
+
+<p><strong>Scenario 1:</strong></p>
+
+<ul>
+  <li>If you found a private IP (Actually that is a public IP only) of the target. This time don’t report to them. Try to increase the impact of the issue by doing port-scan on the IP which you found.</li>
+  <li>Then look for vulnerable service version by doing the service scan with the Nmap tool.</li>
+  <li>If there is a vulnerable service is running on the target then look for publicly available CVE based exploits</li>
+</ul>
+
+<p><strong>Note: If you are getting bored(Called as Lazy baby ??) then do the Nmap script scanning on the IP which will give you some CVE based vulnerability(Based on your luck)</strong></p>
+
+<p><strong>Scenario 2:</strong></p>
+
+<ul>
+  <li>If you found a full path disclosure bug. Then try to open the path on the target using different methods like LFI or open Redirection based payloads with the disclosed path.</li>
+  <li>Sometimes this may leads to the source code disclosure or any other sensitive informations like API key or 2FA Authentication Tokens.</li>
+</ul>
+
+<p><strong>Scenario 3:</strong></p>
+
+<ul>
+  <li>If you found a web server with the default web page, Then try to brute-force the directory which is based on the what type of server is running on the target machine that will helpful to find some default config files of a web server.</li>
+</ul>
+
+<p>This is write-up I will explain about the following ….</p>
+
+<p><strong>Burpsuite Extension Series:</strong></p>
+
+<p><strong>Burp Collaborator</strong></p>
+
+<p>How its works ! Can you understand this pictures. If no then see my description for this tool.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*Emz-MYGlLLjH2aFPUyfxTw.png" alt="" /></p>
+
+<h4 id="how-collaborator-tool-is-detecting-external-service-interaction">How Collaborator tool is detecting external service interaction:</h4>
+
+<p>A typical external service interaction issue can be detected as follows:</p>
+
+<ul>
+  <li>Burp sends a payload to the application containing a URL that uses a random subdomain of the Collaborator domain, for example: <a href="https://example.com/login?param=http://f294gchg2la...r9gf.burpcollaborator.net/">https://example.com/login?param=<strong>http://f294gchg2la…r9gf.burpcollaborator.net/</strong></a></li>
+</ul>
+
+<p>Note: Here the above highlighted field is the collaborator domain this is randomly generated by the collaborator server.</p>
+
+<ul>
+  <li>Due to its programmed behavior (intended or otherwise), the application fetches the contents of the URL. To do this, it will first perform a DNS lookup on the random subdomain, and then perform an HTTP request.</li>
+  <li>The DNS lookup and the HTTP request are received by the Collaborator server. Both interactions contain the random data that Burp placed into the Collaborator subdomain.</li>
+  <li>Burp polls the Collaborator server and asks: “Did you receive any interactions for my payload?”, and the Collaborator returns the interaction details.</li>
+  <li>Burp reports the external service interaction to the Burp user, including the full interaction messages that were captured by the Collaborator server.</li>
+</ul>
+
+<p><strong>The original source Link:</strong> <a href="https://portswigger.net/burp/documentation/collaborator"><strong>https://portswigger.net/burp/documentation/collaborator</strong></a></p>
+
+<p>Reference Link to know how it works and how it is very helpful to us!!</p>
+
+<p>https://youtu.be/zP4b3pw94s0</p>
+
+<p><strong>Extension Download Link:</strong></p>
+
+<p><a href="https://github.com/PortSwigger/collaborator-everywhere" title="https://github.com/PortSwigger/collaborator-everywhere"><strong>PortSwigger/collaborator-everywhere</strong> _A Burp Suite Pro extension which augments your proxy traffic by injecting non-invasive headers designed to reveal…_github.com</a></p>
+
+<p><strong>Burp Macro:</strong></p>
+
+<p>This is not an Extension. This a one of the great feature by the BurpSuite</p>
+
+<p>A macro is a predefined sequence of one or more requests. You can use macros within <a href="https://portswigger.net/burp/documentation/desktop/options/sessions#session-handling-rules">session handling rules</a> to perform various tasks. Typical use cases for macros include:</p>
+
+<ul>
+  <li>Fetching a page of the application (such as the user’s home page) to check that the current session is still valid.</li>
+  <li>Performing a login to obtain a new valid session.</li>
+  <li>Obtaining a token or nonce to use as a parameter in another request.</li>
+  <li>When scanning or fuzzing a request in a multi-step process, performing the necessary preceding requests, to get the application into a state where the targeted request will be accepted.</li>
+  <li>In a multi-step process, after the “attack” request, completing the remaining steps of the process, to confirm the action being performed, or obtain the result or error message from the conclusion of that process.</li>
+</ul>
+
+<p><a href="https://digi.ninja/blog/burp_macros.php" title="https://digi.ninja/blog/burp_macros.php"><strong>Burp Macros and Session Handling - DigiNinja</strong> _A guide for what to writing Burp Suite macros and session handling rules_digi.ninja</a></p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=5v8bWAcA8oI[/embedyt]</p>
+
+<p> </p>
+
+<p><strong>BackSlash Powered Scanner</strong></p>
+
+<p>We can find lots and lots of server side vulnerabilities with this tool. But we need to understand about target application and how it’s responds for different input which is done by this tool by default</p>
+
+<p>Initially we need to enable the Backslash Powered scanner settings from the scanner tab. For more info checkout the below image</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*RdQMJzf1PtOYKq5fHfB9iQ.png" alt="" /></p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=Y80drEt_TVQ[/embedyt]</p>
+
+<p><strong>Extension Download Link:</strong></p>
+
+<p><a href="https://github.com/PortSwigger/backslash-powered-scanner" title="https://github.com/PortSwigger/backslash-powered-scanner"><strong>PortSwigger/backslash-powered-scanner</strong> _Finds unknown classes of injection vulnerabilities - PortSwigger/backslash-powered-scanner_github.com</a></p>
+
+<p><strong>AuthMatrix</strong></p>
+
+<p>AuthMatrix is an extension to Burp Suite that provides a simple way to test authorization in web applications and web services. With AuthMatrix, testers focus on thoroughly defining tables of users, roles, and requests for their specific target application upfront. These tables are structured in a similar format to that of an access control matrix common in various threat modeling methodologies.</p>
+
+<p><a href="https://github.com/PortSwigger/auth-matrix" title="https://github.com/PortSwigger/auth-matrix"><strong>PortSwigger/auth-matrix</strong> _AuthMatrix is a Burp Suite extension that provides a simple way to test authorization in web applications and web…_github.com</a></p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=pMXTmXUsEL8[/embedyt]</p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=x2uTYy72ebg[/embedyt]</p>
+
+<p><strong>Note: We can use the Authz and Authoriz Extensions instead of AuthMatrix</strong></p>
+
+<p><strong>PsychoPath</strong></p>
+
+<p>A Blind web root file upload and LFI detection tool</p>
+
+<p>For this tool I didn’t find any documentation other than this link</p>
+
+<p><a href="https://github.com/PortSwigger/psycho-path" title="https://github.com/PortSwigger/psycho-path"><strong>PortSwigger/psycho-path</strong> _psychoPATH - hunting file uploads &amp; LFI in the dark. This tool is a customisable payload generator designed for blindly…_github.com</a></p>
+
+<p><strong>Upload Scanner</strong></p>
+
+<ol>
+  <li>While uploading the file which supports formats it, use the exiftool file format meta data techniques “keywords”, “comment”, “iptc:keywords”, “xmp:keywords”, “exif:ImageDescription” and “ThumbnailImage”</li>
+  <li>It injects PHP, JSP, ASP, XXE, SSRF, XXS and SSI payloads on the target</li>
+</ol>
+
+<p>3, It will upload with various combinations of file extensions and content- types on the target</p>
+
+<p>4, Also it detects the issues via sleep based payloads, Burp Collaborator interactions or by downloading the file again</p>
+
+<p>For tutorial kindly find the link below</p>
+
+<p><a href="https://www.modzero.ch/share/uploadscanner/UploadScanner_101_Basics.mp4">https://www.modzero.ch/share/uploadscanner/UploadScanner_101_Basics.mp4</a></p>
+
+<p><strong>Extension Download Link:</strong></p>
+
+<p><a href="https://github.com/PortSwigger/upload-scanner" title="https://github.com/PortSwigger/upload-scanner"><strong>PortSwigger/upload-scanner</strong> _HTTP file upload scanner for Burp Proxy. Contribute to PortSwigger/upload-scanner development by creating an account on…_github.com</a></p>
+
+<p><strong>DeSerialization Scanner</strong></p>
+
+<p>This extension gives Burp Suite the ability to find Java deserialization vulnerabilities.</p>
+
+<p>Serialized Java objects begin with “<strong>ac ed</strong>” when in hexadecimal format and “<strong>rO0b</strong>” when base64-encoded.</p>
+
+<p>The content type header value will be equal to <strong>application/x-Java-serialized-object(</strong>It is not presented in GET request but we need to find the vulnerable endpoint and exploit with the post request<strong>)</strong></p>
+
+<p><strong>Tool:</strong></p>
+
+<p>I have seen the YSoserial &amp; Jexboss is also good option to exploit Java Deserialization Vulnerability</p>
+
+<ul>
+  <li><a href="https://github.com/frohoff/ysoserial/releases">https://github.com/frohoff/ysoserial/releases</a></li>
+  <li><a href="https://github.com/joaomatosf/jexboss">https://github.com/joaomatosf/jexboss</a></li>
+</ul>
+
+<p>Reference Link</p>
+
+<p><a href="https://techblog.mediaservice.net/2017/05/reliable-discovery-and-exploitation-of-java-deserialization-vulnerabilities/" title="https://techblog.mediaservice.net/2017/05/reliable-discovery-and-exploitation-of-java-deserialization-vulnerabilities/"><strong>Reliable discovery and exploitation of Java deserialization vulnerabilities</strong> _Java deserialization vulnerabilities were discovered and disclosed in January 2015 by Gabriel Lawrence and Chris…_techblog.mediaservice.net</a></p>
+
+<p><strong>Reflector</strong></p>
+
+<p>Burp Suite extension is help us to find reflected XSS (<strong>Sometimes SSI injection</strong> <strong>which is based on the target</strong> )on page in real-time while browsing on web-site and include some features as:</p>
+
+<ul>
+  <li>Highlighting of reflection in the response tab.</li>
+  <li>Test which symbols is allowed in this reflection.</li>
+  <li>Analyze of reflection context.</li>
+  <li>Content-Type white-list</li>
+</ul>
+
+<h3 id="how-touse">How to use</h3>
+
+<p>After plugin install you just need to start work with the tested web-application. Every time when reflection is found, reflector defines severity and generates burp issue.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*iXbJGgr-GZWF75_t1zK1mQ.gif" alt="" /></p>
+
+<p><strong>Note: Moreover you can manage content-types whitelist with which reflector plugin should work. But if you will use another types except text/html, this can lead to slowdowns in work.</strong></p>
+
+<p><strong>Extension Download Link</strong></p>
+
+<p><a href="https://github.com/elkokc/reflector/releases" title="https://github.com/elkokc/reflector/releases"><strong>elkokc/reflector</strong> _Burp plugin able to find reflected XSS on page in real-time while browsing on site - elkokc/reflector_github.com</a></p>
+
+<p><strong>Turbo Intruder</strong></p>
+
+<p>I didn’t tested yet but I was impressed with this tool. You can try at-least once to find the Race Limiting bugs</p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=vCpIAsxESFY[/embedyt]</p>
+
+<p><strong>Extension Download Link</strong></p>
+
+<p><a href="https://github.com/PortSwigger/turbo-intruder/releases" title="https://github.com/PortSwigger/turbo-intruder/releases"><strong>PortSwigger/turbo-intruder</strong> _Turbo Intruder is a Burp Suite extension for sending large numbers of HTTP requests and analyzing the results. …_github.com</a></p>
+
+<p><strong>Burp-vulners-scanner:</strong></p>
+
+<p>It co-relate real time traffic with the exploit db. This is also similar to the extension Retire.js</p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=N1p9ERcjRb0[/embedyt]</p>
+
+<p><strong>Extension Download Link:</strong></p>
+
+<p><a href="https://github.com/vulnersCom/burp-vulners-scanner/releases/download/1.1/burp-vulners-scanner-1.1.jar">https://github.com/vulnersCom/burp-vulners-scanner/releases/download/1.1/burp-vulners-scanner-1.1.jar</a></p>
+
+<p><strong>Reference Link:</strong></p>
+
+<p><a href="https://medium.com/@d0znpp/the-best-burp-plugin-ive-ever-seen-2d17780342" title="https://medium.com/@d0znpp/the-best-burp-plugin-ive-ever-seen-2d17780342"><strong>The best Burp plugin I’ve ever seen</strong> _Wanted to share with you what IMHO is the most promising Burp Suite plugin that just might transform it to the best…_medium.com</a></p>
+
+<p><strong>Burp ClickBandit</strong></p>
+
+<p>This tool is specifically for clickjacking only. Most of the people are confused with the clickjacking attack vector. But this tool will help us to clarify the real time attack scenario.</p>
+
+<p>[embedyt] https://www.youtube.com/watch?v=ZscgOpW2it0[/embedyt]</p>
+
+<p><strong>What is chaining of vulnerabilities ?</strong></p>
+
+<p>This is technique which the researcher can able to increase the impact of the bug or vulnerabilities using 2 or more bugs.</p>
+
+<p>This is possible while some of the vulnerabilities with the low impact or self based vulnerabilities like self XSS and login CSRF and Logout CSRF, Clickjacking (Which are the out of scope bugs in many targets)etc.</p>
+
+<p><strong>How to chain vulnerabilities ?</strong></p>
+
+<p>I will share some of the great write-ups which the researcher exploits with the chaining of vulnerabilities(<strong>Simple to Hard</strong>)</p>
+
+<p><strong>Open Redirection to XSS</strong></p>
+
+<p>We can see ton of report for these type of chain</p>
+
+<ul>
+  <li><a href="https://medium.com/@SyntaxError4/reflective-xss-and-open-redirect-on-indeed-com-subdomain-b4ab40e40c83">https://medium.com/@SyntaxError4/reflective-xss-and-open-redirect-on-indeed-com-subdomain-b4ab40e40c83</a></li>
+  <li><a href="https://hackerone.com/reports/260744">https://hackerone.com/reports/260744</a></li>
+  <li><a href="https://hackerone.com/reports/196846">https://hackerone.com/reports/196846</a></li>
+</ul>
+
+<p><strong>Open Redirection to OAuth Token Stealing</strong></p>
+
+<ul>
+  <li><a href="https://www.arneswinnen.net/2017/06/authentication-bypass-on-airbnb-via-oauth-tokens-theft/">https://www.arneswinnen.net/2017/06/authentication-bypass-on-airbnb-via-oauth-tokens-theft/</a> (This is my one of the favorite bug)</li>
+  <li><a href="https://medium.com/@protector47/full-account-takeover-via-referrer-header-oauth-token-steal-open-redirect-vulnerability-chaining-324a14a1567">https://medium.com/@protector47/full-account-takeover-via-referrer-header-oauth-token-steal-open-redirect-vulnerability-chaining-324a14a1567</a></li>
+  <li><a href="https://hackerone.com/reports/405100">https://hackerone.com/reports/405100</a></li>
+</ul>
+
+<p><strong>Self XSS into good XSS:</strong></p>
+
+<ul>
+  <li><a href="https://whitton.io/articles/uber-turning-self-xss-into-good-xss/">https://whitton.io/articles/uber-turning-self-xss-into-good-xss/</a></li>
+  <li>In this report Self xss is become a good XSS with the help of Clickjacking <a href="https://medium.com/@arbazhussain/self-xss-to-good-xss-clickjacking-6db43b44777e">https://medium.com/@arbazhussain/self-xss-to-good-xss-clickjacking-6db43b44777e</a></li>
+  <li><a href="https://www.youtube.com/watch?v=bP6JwcDwEZE">https://www.youtube.com/watch?v=bP6JwcDwEZE</a></li>
+  <li><a href="https://www.geekboy.ninja/blog/airbnb-bug-bounty-turning-self-xss-into-good-xss-2/">https://www.geekboy.ninja/blog/airbnb-bug-bounty-turning-self-xss-into-good-xss-2/</a></li>
+</ul>
+
+<p><strong>LFI to RCE:</strong></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[**From Local File Inclusion to Remote Code Execution - Part 1</td>
+      <td>Outpost 24 blog** _Local File Inclusion - aka LFI - is one of the most common Web Application vulnerabilities. If conducted successfully…_outpost24.com](https://outpost24.com/blog/from-local-file-inclusion-to-remote-code-execution-part-1 “https://outpost24.com/blog/from-local-file-inclusion-to-remote-code-execution-part-1”)</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><a href="https://medium.com/bugbountywriteup/bugbounty-journey-from-lfi-to-rce-how-a69afe5a0899">https://medium.com/bugbountywriteup/bugbounty-journey-from-lfi-to-rce-how-a69afe5a0899</a></li>
+  <li>This write up Will give you an Idea for LFI to RCE chaining <a href="https://resources.infosecinstitute.com/local-file-inclusion-code-execution/#gref">https://resources.infosecinstitute.com/local-file-inclusion-code-execution/#gref</a></li>
+</ul>
+
+<p><strong>SSRF to XSS</strong></p>
+
+<ul>
+  <li><a href="https://medium.com/bugbountywriteup/piercing-the-veil-server-side-request-forgery-to-niprnet-access-c358fd5e249a">https://medium.com/bugbountywriteup/piercing-the-veil-server-side-request-forgery-to-niprnet-access-c358fd5e249a</a></li>
+  <li><a href="http://blog.orange.tw/2017/07/how-i-chained-4-vulnerabilities-on.html">http://blog.orange.tw/2017/07/how-i-chained-4-vulnerabilities-on.html</a></li>
+  <li><a href="https://medium.com/@D0rkerDevil/how-i-convert-ssrf-to-xss-in-a-ssrf-vulnerable-jira-e9f37ad5b158">https://medium.com/@D0rkerDevil/how-i-convert-ssrf-to-xss-in-a-ssrf-vulnerable-jira-e9f37ad5b158</a></li>
+  <li><a href="https://medium.com/@adeshkolte/how-i-found-xss-via-ssrf-vulnerability-adesh-kolte-873b30a6b89f">https://medium.com/@adeshkolte/how-i-found-xss-via-ssrf-vulnerability-adesh-kolte-873b30a6b89f</a></li>
+  <li><a href="https://s1gnalcha0s.github.io/dspl/2018/03/07/Stored-XSS-and-SSRF-Google.html">https://s1gnalcha0s.github.io/dspl/2018/03/07/Stored-XSS-and-SSRF-Google.html</a></li>
+</ul>
+
+<p><strong>SSRF to RCE:</strong></p>
+
+<ul>
+  <li><a href="https://medium.com/@hisham.mir/exploiting-a-single-parameter-6f4ba2acf523">https://medium.com/@hisham.mir/exploiting-a-single-parameter-6f4ba2acf523</a></li>
+  <li><a href="http://www.kernelpicnic.net/2017/05/29/Pivoting-from-blind-SSRF-to-RCE-with-Hashicorp-Consul.html">http://www.kernelpicnic.net/2017/05/29/Pivoting-from-blind-SSRF-to-RCE-with-Hashicorp-Consul.html</a></li>
+</ul>
+
+<p><strong>SSTI to RCE:</strong></p>
+
+<ul>
+  <li><a href="https://hawkinsecurity.com/2017/12/13/rce-via-spring-engine-ssti/">https://hawkinsecurity.com/2017/12/13/rce-via-spring-engine-ssti/</a></li>
+</ul>
+
+<p><strong>Miscellaneous:</strong></p>
+
+<p><a href="https://medium.com/@logicbomb_1/bugbounty-how-i-was-able-to-bypass-firewall-to-get-rce-and-then-went-from-server-shell-to-get-783f71131b94">https://medium.com/@logicbomb_1/bugbounty-how-i-was-able-to-bypass-firewall-to-get-rce-and-then-went-from-server-shell-to-get-783f71131b94</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-20T00:00:00-05:00">March 20, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Bug+Bounty+Tips+%282%29%20http%3A%2F%2Flocalhost%3A4000%2Fbug-hunting%2F2019%2F03%2F20%2Fbug-bounty-tips-2.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fbug-hunting%2F2019%2F03%2F20%2Fbug-bounty-tips-2.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fbug-hunting%2F2019%2F03%2F20%2Fbug-bounty-tips-2.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/root-me/2019/03/13/pwn-elf-mips-stack-buffer-overflow-no-nx.html" class="pagination--pager" title="[PWN] ELF-MIPS-Stack-buffer-overflow-No-NX
+">Previous</a>
+    
+    
+      <a href="/oscp/2019/03/22/oscp-reviews-collection.html" class="pagination--pager" title="OSCP Reviews Collection
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/28/pwning-the-samsung-tv.html" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2022/01/21/pwning-facebook-portal.html" rel="permalink">Pwning the Facebook Portal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 iam.chi. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
