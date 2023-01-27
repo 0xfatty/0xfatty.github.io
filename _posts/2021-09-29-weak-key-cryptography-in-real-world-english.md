@@ -2,7 +2,7 @@
 title: "[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”"
 date: "2021-09-29"
 categories: 
-  - "security-research"
+  - "research"
 ---
 
 ### I. SUMMARY
@@ -141,8 +141,6 @@ Once we got the key factors, we were able to calculate the original Private Key 
 ### ![](images/10.png)
 
 Generating QR Code
-
- 
 
 ![](images/11.png)
 

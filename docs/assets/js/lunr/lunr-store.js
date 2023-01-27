@@ -270,9 +270,9 @@ var store = [{
         "teaser": null
       },{
         "title": "[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”",
-        "excerpt":"I. SUMMARY Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes. II. ANALYSIS 1. QR DATA Through news channels and social medias,...","categories": ["security-research"],
+        "excerpt":"I. SUMMARY Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes. II. ANALYSIS 1. QR DATA Through news channels and social medias,...","categories": ["research"],
         "tags": [],
-        "url": "/security-research/2021/09/29/weak-key-cryptography-in-real-world-english.html",
+        "url": "/research/2021/09/29/weak-key-cryptography-in-real-world-english.html",
         "teaser": null
       },{
         "title": "Python Deserialization on Integrated AWS DDB Flask App",

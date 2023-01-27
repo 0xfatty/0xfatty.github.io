@@ -1,6 +1,4 @@
 ---
-author: Chi Tran
-layout: single
 title: "Pwning the Facebook Portal"
 date: "2022-01-21"
 categories: 

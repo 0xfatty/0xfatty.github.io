@@ -2,7 +2,7 @@
 title: "[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”"
 date: "2021-09-17"
 categories: 
-  - "security-research"
+  - "research"
 ---
 
 ### I. TÓM TẮT

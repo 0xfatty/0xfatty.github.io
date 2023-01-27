@@ -1,6 +1,4 @@
 ---
-author: Chi Tran
-layout: single
 title: "Python Deserialization on Integrated AWS DDB Flask App"
 date: "2021-12-19"
 categories: 
