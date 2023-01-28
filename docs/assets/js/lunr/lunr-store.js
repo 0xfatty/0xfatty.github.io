@@ -1,32 +1,8 @@
 var store = [{
-        "title": "Bug Hunting Tips",
-        "excerpt":"Author: Shankar Pre-requisites Skills: Linux basics Basic idea about the HTTP protocols and its headers(Request and Response) (Burpsuite) How to choose our target ? We can choose our targets from bug bounty platforms like Bugcrowd, Hackerone, Zerocopter, etc, Or we can find targets from the google by searching for responsible disclosure policy...","categories": ["bug-hunting"],
-        "tags": [],
-        "url": "/bug-hunting/2019/02/07/bug-hunting-tips.html",
-        "teaser": null
-      },{
         "title": "Web Application Pentesting (Vietnamese)",
         "excerpt":"Re-made by: @felix   [embeddoc url=”https://ctrsec.io/wp-content/uploads/2019/03/Presentation1.pdf” download=”none”]  ","categories": ["bug-hunting"],
         "tags": [],
         "url": "/bug-hunting/2019/03/06/web-application-pentesting-vietnamese.html",
-        "teaser": null
-      },{
-        "title": "Bug Bounty Programs",
-        "excerpt":"[embeddoc url=”https://ctrsec.io/wp-content/uploads/2019/03/Bug-Bounties.xlsx” viewer=”google”]  ","categories": ["bug-hunting"],
-        "tags": [],
-        "url": "/bug-hunting/2019/03/12/bug-bounty-programs.html",
-        "teaser": null
-      },{
-        "title": "DB2 SQL Injection",
-        "excerpt":"Finding a SQL injection vulnerability in a web application backed by DB2 isn’t too common in my experience.  When you do find one, though it pays to be prepared… Below are some tabulated notes on how to do many of thing you’d normally do via SQL injection.  All tests were...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/db2-sql-injection.html",
-        "teaser": null
-      },{
-        "title": "DFIR",
-        "excerpt":"Volatility   https://github.com/volatilityfoundation/volatility/wiki/Command-Reference   https://github.com/volatilityfoundation/volatility/wiki/Command-Reference-Mal   Bulk Extractor   https://github.com/simsong/bulk_extractor   Lib PFF   https://github.com/libyal/libpff  ","categories": ["tools"],
-        "tags": [],
-        "url": "/tools/2019/03/12/dfir.html",
         "teaser": null
       },{
         "title": "Discovery & Probing",
@@ -41,58 +17,16 @@ var store = [{
         "url": "/penetration-testing-guides/2019/03/12/enumeration.html",
         "teaser": null
       },{
-        "title": "Informix SQL Injection",
-        "excerpt":"Some useful syntax reminders for SQL Injection into Informix databases… Below are some tabulated notes on how to do many of thing you’d normally do via SQL injection.  All tests were performed on Informix Dynamic Server Express Edition 11.5 for Windows.  The Informix download page is here. I’m not planning...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/informix-sql-injection.html",
-        "teaser": null
-      },{
-        "title": "Ingres SQL Injection",
-        "excerpt":"Ingres seems to be one of the less common database backends for web applications, so I thought it would be worth installing it and making some notes to make my next Ingres-based web app test a little easier. Below are some tabulated notes on how to do many of thing...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/ingres-sql-injection.html",
-        "teaser": null
-      },{
         "title": "John The Ripper Hash Formats",
         "excerpt":"John the Ripper is a favourite password cracking tool of many pentesters.  There is plenty of documentation about its command line options. I’ve encountered the following problems using John the Ripper.  These are not problems with the tool itself, but inherent problems with pentesting and password cracking in general. Sometimes I...","categories": ["security-cheat-sheets"],
         "tags": [],
         "url": "/security-cheat-sheets/2019/03/12/john-the-ripper-hash-formats.html",
         "teaser": null
       },{
-        "title": "MSSQL Injection",
-        "excerpt":"Some useful syntax reminders for SQL Injection into MSSQL databases… I’m not planning to write one for MS Access, but there’s a great MS Access Cheat Sheet here. Some of the queries in the table below can only be run by an admin. These are marked with “– priv” at...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/mssql-injection.html",
-        "teaser": null
-      },{
-        "title": "MySQL SQL Injection",
-        "excerpt":"Some useful syntax reminders for SQL Injection into MySQL databases… I’m not planning to write one for MS Access, but there’s a great MS Access Cheat Sheet here. Some of the queries in the table below can only be run by an admin. These are marked with “– priv” at...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/mysql-sql-injection.html",
-        "teaser": null
-      },{
-        "title": "Network Foot-printing",
-        "excerpt":"Whois is widely used for querying authoritative registries/ databases to discover the owner of a domain name, an IP address, or an autonomous system number of the system you are targeting. - Authoratitive Bodies - IANA - Internet Assigned Numbers Authority - ICANN - Internet Corporation for Assigned Names and...","categories": ["penetration-testing-guides"],
-        "tags": [],
-        "url": "/penetration-testing-guides/2019/03/12/network-foot-printing.html",
-        "teaser": null
-      },{
-        "title": "Oracle SQL Injection",
-        "excerpt":"Some of the queries in the table below can only be run by an admin.  These are marked with “– priv” at the end of the query. VersionSELECT banner FROM v$version WHERE banner LIKE ‘Oracle%’; SELECT banner FROM v$version WHERE banner LIKE ‘TNS%’; SELECT version FROM v$instance;CommentsSELECT 1 FROM dual...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/oracle-sql-injection.html",
-        "teaser": null
-      },{
         "title": "Penetration",
         "excerpt":"Penetration - An exploit usually relates to the existence of some flaw or vulnerability in an application or operating system that if used could lead to privilege escalation or denial of service against the computer system that is being attacked. Exploits can be compiled and used manually or various engines...","categories": ["penetration-testing-guides"],
         "tags": [],
         "url": "/penetration-testing-guides/2019/03/12/penetration.html",
-        "teaser": null
-      },{
-        "title": "Postgre SQL Injection",
-        "excerpt":"Some useful syntax reminders for SQL Injection into PostgreSQL databases… I’m not planning to write one for MS Access, but there’s a great MS Access Cheat Sheet here. Some of the queries in the table below can only be run by an admin. These are marked with “– priv” at...","categories": ["security-cheat-sheets"],
-        "tags": [],
-        "url": "/security-cheat-sheets/2019/03/12/postgre-sql-injection.html",
         "teaser": null
       },{
         "title": "Reverse Shell",
@@ -105,12 +39,6 @@ var store = [{
         "excerpt":"SSH has several features that are useful during pentesting and auditing.  This page aims to remind us of the syntax for the most useful features. NB: This page does not attempt to replace the man page for pentesters, only to supplement it with some pertinent examples. SOCKS Proxy Set up a SOCKS...","categories": ["security-cheat-sheets"],
         "tags": [],
         "url": "/security-cheat-sheets/2019/03/12/ssh.html",
-        "teaser": null
-      },{
-        "title": "VoIP Security",
-        "excerpt":"  Sniffing Tools AuthTool Cain &amp; Abel Etherpeek NetDude Oreka PSIPDump SIPomatic SIPv6 Analyzer UCSniff VoiPong VOMIT Wireshark WIST - Web Interface for SIP Trace Scanning and Enumeration Tools enumIAX fping IAX Enumerator iWar Nessus Nmap SIP Forum Test Framework (SFTF) SIPcrack sipflanker python sipflanker.py 192.168.1-254 SIP-Scan SIP.Tastic SIPVicious SiVuS...","categories": ["penetration-testing-guides"],
-        "tags": [],
-        "url": "/penetration-testing-guides/2019/03/12/voip-security.html",
         "teaser": null
       },{
         "title": "Vulnerability Assessment",
@@ -135,12 +63,6 @@ var store = [{
         "excerpt":"Author: Shankar R How to make a good report !! We can find ton of write-ups for this section but one of my favorite is https://youtu.be/XAjpilWbSSQ The importance of Impact: Many researchers are looking for a bug on the target if they found a small vulnerabilities then they have reported to...","categories": ["bug-hunting"],
         "tags": [],
         "url": "/bug-hunting/2019/03/20/bug-bounty-tips-2.html",
-        "teaser": null
-      },{
-        "title": "OSCP Reviews Collection",
-        "excerpt":"This post contains OSCP reviews from those who have taken OSCP sharing their thoughts and tips. https://scriptdotsh.com/index.php/2018/04/17/31-days-of-oscp-experience/ https://netsec.ws/?p=398 https://jhalon.github.io/OSCP-Review/ https://hakin9.org/try-harder-my-penetration-testing-with-kali-linux-oscp-review-and-courselab-experience-my-oscp-review-by-jason-bernier/ https://h4ck.co/oscp-journey-pwk-course-review/ https://awansec.com/oscp-review.html http://jameelnabbo.com/oscp-preparation-guide-and-exam-review/ https://www.linkedin.com/pulse/oscp-review-nick-frichette https://www.secjuice.com/oscp-prep-guidance/ https://www.jimwilbur.com/2017/07/oscp-review/ https://www.hackingtutorials.org/hacking-courses/offensive-security-certified-professional-oscp/ https://clintonmetu.com/2018/06/how-i-prepared-for-the-pwk-course-and-oscp-exam-oscp-exam-review/ http://dsolstad.com/PWK-OSCP-Review/ https://medium.com/@forwardsecrecy/oscp-post-exam-and-final-review-448e51bf7dae https://medium.com/@LearnerPentest/oscp-i-did-it-af9ee3335a1c http://dann.com.br/oscp-offensive-security-certification-pwk-course-review/ http://niiconsulting.com/checkmate/2017/06/a-detail-guide-on-oscp-preparation-from-newbie-to-oscp/ http://ly0n.me/2018/04/30/offensive-security-certs-oscp-and-osce-review/ https://www.netsecfocus.com/oscp/review/2019/01/29/An_Adventure_to_Try_Harder_Tjnulls_OSCP_Journey.html https://dubell.io/my-oscp-review/ https://m4cybersolutions.com/oscp-review/ https://dejandayoff.com/oscp-review—felt-the-pain-and-suffered-through-it/ https://stormctf.ninja/ctf/blog/c0ax/review/oscp-review https://github.com/D3cl4n/OSCP-Review https://community.infosecinstitute.com/discussion/132306/oscp-review https://ethicalhackers.club/oscp-penetration-testing-kali-linux-experience-review/ https://limbenjamin.com/articles/oscp-review.html http://www.exumbraops.com/blog/2018/4/6/7-things-you-didnt-know-about-passing-the-oscp http://www.websecgeeks.com/2017/04/penetration-testing-with-kali-linux.html https://blog.fadyothman.com/pwk-and-oscp-my-experience/ https://wiki.securityweekly.com/Hack_Naked_TV_OSCP_Review https://dilsec.com/2017/04/06/oscp-certification-the-review/ https://infosecuritygeek.com/my-oscp-journey/ https://kongwenbin.wordpress.com/2017/02/23/officially-oscp-certified/...","categories": ["oscp"],
-        "tags": [],
-        "url": "/oscp/2019/03/22/oscp-reviews-collection.html",
         "teaser": null
       },{
         "title": "CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension",
