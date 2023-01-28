@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-28T15:42:40-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-01-26T23:29:23-06:00</published><updated>2023-01-26T23:29:23-06:00</updated><id>http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-28T15:45:42-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-01-26T23:29:23-06:00</published><updated>2023-01-26T23:29:23-06:00</updated><id>http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;p&gt;Jekyll requires blog post files to be named according to the following format:&lt;/p&gt;
 
@@ -523,7 +523,7 @@ Count += 1
   &lt;li&gt;We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/BOF.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/bof.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;The application crashed after an attack data was sent where we were able to control &lt;strong&gt;$PC, $S4&lt;/strong&gt;, some registers as well as content on the &lt;strong&gt;heap and stack&lt;/strong&gt; (See below)&lt;/li&gt;
@@ -678,26 +678,26 @@ Count += 1
   &lt;li&gt;By analyzing the firmware using QEMU, I observed that requests to /MTFWU are configured to be handled by &lt;strong&gt;/usr/sbin/mtfwu&lt;/strong&gt; in HTTPD service configuration.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/httpd-config.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/httpd-config.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Digging into this path, the execution is symlinked by &lt;strong&gt;/htdocs/cgibin&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;img src=&quot;images/symlink.png&quot; alt=&quot;&quot; /&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/symlink.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;At this point, I saw the attack surface is around HTTPD service at /MTFWU endpoint. From reversing the firmware (.bin), I was able to determine the &lt;strong&gt;stack buffer overflow&lt;/strong&gt; via &lt;strong&gt;LOGINPASSWORD&lt;/strong&gt; parameter.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/BOF.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/BOF.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Line 19 and 50 indicate where Buffer Overflow occurs when we craft a POST request to /MTFWU with long enough value in LOGINPASSWORD parameters. This would make the service to crash and lead to an RCE as a result.&lt;/li&gt;
   &lt;li&gt;And it is always good to see these types of emails. Exploit was confirmed and bug got fixed!&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/Email-threads-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Email-threads-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;iv-impact&quot;&gt;&lt;em&gt;&lt;strong&gt;IV. IMPACT&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
 

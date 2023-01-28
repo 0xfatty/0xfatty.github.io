@@ -63,7 +63,7 @@ int main(void)
 {% endhighlight %}
 - We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.
 
-![](/images/BOF.png)
+![](/images/bof.png)
 
 - The application crashed after an attack data was sent where we were able to control **$PC, $S4**, some registers as well as content on the **heap and stack** (See below)
 
