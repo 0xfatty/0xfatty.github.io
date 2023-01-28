@@ -84,3 +84,14 @@ defaults:
       comments: false
       share: true
       related: true
+
+
+# Admin
+jekyll_admin:
+  hidden_links:
+    - posts
+    - pages
+    - staticfiles
+    - datafiles
+    - configuration
+  homepage: "pages"

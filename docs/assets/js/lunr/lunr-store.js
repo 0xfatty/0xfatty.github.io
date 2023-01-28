@@ -264,9 +264,9 @@ var store = [{
         "teaser": null
       },{
         "title": "[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”",
-        "excerpt":"I. TÓM TẮT Hệ thống cấp giấy đi đường mà Công An Thành Phố Hà Nội đang sử dụng tồn tại lỗ hổng nghiêm trọng về cách triển khai mã hóa, dẫn đến nguy cơ bị giả mạo giấy đi đường tùy ý hay cũng có khả năng rất cao...","categories": ["security-research"],
+        "excerpt":"I. TÓM TẮT Hệ thống cấp giấy đi đường mà Công An Thành Phố Hà Nội đang sử dụng tồn tại lỗ hổng nghiêm trọng về cách triển khai mã hóa, dẫn đến nguy cơ bị giả mạo giấy đi đường tùy ý hay cũng có khả năng rất cao...","categories": ["research"],
         "tags": [],
-        "url": "/security-research/2021/09/17/weak-rsa-in-realworld-vietnamese.html",
+        "url": "/research/2021/09/17/weak-rsa-in-realworld-vietnamese.html",
         "teaser": null
       },{
         "title": "[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”",
