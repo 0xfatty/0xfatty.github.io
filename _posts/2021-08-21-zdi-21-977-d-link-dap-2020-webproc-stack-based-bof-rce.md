@@ -63,21 +63,20 @@ int main(void)
 {% endhighlight %}
 - We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.
 
-![](images/bof.png)
+![](/images/bof.png)
 
 - The application crashed after an attack data was sent where we were able to control **$PC, $S4**, some registers as well as content on the **heap and stack** (See below)
 
-![](images/bof1.png)
+![](/images/bof1.png)
 
 - More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the **“$SP”** register which is executable in the context of the stack segment.
 - In fact, if we can control the **“$PC”** register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.
 
-![](images/bof2.png)
-
+![](/images/bof2.png)
 
 - We managed to use 2 gadgets: “_**addiu $a3, $sp, 0x28 ; jalr $t9**_” and “_**move $t9, $a3 ; jalr $t9**_” in **/lib/libuClibc-0.9.30.so** (ASLR is disabled) to control **$A3** point to stack (part of post data), then control **$PC** point to **$A3** register (See below)
 
-![](images/bof3.png)
+![](/images/bof3.png)
 
 
 ### _**III. IMPACT**_
@@ -85,7 +84,7 @@ int main(void)
 - When a memory buffer overflow occurs and data is written outside the buffer, the running program may become unstable, crash or return corrupt information. The overwritten parts of memory may have contained other important data for the running application which is now overwritten and not available to the program anymore. Buffer overflows can even run other (malicious) programs or commands and result in arbitrary code execution
 - Proof of Concept:
 
-![](images/poc.png)
+![](/images/poc.png)
 
 ### _**VI. DISCLOSURE TIMELINE**_
 
