@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world” - iam.chi</title>
+<!-- begin _includes/seo.html --><title>[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào - iam.chi</title>
 <meta name="description" content="I. TÓM TẮT">
 
 
@@ -22,7 +22,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="iam.chi">
-<meta property="og:title" content="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”">
+<meta property="og:title" content="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào">
 <meta property="og:url" content="http://localhost:4000/research/2021/09/17/weak-rsa-in-realworld-vietnamese.html">
 
 
@@ -248,7 +248,7 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”">
+    <meta itemprop="headline" content="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào">
     <meta itemprop="description" content="I. TÓM TẮT">
     <meta itemprop="datePublished" content="2021-09-17T00:00:00-05:00">
     
@@ -256,7 +256,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào — “Weak Key Cryptography in real world”
+          <h1 id="page-title" class="page__title" itemprop="headline">[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào
 </h1>
           
 
@@ -292,29 +292,11 @@
 
 <p><strong>1.</strong> <strong>DỮ LIỆU QR</strong> Thông qua báo chí và mạng xã hội, anh em chúng tôi tìm được một bản mẫu của mã QR giấy đi đường như hình dưới đây:</p>
 
-<p><img src="images/1.jpg" alt="" /> Trích xuất tại: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html">https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html</a></p>
+<p><img src="/images/1.jpg" alt="" /> Trích xuất tại: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html">https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html</a></p>
 
 <p>Qua khảo sát ứng dụng này, mặc dù đã che chắn rất kỹ thông tin nhưng mã QR lại không bị che, sau khi decode ta có được những thông tin trong mã QR như sau:</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==</td>
-      <td>**10505</td>
-      <td>3</td>
-      <td>06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09</td>
-      <td>4_PHÒNG CẢNH SÁT GIAO THÔNG</td>
-      <td>02439424451</td>
-      <td>29G1–391.89</td>
-      <td> </td>
-      <td>Vùng 1</td>
-      <td>Nguyễn Ánh Ngọc</td>
-      <td> </td>
-      <td>09:00–20:00</td>
-    </tr>
-  </tbody>
-</table>
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4\_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+</code></pre></div></div>
 <p>Trong cụm thông tin đã được decoded bao gồm các thông tin về người dân, cũng như mã phường của đơn vị cấp (ví dụ: <strong>10505</strong>). Ở phía đầu của mỗi mã QR đều có một chuỗi chữ ký điện tử, sử dụng thuật toán RSA — SHA256 để ký.</p>
 
 <p><strong>2.</strong> <strong>PHƯƠNG THỨC XÁC THỰC</strong> Không khó lắm để tìm được ứng dụng xác thực mã đi đường trên Google Play Store. Tuy nhiên, do bị hạn chế quốc gia, nên cần phải VPN về Việt Nam để tải ứng dụng “<strong>Kiểm soát đi đường</strong>”.</p>
@@ -325,77 +307,48 @@
 
 <p>Trước khi đi vào phân tích luồng hoạt động của ứng dụng thì chúng mình nói sơ qua chút về cách hoạt động của mô hình xác thực này.</p>
 
-<p><img src="images/2.png" alt="" /></p>
+<p><img src="/images/2.png" alt="" /></p>
 
 <p>Mô hình hoạt động này thuộc dạng server-less, nghĩa là không cần dùng bất cứ Server nào trong suốt quá trình vận hành, hoạt động của app. Như vậy có một ưu điểm có thể nhìn ra ngay, đó là không sợ hệ thống bị quá tải, không sợ bị dân tình chửi nếu server sập ( ͡° ͜ʖ ͡°). Tuy nhiên việc đặt niềm tin 100% vào client chưa bao giờ đem lại kết quả tốt cả! Việc không xác thực lại ở phía server như vậy, có nghĩa là chỉ cần có Private Key của một phường, hoặc là cán bộ của Phường này tham nhũng, sẽ có thể cấp bừa bãi giấy đi đường cho bất cứ ai. Trong thời đại này niềm tin giữa con người với con người nó mong manh lắm.</p>
 
 <p><strong>3.</strong> <strong>LUỒNG HOẠT ĐỘNG CỦA ỨNG DỤNG</strong> Dữ liệu ban đầu được scan qua mã QR là:</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==</td>
-      <td>**10505</td>
-      <td>3</td>
-      <td>06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09</td>
-      <td>4_PHÒNG CẢNH SÁT GIAO THÔNG</td>
-      <td>02439424451</td>
-      <td>29G1–391.89</td>
-      <td> </td>
-      <td>Vùng 1</td>
-      <td>Nguyễn Ánh Ngọc</td>
-      <td> </td>
-      <td>09:00–20:00</td>
-    </tr>
-  </tbody>
-</table>
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4\_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+</code></pre></div></div>
 <p>Trong đó, “<strong>10505</strong>” là mã của đơn vị cấp, ở đây là “<strong>Phòng cảnh sát giao thông</strong>”. Sau khi nhận được dữ liệu từ mã QR, chương trình sẽ lấy dữ liệu tiếp tục từ mã phường trở về cuối, sau đó sẽ thực hiện các bước kế tiếp theo thứ tự như sau:</p>
 
 <ul>
-  <li>
-    <table>
-      <tbody>
-        <tr>
-          <td>Thực hiện xóa bỏ tất cả các ký tự “</td>
-          <td>”,</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
+  <li>Thực hiện xóa bỏ tất cả các ký tự “|”,</li>
   <li>Xóa bỏ các ký tự đặc biệt</li>
   <li>Bỏ dấu tiếng Việt</li>
   <li>Chuyển các ký tự về dạng chữ cái thường</li>
 </ul>
 
-<p><img src="images/3.jpg" alt="" /></p>
+<p><img src="/images/3.jpg" alt="" /></p>
 
 <p>Code xử lý input string</p>
 
 <p>Dữ liệu khi đó trở thành:</p>
-
-<p><strong>10505</strong>3060907090809090910091109120913091409150916091709180919092009<strong>4_phongcanhsatgiaothong</strong>02439424451<strong>29g139189</strong>vung1<strong>nguyenanhngoc</strong>09002000</p>
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**10505**3060907090809090910091109120913091409150916091709180919092009**4\_phongcanhsatgiaothong**02439424451**29g139189**vung1**nguyenanhngoc**09002000
+</code></pre></div></div>
 <p>Tiếp tục, dữ liệu được chuyển sang một dạng hash code mà <strong>lachongtech</strong> tự phát triển, thuật toán hoạt động đơn giản như sau:</p>
-
-<p><strong>Hashcode</strong> = 0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**Hashcode** = 0
 Count = 0
 For char in String:
 Count += 1
-<strong>Hashcode</strong> += char * Count
-<strong>Hashcode</strong> = (1988 * <strong>Hashcode</strong> — 1910) / 2</p>
-
+**Hashcode** += char \* Count
+**Hashcode** = (1988 \* **Hashcode** — 1910) / 2
+</code></pre></div></div>
 <p>Qua bước hashcode, dữ liệu có được dạng như sau: “<strong>682673275</strong>”</p>
 
 <ul>
   <li>Đây chính là điểm yếu đầu tiên của cách triển khai, việc tính ra Hashcode quá đơn giản, dẫn đến trường hợp Collision có thể xảy ra, nghĩa là có thể một chuỗi có nội dung hoàn toàn khác cũng có trùng hashcode.</li>
 </ul>
 
-<p><img src="images/4.jpg" alt="" /></p>
+<p><img src="/images/4.jpg" alt="" /></p>
 
 <p>Dữ liệu sau khi qua bước Hashcode được đưa vào kiểm tra xác thực chữ ký bằng khóa công khai trong ứng dụng. Tuy nhiên, sau khi kiểm tra, có thể thấy ứng dụng đang sử dụng RSA public key với chiều dài key là 512 bits. Ở thời điểm hiện tại, chiều dài key 512 bits là rất yếu, hoàn toàn có thể bị crack trong vài tiếng. Về lý thuyết thì ai cũng biết key 512-bits có thể bị crack, nhưng crack bằng cách nào thì ít thấy chỗ nào đề cập đến (cũng có thể bọn mình tìm chưa kỹ) qua Google search. Các kết quả tìm kiếm đa phần đều là các CTF challenges. Search trên factordb cũng ra, và đương nhiên là trong trường hợp này, factordb không có kết quả của key mình đang tìm. Trong tất cả kết quả tìm kiếm thì chỉ duy nhất có một paper là đáng chú ý:</p>
 
-<p><img src="images/5.jpg" alt="" /></p>
+<p><img src="/images/5.jpg" alt="" /></p>
 
 <blockquote>
   <p>Reference: <a href="https://seclab.upenn.edu/projects/faas/faas.pdf">https://seclab.upenn.edu/projects/faas/faas.pdf</a></p>
@@ -417,21 +370,21 @@ Count += 1
 
 <p>- Như bọn mình đã đề cập ở trên, công nghệ crack này được tạo ra từ 2015 bởi 1 nhóm các giáo sư và kỹ sư đến từ University of Pennsylvania. Một công cụ gần 7 năm tuổi về cơ bản không còn tương thích với các phiên bản hiện đại hơn ngày nay. Vì vậy, việc setup và chạy thử đã tốn khá nhiều thời gian. Phần lớn thời gian dành cho việc debug lỗi trong quá trình setup, tìm kiếm phiên bản thư viện và dependencies tương thích. Và sau gần 2 ngày hì hục cùng với chút kinh nghiệm ít ỏi của một đứa con địa chủ AWS VPS thì bọn mình đã chạy thử thành công với một đoạn RSA với độ dài 100 chars.</p>
 
-<p><img src="images/6.jpg" alt="" /> Quá trình spin-up EC2 instances</p>
+<p><img src="/images/6.jpg" alt="" /> Quá trình spin-up EC2 instances</p>
 
 <h3 id="2-cracking-the-real-key">2. Cracking the real key</h3>
 
 <p>Các public keys được cung cấp bởi ứng dụng “Kiểm soát đi đường” đều có độ dài 155 ký tự tương ứng với RSA 512-bits. Vì vậy, thời gian crack và số lượng instances cũng tăng lên. Bọn mình triển khai tổng cộng 16 instances EC2 x 36 CPUs x 60 GiB Memory cho mỗi key cần crack. Sau khi script được run, việc của mấy anh em mình là ngồi đợi và hy vọng sẽ không có FATAL errors gì. Cuối cùng, sau gần 9 tiếng đồng hồ, bọn mình đã thu được kết quả.</p>
 
-<p><img src="images/7.jpg" alt="" /></p>
+<p><img src="/images/7.jpg" alt="" /></p>
 
 <h3 id="3-chi-phí-triển-khai">3. Chi phí triển khai</h3>
 
 <p>Vì mình là con ruột của địa chủ, cho nên các chi phí đối với mình không đáng kể. Tuy nhiên, mình cũng sẽ show cho các bạn xem chi tiết số tiền các bạn phải bỏ ra để crack RSA-512 bits trong vòng 9 tiếng (+ test crack) là khoảng $250 USD cho 2 keys (per region)</p>
 
-<p><img src="images/8-scaled.jpg" alt="" /> Bọn mình sau đó đã tìm cách để optimize quá trình này bằng cách sử dụng lại các sieves cho các key khác nhưng không thành công. Liên hệ với tác giả của công cụ này, cách tốt nhất có lẽ là lưu lại trong database. Nhưng vì lý do thời gian, bọn mình đã không thực hiện theo cách này.</p>
+<p><img src="/images/8-scaled.jpg" alt="" /> Bọn mình sau đó đã tìm cách để optimize quá trình này bằng cách sử dụng lại các sieves cho các key khác nhưng không thành công. Liên hệ với tác giả của công cụ này, cách tốt nhất có lẽ là lưu lại trong database. Nhưng vì lý do thời gian, bọn mình đã không thực hiện theo cách này.</p>
 
-<p><img src="images/9.jpg" alt="" /></p>
+<p><img src="/images/9.jpg" alt="" /></p>
 
 <h3 id="4-sử-dụng-private-key">4. Sử dụng Private Key</h3>
 
@@ -439,13 +392,11 @@ Count += 1
 
 <h3 id="iv-demo">IV. DEMO</h3>
 
-<h3><img src="images/10.png" alt="" /></h3>
+<h3><img src="/images/10.png" alt="" /></h3>
 
 <p>Tạo QR Code</p>
 
-<p> </p>
-
-<p><img src="images/11.png" alt="" /></p>
+<p><img src="/images/11.png" alt="" /></p>
 
         
       </section>
@@ -465,7 +416,7 @@ Count += 1
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=%5BTi%E1%BA%BFng+Vi%E1%BB%87t%5D+T%C3%B4i+%C4%91%C3%A3+fake+h%C6%A1n+250k+gi%E1%BA%A5y+%C4%91i+%C4%91%C6%B0%E1%BB%9Dng+nh%C6%B0+th%E1%BA%BF+n%C3%A0o+%E2%80%94+%E2%80%9CWeak+Key+Cryptography+in+real+world%E2%80%9D%20http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2021%2F09%2F17%2Fweak-rsa-in-realworld-vietnamese.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%5BTi%E1%BA%BFng+Vi%E1%BB%87t%5D+T%C3%B4i+%C4%91%C3%A3+fake+h%C6%A1n+250k+gi%E1%BA%A5y+%C4%91i+%C4%91%C6%B0%E1%BB%9Dng+nh%C6%B0+th%E1%BA%BF+n%C3%A0o%20http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2021%2F09%2F17%2Fweak-rsa-in-realworld-vietnamese.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2021%2F09%2F17%2Fweak-rsa-in-realworld-vietnamese.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
@@ -476,11 +427,11 @@ Count += 1
       
   <nav class="pagination">
     
-      <a href="/hackthebox/2021/09/17/544.html" class="pagination--pager" title="
+      <a href="/esearch/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" class="pagination--pager" title="[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
 ">Previous</a>
     
     
-      <a href="/research/2021/09/29/weak-key-cryptography-in-real-world-english.html" class="pagination--pager" title="[English] How I faked tons of COVID passes — “Weak Key Cryptography in real world”
+      <a href="/research/2021/09/29/weak-key-cryptography-in-real-world-english.html" class="pagination--pager" title="[English] How I faked tons of COVID passes — Weak Key Cryptography in real world
 ">Next</a>
     
   </nav>
@@ -626,7 +577,7 @@ Count += 1
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/bug-hunting/2021/12/19/python-deserialization-on-integrated-aws-ddb-flask-app.html" rel="permalink">Python Deserialization on Integrated AWS DDB Flask App
+        <a href="/research/2021/09/29/weak-key-cryptography-in-real-world-english.html" rel="permalink">[English] How I faked tons of COVID passes — Weak Key Cryptography in real world
 </a>
       
     </h2>
@@ -644,14 +595,16 @@ Count += 1
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Cách đây vài hôm mình có gặp một challenge hay ho khi làm Bug Bounty ở nền Cloud &amp;&amp; Web. Tuy flow xử lý data không có gì là mới, nhưng việc applicati...</p>
+    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+
+</p>
   </article>
 </div>
 

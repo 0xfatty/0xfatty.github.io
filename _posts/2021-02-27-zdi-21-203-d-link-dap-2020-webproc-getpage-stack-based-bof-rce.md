@@ -2,7 +2,7 @@
 title: "[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE"
 date: "2021-02-27"
 categories: 
-  - "security-research"
+  - "research"
 ---
 
 ### _**I. OVERVIEW**_
@@ -20,6 +20,7 @@ categories:
 - After analyzing the DAP-2020 A1 Router, a Stack Buffer-overflow vulnerability was found on mini\_httpd service via ‘**var:menu**’ or ‘**var:page**’ parameter, which exist in **_WEB\_GetCgiVars()_** function in **/usr/www/cgi-bin/webproc** binary.
 - The following is part of decompiled code of **/usr/www/cgi-bin/webproc** binary, the buffer overflow vulnerability was discovered in **_WEB\_GetCgiVars()_** function (See below)
 
+{% highlight c %}
 // 00402cf0 WEB\_GetCgiVars - /usr/www/cgi-bin/webproc
 int WEB\_GetCgiVars(ST\_NAME\_VAL \*\*ppstCgiVal)
 {
@@ -59,6 +60,7 @@ int WEB\_GetCgiVars(ST\_NAME\_VAL \*\*ppstCgiVal)
     \_\_s1 = My\_getenv("HTTP\_COOKIE");
     if (\_\_s1 != (char \*)0x0) {
         \_\_s\_00 = strstr(\_\_s1,"
+{% endhighlight %}
 
 - We were able to build a test environment for this vulnerability (See below). Additionally, either “**var:menu**” or “**var:page**” parameter can be used to trigger the Buffer Overflow vulnerability.
 

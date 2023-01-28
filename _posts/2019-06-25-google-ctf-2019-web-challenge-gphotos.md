@@ -5,4 +5,4 @@ categories:
   - "ctf"
 ---
 
-\[embeddoc url="https://ctrsec.io/wp-content/uploads/2019/06/Google-CTF-2019-Writeups-Web-gphotos.pptx.pdf" download="none"\]
+<embed src="/files/Google-CTF-2019-Writeups-Web-gphotos.pptx.pdf" type="application/pdf">

@@ -2,7 +2,7 @@
 title: "[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE"
 date: "2021-08-21"
 categories: 
-  - "security-research"
+  - "esearch"
 ---
 
 ### _**I. OVERVIEW**_
@@ -20,6 +20,7 @@ categories:
 - After analyzing the DAP-2020 A1 Router, a Stack Buffer-overflow vulnerability was discovered on _**mini\_httpd**_ service via post data, which exist in **_main()_** function in _**/usr/www/cgi-bin/webproc**_ binary.
 - The following is part of decompiled code of _**/usr/www/cgi-bin/webproc**_ binary, the buffer overflow vulnerability was discovered in _**main()**_ function (See below)
 
+{% highlight c %}
 // 00401e20 main - /usr/www/cgi-bin/webproc
 int main(void)
 {
@@ -59,31 +60,25 @@ int main(void)
     }
     ...\[TRUNCATED\]...
 }
-
+{% endhighlight %}
 - We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.
 
 ![](images/bof.png)
-
- 
 
 - The application crashed after an attack data was sent where we were able to control **$PC, $S4**, some registers as well as content on the **heap and stack** (See below)
 
 ![](images/bof1.png)
 
- 
-
-- More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the **“$SP”** register which is executable in the context of the stack segment. 
+- More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the **“$SP”** register which is executable in the context of the stack segment.
 - In fact, if we can control the **“$PC”** register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.
 
 ![](images/bof2.png)
 
- 
 
 - We managed to use 2 gadgets: “_**addiu $a3, $sp, 0x28 ; jalr $t9**_” and “_**move $t9, $a3 ; jalr $t9**_” in **/lib/libuClibc-0.9.30.so** (ASLR is disabled) to control **$A3** point to stack (part of post data), then control **$PC** point to **$A3** register (See below)
 
 ![](images/bof3.png)
 
- 
 
 ### _**III. IMPACT**_
 

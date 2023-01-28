@@ -70,8 +70,6 @@ author:
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/imspciynoodles"
 
-
-
 # Defaults
 defaults:
   - scope:
@@ -84,14 +82,3 @@ defaults:
       comments: false
       share: true
       related: true
-
-
-# Admin
-jekyll_admin:
-  hidden_links:
-    - posts
-    - pages
-    - staticfiles
-    - datafiles
-    - configuration
-  homepage: "pages"
