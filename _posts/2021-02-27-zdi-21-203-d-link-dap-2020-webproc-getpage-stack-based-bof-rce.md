@@ -64,27 +64,27 @@ int WEB\_GetCgiVars(ST\_NAME\_VAL \*\*ppstCgiVal)
 
 - We were able to build a test environment for this vulnerability (See below). Additionally, either “**var:menu**” or “**var:page**” parameter can be used to trigger the Buffer Overflow vulnerability.
 
-**![](images/Screen-Shot-2021-02-26-at-8.29.02-PM.png)**
+![](/images/Screen-Shot-2021-02-26-at-8.29.02-PM.png)
 
 - The application crashed after an attack data was sent where we were able to control **$PC, $A2**, some registers as well as content on the stack (See below)
 
-![](images/Screen-Shot-2021-02-26-at-8.30.06-PM.png)
+![](/images/Screen-Shot-2021-02-26-at-8.30.06-PM.png)
 
 - More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the **“$a2”** register which is executable in the context of the stack segment. 
 - In fact, if we can control the **“$PC”** register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.
 
-![](images/Screen-Shot-2021-02-26-at-8.31.26-PM.png)
+![](/images/Screen-Shot-2021-02-26-at-8.31.26-PM.png)
 
 - We managed to use gadget “**move $t9, $a2 ; jalr $t9**” in **/lib/libuClibc-0.9.30.so** (ASLR is disabled) to control $PC register to point to $a2 register (part of cookie value)(See below)
 
-![](images/Screen-Shot-2021-02-26-at-8.32.33-PM.png)
+![](/images/Screen-Shot-2021-02-26-at-8.32.33-PM.png)
 
 ### _**III. IMPACT**_
 
 - When a memory buffer overflow occurs and data is written outside the buffer, the running program may become unstable, crash or return corrupt information. The overwritten parts of memory may have contained other important data for the running application which is now overwritten and not available to the program anymore. Buffer overflows can even run other (malicious) programs or commands and result in arbitrary code execution
 - Proof of Concept:
 
-![](images/Screen-Shot-2021-02-26-at-8.34.40-PM.png)
+![](/images/Screen-Shot-2021-02-26-at-8.34.40-PM.png)
 
 ### _**VI. DISCLOSURE TIMELINE**_
 
