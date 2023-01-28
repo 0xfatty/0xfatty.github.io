@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-28T15:28:17-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-01-26T23:29:23-06:00</published><updated>2023-01-26T23:29:23-06:00</updated><id>http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-28T15:39:28-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-01-26T23:29:23-06:00</published><updated>2023-01-26T23:29:23-06:00</updated><id>http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/01/26/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;p&gt;Jekyll requires blog post files to be named according to the following format:&lt;/p&gt;
 
@@ -523,26 +523,26 @@ Count += 1
   &lt;li&gt;We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/bof.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/BOF.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;The application crashed after an attack data was sent where we were able to control &lt;strong&gt;$PC, $S4&lt;/strong&gt;, some registers as well as content on the &lt;strong&gt;heap and stack&lt;/strong&gt; (See below)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/bof1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/bof1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the &lt;strong&gt;“$SP”&lt;/strong&gt; register which is executable in the context of the stack segment.&lt;/li&gt;
   &lt;li&gt;In fact, if we can control the &lt;strong&gt;“$PC”&lt;/strong&gt; register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/bof2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/bof2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;We managed to use 2 gadgets: “&lt;em&gt;&lt;strong&gt;addiu $a3, $sp, 0x28 ; jalr $t9&lt;/strong&gt;&lt;/em&gt;” and “&lt;em&gt;&lt;strong&gt;move $t9, $a3 ; jalr $t9&lt;/strong&gt;&lt;/em&gt;” in &lt;strong&gt;/lib/libuClibc-0.9.30.so&lt;/strong&gt; (ASLR is disabled) to control &lt;strong&gt;$A3&lt;/strong&gt; point to stack (part of post data), then control &lt;strong&gt;$PC&lt;/strong&gt; point to &lt;strong&gt;$A3&lt;/strong&gt; register (See below)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/bof3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/bof3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;iii-impact&quot;&gt;&lt;em&gt;&lt;strong&gt;III. IMPACT&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
 
@@ -551,7 +551,7 @@ Count += 1
   &lt;li&gt;Proof of Concept:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/poc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/poc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;vi-disclosure-timeline&quot;&gt;&lt;em&gt;&lt;strong&gt;VI. DISCLOSURE TIMELINE&lt;/strong&gt;&lt;/em&gt;&lt;/h3&gt;
 

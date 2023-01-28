@@ -347,26 +347,26 @@
   <li>We were able to build a test environment for this vulnerability (See below). Additionally, many parameters can be used to trigger the Buffer Overflow vulnerability.</li>
 </ul>
 
-<p><img src="images/bof.png" alt="" /></p>
+<p><img src="/images/BOF.png" alt="" /></p>
 
 <ul>
   <li>The application crashed after an attack data was sent where we were able to control <strong>$PC, $S4</strong>, some registers as well as content on the <strong>heap and stack</strong> (See below)</li>
 </ul>
 
-<p><img src="images/bof1.png" alt="" /></p>
+<p><img src="/images/bof1.png" alt="" /></p>
 
 <ul>
   <li>More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the <strong>“$SP”</strong> register which is executable in the context of the stack segment.</li>
   <li>In fact, if we can control the <strong>“$PC”</strong> register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.</li>
 </ul>
 
-<p><img src="images/bof2.png" alt="" /></p>
+<p><img src="/images/bof2.png" alt="" /></p>
 
 <ul>
   <li>We managed to use 2 gadgets: “<em><strong>addiu $a3, $sp, 0x28 ; jalr $t9</strong></em>” and “<em><strong>move $t9, $a3 ; jalr $t9</strong></em>” in <strong>/lib/libuClibc-0.9.30.so</strong> (ASLR is disabled) to control <strong>$A3</strong> point to stack (part of post data), then control <strong>$PC</strong> point to <strong>$A3</strong> register (See below)</li>
 </ul>
 
-<p><img src="images/bof3.png" alt="" /></p>
+<p><img src="/images/bof3.png" alt="" /></p>
 
 <h3 id="iii-impact"><em><strong>III. IMPACT</strong></em></h3>
 
@@ -375,7 +375,7 @@
   <li>Proof of Concept:</li>
 </ul>
 
-<p><img src="images/poc.png" alt="" /></p>
+<p><img src="/images/poc.png" alt="" /></p>
 
 <h3 id="vi-disclosure-timeline"><em><strong>VI. DISCLOSURE TIMELINE</strong></em></h3>
 
