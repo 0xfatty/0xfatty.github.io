@@ -17,7 +17,8 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-repository: 0xfatty/iamchi.github.io.git
+
+repository: 0xfatty/0xfatty.github.io
 
 title: iam.chi
 email: research@ctrsec.io
@@ -34,6 +35,12 @@ remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 plugins:
   - jekyll-feed
   - jekyll-include-cache
+
+search: true
+
+# Reading Files
+include:
+  - _pages
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
@@ -85,3 +92,13 @@ defaults:
       comments: false
       share: true
       related: true
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+category_archive:
+  type: liquid
+  path: /categories/
