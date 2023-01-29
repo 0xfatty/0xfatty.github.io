@@ -1,5 +1,5 @@
 ---
-permalink: /about.html
+permalink: /about.md
 author_profile: true
 ---
 <h1><b>About</b></h1>
