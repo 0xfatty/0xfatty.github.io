@@ -38,13 +38,6 @@ plugins:
 
 search: true
 
-# Reading Files
-include:
-  - _pages
-
-categories_path: categories.html
-about_path: about.html
-
 # Site Author
 author:
   name             : "Chi Tran"
@@ -76,13 +69,3 @@ defaults:
       comments: false
       share: true
       related: true
-  - scope:
-      path: ""
-      type: pages
-    values:
-      layout: single
-      author_profile: true
-
-category_archive:
-  type: liquid
-  path: /categories/
