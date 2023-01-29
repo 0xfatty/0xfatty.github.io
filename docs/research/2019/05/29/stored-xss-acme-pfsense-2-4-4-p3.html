@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>CVE-2019-12347: Stored Cross-site Scripting on pfSense 2.4.4-RELEASE-p3 - iam.chi</title>
-<meta name="description" content="I. OVERVIEW">
+<meta name="description" content="Overview">
 
 
   <meta name="author" content="Chi Tran">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://localhost:4000/research/2019/05/29/stored-xss-acme-pfsense-2-4-4-p3.html">
 
 
-  <meta property="og:description" content="I. OVERVIEW">
+  <meta property="og:description" content="Overview">
 
 
 
@@ -249,7 +249,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="CVE-2019-12347: Stored Cross-site Scripting on pfSense 2.4.4-RELEASE-p3">
-    <meta itemprop="description" content="I. OVERVIEW">
+    <meta itemprop="description" content="Overview">
     <meta itemprop="datePublished" content="2019-05-29T00:00:00-05:00">
     
 
@@ -284,33 +284,31 @@
 
       <section class="page__content" itemprop="text">
         
-        <h3 id="i-overview"><em><strong>I. OVERVIEW</strong></em></h3>
-
-<p><strong>Author</strong>: <strong>Chi Tran</strong></p>
-
-<p><strong>Vendor</strong>: <strong>NetGate</strong></p>
-
-<p><strong>Product</strong>: <strong>NetGate PfSense</strong></p>
-
-<p><strong>Version: 2.4.4-RELEASE-p3</strong></p>
-
-<p><strong>CVE Reference</strong>: <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12347"><strong>CVE-2019-12347</strong></a></p>
-
-<h3 id="ii-about-pfsense"><em><strong>II. ABOUT PFSENSE</strong></em></h3>
+        <h2 id="overview">Overview</h2>
 
 <ul>
-  <li>pfSense® software is a free, open source customized distribution of FreeBSD specifically tailored for use as a firewall and router that is entirely managed via web interface. In addition to being a powerful, flexible firewalling and routing platform, it includes a long list of related features and a package system allowing further expandability without adding bloat and potential security vulnerabilities to the base distribution.</li>
+  <li>Author: Chi Tran</li>
+  <li>Vendor: NetGate</li>
+  <li>Product: NetGate PfSense</li>
+  <li>Version: 2.4.4-RELEASE-p3</li>
+  <li>CVE Reference: CVE-2019-12347</li>
 </ul>
 
-<h3 id="iii-vulnerability-details"><em><strong>III. VULNERABILITY DETAILS</strong></em></h3>
+<h2 id="about-pfsense">About PfSense</h2>
 
-<ul>
-  <li>What is ACME? The ACME Package for pfSense interfaces with Let’s Encrypt to handle the certificate generation, validation, and renewal processes. (<a href="https://docs.netgate.com/pfsense/en/latest/certificates/acme-package.html">https://docs.netgate.com/pfsense/en/latest/certificates/acme-package.html</a>)</li>
-  <li><strong>Stored-XSS Vulnerability</strong> occurs due to an input validation error which allows attackers inject payload into <strong>“Name”</strong> and <strong>“Description”</strong> field via <strong>acme_accountkeys_edit.php</strong> action</li>
-  <li><strong>MISC</strong>: <a href="https://redmine.pfsense.org/issues/9554">https://redmine.pfsense.org/issues/9554</a></li>
-  <li><strong>Cause:</strong> The <strong>‘</strong><strong>acme_accountkey.php’</strong> script does not properly filter HTML code from user-supplied input in the <strong>“Name” and “Description”</strong> parameters before displaying the input. A remote user can create a specially crafted URL that, when loaded by a target user, will cause arbitrary scripting code to be executed by the target user’s browser. The code will originate from the site running the Acme v0.5.7_1 . As a result, the code will be able to access the target user’s cookies (including authentication cookies), if any, associated with the site, access data recently submitted by the target user via web form to the site, or take actions on the site acting as the target user.</li>
-  <li><strong>Code audit</strong>:</li>
-</ul>
+<p>pfSense® software is a free, open source customized distribution of FreeBSD specifically tailored for use as a firewall and router that is entirely managed via web interface. In addition to being a powerful, flexible firewalling and routing platform, it includes a long list of related features and a package system allowing further expandability without adding bloat and potential security vulnerabilities to the base distribution.</p>
+
+<h2 id="vulnerability-detail">Vulnerability Detail</h2>
+
+<p>What is ACME? The ACME Package for pfSense interfaces with Let’s Encrypt to handle the certificate generation, validation, and renewal processes. (<a href="https://docs.netgate.com/pfsense/en/latest/certificates/acme-package.html">https://docs.netgate.com/pfsense/en/latest/certificates/acme-package.html</a>)</p>
+
+<p><strong>Stored-XSS Vulnerability</strong> occurs due to an input validation error which allows attackers inject payload into <code class="language-plaintext highlighter-rouge">Name</code> and <code class="language-plaintext highlighter-rouge">Description</code> field via <code class="language-plaintext highlighter-rouge">acme_accountkeys_edit.php</code> action</p>
+
+<p><strong>MISC</strong>: <a href="https://redmine.pfsense.org/issues/9554">https://redmine.pfsense.org/issues/9554</a></p>
+
+<p><strong>Cause:</strong> The <code class="language-plaintext highlighter-rouge">acme_accountkey.php</code> script does not properly filter HTML code from user-supplied input in the <code class="language-plaintext highlighter-rouge">Name</code> and <code class="language-plaintext highlighter-rouge">Description</code> parameters before displaying the input. A remote user can create a specially crafted URL that, when loaded by a target user, will cause arbitrary scripting code to be executed by the target user’s browser. The code will originate from the site running the Acme v0.5.7_1 . As a result, the code will be able to access the target user’s cookies (including authentication cookies), if any, associated with the site, access data recently submitted by the target user via web form to the site, or take actions on the site acting as the target user.</p>
+
+<p><strong>Code audit</strong>:</p>
 
 <p><img src="/images/codeaudit.png" alt="" /></p>
 
@@ -322,30 +320,25 @@
 
 <p><img src="/images/ACME1.png" alt="" /></p>
 
-<p>2 - Input the following payload into “Name” or “Description” field:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"&gt;&lt;svg/onload=alert(1)&gt;
-</code></pre></div></div>
+<p>2 - Input the following payload into <code class="language-plaintext highlighter-rouge">Name</code> or <code class="language-plaintext highlighter-rouge">Description</code> field:</p>
+
+<p><code class="language-plaintext highlighter-rouge">"&gt;&lt;svg/onload=alert(1)&gt;</code></p>
+
 <p><img src="/images/Stored-XSS.png" alt="" /></p>
 
-<h3 id="iv-impact"><em><strong>IV. IMPACT</strong></em></h3>
+<h2 id="impact">Impact</h2>
 
-<ul>
-  <li>Stored-XSS attack could be used to perform several attack purposes such as session hijacking, client browser corruption, etc. Victim retrieves the malicious script from the server when it requests the stored information.</li>
-</ul>
+<p>Stored-XSS attack could be used to perform several attack purposes such as session hijacking, client browser corruption, etc. Victim retrieves the malicious script from the server when it requests the stored information.</p>
 
-<h3 id="v-remediation"><em><strong>V. REMEDIATION</strong></em></h3>
+<h2 id="remediation">Remediation</h2>
 
-<ul>
-  <li><a href="https://github.com/pfsense/FreeBSD-ports/commit/504909564079e540689dbdbed3a579483c614275">https://github.com/pfsense/FreeBSD-ports/commit/504909564079e540689dbdbed3a579483c614275</a></li>
-</ul>
+<p><a href="https://github.com/pfsense/FreeBSD-ports/commit/504909564079e540689dbdbed3a579483c614275">https://github.com/pfsense/FreeBSD-ports/commit/504909564079e540689dbdbed3a579483c614275</a></p>
 
-<h3 id="vi-report-timeline"><em><strong>VI. REPORT TIMELINE</strong></em></h3>
+<h2 id="report-timeline">Report Timeline</h2>
 
-<ul>
-  <li>05.26.2019 - Bug reported &amp; Vendor confirmed</li>
-  <li>05.27.2019 - CVE ID Assigned</li>
-  <li>05.28.2019 - Vendor released a fix</li>
-</ul>
+<p>05.26.2019 - Bug reported &amp; Vendor confirmed<br />
+05.27.2019 - CVE ID Assigned<br />
+05.28.2019 - Vendor released a fix</p>
 
         
       </section>
@@ -376,7 +369,7 @@
       
   <nav class="pagination">
     
-      <a href="/security-research/2019/05/29/cve-2019-12584-12585-command-injection-vulnerability-on-pfsense-2-4-4-release-p3.html" class="pagination--pager" title="CVE-2019-[12584-12585] : Command Injection Vulnerability on pfSense 2.4.4-RELEASE-p3
+      <a href="/research/2019/05/29/cve-2019-12584-12585-command-injection-vulnerability-on-pfsense-2-4-4-release-p3.html" class="pagination--pager" title="CVE-2019-[12584-12585] : Command Injection Vulnerability on pfSense 2.4.4-RELEASE-p3
 ">Previous</a>
     
     
@@ -395,45 +388,6 @@
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
         
           
 
@@ -551,7 +505,48 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+    <p class="archive__item-excerpt" itemprop="description">Vulnerability Summary
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
 
 </p>
   </article>

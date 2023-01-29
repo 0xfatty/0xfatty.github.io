@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension - iam.chi</title>
-<meta name="description" content="I. OVERVIEW">
+<meta name="description" content="Overview">
 
 
   <meta name="author" content="Chi Tran">
@@ -23,10 +23,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="iam.chi">
 <meta property="og:title" content="CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension">
-<meta property="og:url" content="http://localhost:4000/security-research/2019/03/25/cmsmadesimple-xss-filepicker.html">
+<meta property="og:url" content="http://localhost:4000/research/2019/03/25/cmsmadesimple-xss-filepicker.html">
 
 
-  <meta property="og:description" content="I. OVERVIEW">
+  <meta property="og:description" content="Overview">
 
 
 
@@ -41,7 +41,7 @@
 
 
 
-<link rel="canonical" href="http://localhost:4000/security-research/2019/03/25/cmsmadesimple-xss-filepicker.html">
+<link rel="canonical" href="http://localhost:4000/research/2019/03/25/cmsmadesimple-xss-filepicker.html">
 
 
 
@@ -249,7 +249,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension">
-    <meta itemprop="description" content="I. OVERVIEW">
+    <meta itemprop="description" content="Overview">
     <meta itemprop="datePublished" content="2019-03-25T00:00:00-05:00">
     
 
@@ -284,64 +284,46 @@
 
       <section class="page__content" itemprop="text">
         
-        <h3 id="i-overview"><em><strong>I. OVERVIEW</strong></em></h3>
-
-<p><strong>Author</strong>: <strong>Chi Tran of Southern Methodist University</strong></p>
-
-<p><strong>Vendor</strong>: CMS Made Simple™</p>
-
-<p><strong>Product</strong>: CMS Made Simple™ 2.2.10 “Spuzzum”</p>
-
-<p><strong>CVE Reference</strong>: <strong><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-10017">CVE-2019-10017</a></strong></p>
-
-<p><strong>Original Entry Date</strong>: March 24, 2019</p>
-
-<p><strong>Affected Version(s): 2.2.10</strong></p>
-
-<p> </p>
-
-<h3 id="ii-vulnerability-details"><em><strong>II. VULNERABILITY DETAILS</strong></em></h3>
+        <h2 id="overview">Overview</h2>
 
 <ul>
-  <li><strong>Cause:</strong> The <strong>‘moduleinterface.php’</strong> uploader class script does not properly filter HTML code from user-supplied input in the ‘Name’ field before listing the Profile. A remote authenticated user can create a specially crafted an malicious entry that, when loaded by a target users, will cause arbitrary scripting code to be executed by the target user’s browser. The code will originate from the site running the CMS Made Simple software and will run in the security context of that site. As a result, the code will be able to access the target user’s cookies (including authentication cookies), if any.</li>
+  <li>Author: Chi Tran</li>
+  <li>Vendor: CMS Made Simple</li>
+  <li>Product: CMS Made Simple™ 2.2.10 “Spuzzum”</li>
+  <li>CVE Reference: <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-10017">CVE-2019-10017</a></li>
+  <li>Original Entry Date: March 24, 2019</li>
+  <li>Affected Version(s): 2.2.10</li>
 </ul>
 
-<p> </p>
+<h2 id="vulnerability-details">Vulnerability Details</h2>
 
-<ul>
-  <li><strong>Proof of Concepts:</strong></li>
-</ul>
+<p><strong>Cause:</strong> The <code class="language-plaintext highlighter-rouge">moduleinterface.php</code> uploader class script does not properly filter HTML code from user-supplied input in the <code class="language-plaintext highlighter-rouge">Name</code> field before listing the Profile. A remote authenticated user can create a specially crafted an malicious entry that, when loaded by a target users, will cause arbitrary scripting code to be executed by the target user’s browser. The code will originate from the site running the CMS Made Simple software and will run in the security context of that site. As a result, the code will be able to access the target user’s cookies (including authentication cookies), if any.</p>
 
-<p>1 - Navigate to Admin Dashboard -&gt; Click on Extension -&gt; File Picker
-URL: http://site.com/web/admin/moduleinterface.php?mact=FilePicker,m1_,defaultadmin,0</p>
+<p><strong>Proof of Concepts:</strong></p>
 
-<p><img src="images/CVE1.png" alt="" /></p>
+<p>1 - Navigate to Admin Dashboard -&gt; Click on Extension -&gt; File Picker</p>
 
-<p>2 - Click on “Add a new Profile” -&gt; In “Name” field, input the following payload:</p>
+<p><code class="language-plaintext highlighter-rouge">http://site.com/web/admin/moduleinterface.php?mact=FilePicker,m1_,defaultadmin,0</code></p>
 
-<p>&lt;svg/onload=alert(“XSS”)&gt;</p>
+<p><img src="/images/CVE1.png" alt="" /></p>
 
-<p><img src="images/CVE2.png" alt="" /></p>
+<p>2 - Click on “Add a new Profile” -&gt; In <code class="language-plaintext highlighter-rouge">Name</code> field, input the following payload:</p>
 
-<p>3 - After clicking “Submit”, malicious scripts will be executed every time we refresh “File Picker” page:</p>
+<p><code class="language-plaintext highlighter-rouge">&lt;svg/onload=alert("XSS")&gt;</code></p>
 
-<p><img src="images/CVE3.png" alt="" /></p>
+<p><img src="/images/CVE2.png" alt="" /></p>
 
-<p> </p>
+<p>3 - After clicking Submit, malicious scripts will be executed every time we refresh <code class="language-plaintext highlighter-rouge">File Picker</code> page:</p>
 
-<h3 id="iii-impact"><em><strong>III. IMPACT</strong></em></h3>
+<p><img src="/images/CVE3.png" alt="" /></p>
 
-<ul>
-  <li>An attacker will be able to take over an account as well as cookies hijacking.</li>
-</ul>
+<h2 id="impact">Impact</h2>
 
-<p> </p>
+<p>An attacker will be able to take over an account as well as cookies hijacking.</p>
 
-<h3 id="iv-remediation"><em><strong>IV. REMEDIATION</strong></em></h3>
+<h2 id="remediation">Remediation</h2>
 
-<ul>
-  <li>Not yet available. The fixes should be available on the next releases.</li>
-</ul>
+<p>Not yet available. The fixes should be available on the next releases.</p>
 
         
       </section>
@@ -361,22 +343,21 @@ URL: http://site.com/web/admin/moduleinterface.php?mact=FilePicker,m1_,defaultad
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=CVE-2019-10017%3A+CMS+Made+Simple+2.2.10+XSS+via+File+Picker+Extension%20http%3A%2F%2Flocalhost%3A4000%2Fsecurity-research%2F2019%2F03%2F25%2Fcmsmadesimple-xss-filepicker.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=CVE-2019-10017%3A+CMS+Made+Simple+2.2.10+XSS+via+File+Picker+Extension%20http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2019%2F03%2F25%2Fcmsmadesimple-xss-filepicker.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsecurity-research%2F2019%2F03%2F25%2Fcmsmadesimple-xss-filepicker.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2019%2F03%2F25%2Fcmsmadesimple-xss-filepicker.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsecurity-research%2F2019%2F03%2F25%2Fcmsmadesimple-xss-filepicker.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fresearch%2F2019%2F03%2F25%2Fcmsmadesimple-xss-filepicker.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/bug-hunting/2019/03/20/bug-bounty-tips-2.html" class="pagination--pager" title="Bug Bounty Tips (2)
-">Previous</a>
+      <a href="#" class="pagination--pager disabled">Previous</a>
     
     
-      <a href="/security-research/2019/03/25/gforge-advanced-server-xss-commonsearch-php.html" class="pagination--pager" title="CVE-2019-10016: GForge Advanced Server Input validation error in ‘commonsearch.php’
+      <a href="/research/2019/03/25/gforge-advanced-server-xss-commonsearch-php.html" class="pagination--pager" title="CVE-2019-10016: GForge Advanced Server Input validation error in ‘commonsearch.php’
 ">Next</a>
     
   </nav>
@@ -391,45 +372,6 @@ URL: http://site.com/web/admin/moduleinterface.php?mact=FilePicker,m1_,defaultad
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
         
           
 
@@ -547,7 +489,48 @@ URL: http://site.com/web/admin/moduleinterface.php?mact=FilePicker,m1_,defaultad
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+    <p class="archive__item-excerpt" itemprop="description">Vulnerability Summary
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
 
 </p>
   </article>

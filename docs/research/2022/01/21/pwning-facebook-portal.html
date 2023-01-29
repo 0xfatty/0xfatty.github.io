@@ -290,7 +290,7 @@
 
 <h2 id="vulnerability-summary">Vulnerability Summary</h2>
 
-<p>The attack was conducted relying on the usage of vulnerable browser version (Chrome/92.0.4515.131). This Chromium-based webview is related to the Out-of-bounds write in V8 (CVE-2021-30632) leading a Remote Code Execution on Facebook Portal @ latest version @1.29.1</p>
+<p>The attack was conducted relying on the usage of vulnerable browser version (Chrome/92.0.4515.131). This Chromium-based webview is related to the Out-of-bounds write in V8 (<code class="language-plaintext highlighter-rouge">CVE-2021-30632</code>) leading a Remote Code Execution on Facebook Portal @ latest version @1.29.1</p>
 
 <p>Generally, whenever a device try to connect to a Wireless router that has Captive Portal Auth Mechanism, the wireless router, as part of Auth Mechanism, will send the request to a login form. Users would have to have a valid set of credential to be granted access to the Internet. This HTML login form is parsed and run by an obsolete chromium-based webview (Chrome/92.0.4515.131).</p>
 
@@ -298,41 +298,41 @@
 
 <h2 id="vulnerability-detail">Vulnerability Detail</h2>
 
-<p>Optimized code that stores global properties does not get de-optimized when the property map gets changed, leading to type confusion vulnerability. Prior to the patch, when Turbofan compiles code for storing global properties that has the <strong>kConstantType</strong> attribute (i.e. the storage type has not changed), it inserts <strong>DependOnGlobalProperty</strong> (1. below) and <strong>CheckMaps</strong> (2. below) to ensure that the property store does not change the map of the property cell:</p>
+<p>Optimized code that stores global properties does not get de-optimized when the property map gets changed, leading to type confusion vulnerability. Prior to the patch, when Turbofan compiles code for storing global properties that has the <code class="language-plaintext highlighter-rouge">kConstantType</code> attribute (i.e. the storage type has not changed), it inserts <code class="language-plaintext highlighter-rouge">DependOnGlobalProperty</code> (1. below) and <code class="language-plaintext highlighter-rouge">CheckMaps</code> (2. below) to ensure that the property store does not change the map of the property cell:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c">     <span class="k">case</span> <span class="n">PropertyCellType</span><span class="p">:</span><span class="o">:</span><span class="n">kConstantType</span><span class="o">:</span> <span class="p">{</span>
         <span class="p">...</span>
-        <span class="n">dependencies</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">DependOnGlobalProperty</span><span class="p">(</span><span class="n">property</span><span class="err">\</span><span class="n">_cell</span><span class="p">);</span>     <span class="c1">//&lt;---- 1. ... if (property\_cell\_value.IsHeapObject()) { MapRef property\_cell\_value\_map = property\_cell\_value.AsHeapObject().map(); if (property\_cell\_value\_map.is\_stable()) { dependencies()-&gt;DependOnStableMap(property\_cell\_value\_map);</span>
+        <span class="n">dependencies</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">DependOnGlobalProperty</span><span class="p">(</span><span class="n">property_cell</span><span class="p">);</span>     <span class="c1">//&lt;---- 1. ... if (property_cell_value.IsHeapObject()) { MapRef property_cell_value_map = property_cell_value.AsHeapObject().map(); if (property_cell_value_map.is_stable()) { dependencies()-&gt;DependOnStableMap(property_cell_value_map);</span>
           <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="p">...</span> <span class="c1">//&lt;----- fall through } // Check that the {value} is a HeapObject. value = effect = graph()-&gt;NewNode(simplified()-&gt;CheckHeapObject(),</span>
                                             <span class="n">value</span><span class="p">,</span> <span class="n">effect</span><span class="p">,</span> <span class="n">control</span><span class="p">);</span>
-          <span class="c1">// Check {value} map against the {property\_cell\_value} map.</span>
+          <span class="c1">// Check {value} map against the {property_cell_value} map.</span>
           <span class="n">effect</span> <span class="o">=</span> <span class="n">graph</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">NewNode</span><span class="p">(</span>                          <span class="c1">//&lt;----- 2. simplified()-&gt;CheckMaps(</span>
                   <span class="n">CheckMapsFlag</span><span class="o">::</span><span class="n">kNone</span><span class="p">,</span>
-                  <span class="n">ZoneHandleSet</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&gt;</span><span class="p">(</span><span class="n">property</span><span class="err">\</span><span class="n">_cell</span><span class="err">\</span><span class="n">_value</span><span class="err">\</span><span class="n">_map</span><span class="p">.</span><span class="n">object</span><span class="p">())),</span>
+                  <span class="n">ZoneHandleSet</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&gt;</span><span class="p">(</span><span class="n">property_cell_value_map</span><span class="p">.</span><span class="n">object</span><span class="p">())),</span>
               <span class="n">value</span><span class="p">,</span> <span class="n">effect</span><span class="p">,</span> <span class="n">control</span><span class="p">);</span></code></pre></figure>
 
-<p>However, when the map of the global property (<strong>property_cell_value_map</strong>) is changed in place after the code is compiled, the optimized code generated by the above only de-optimizes when <strong>property_cell_value_map</strong> is stable. So for example, if a function store is optimized when the map of the global property <strong>x</strong> is unstable:</p>
+<p>However, when the map of the global property (<code class="language-plaintext highlighter-rouge">property_cell_value_map</code>) is changed in place after the code is compiled, the optimized code generated by the above only de-optimizes when <code class="language-plaintext highlighter-rouge">property_cell_value_map</code> is stable. So for example, if a function store is optimized when the map of the global property <code class="language-plaintext highlighter-rouge">x</code> is unstable:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">function</span> <span class="nf">store</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="p">{</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Then an in-place change to the map of x will not de-optimize the compiled <strong>store</strong>:</p>
+<p>Then an in-place change to the map of x will not de-optimize the compiled <code class="language-plaintext highlighter-rouge">store</code>:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">x</span><span class="p">.</span><span class="n">newProp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//&lt;------ x now has new map, but the optimized store still assumed it had an old map</span></code></pre></figure>
 
-<p>This causes the map for <strong>x</strong> in the optimized <strong>store</strong> function to be inaccurate. Another function <strong>load</strong> can now be compiled to access <strong>newProp</strong> from <strong>x</strong>:</p>
+<p>This causes the map for <code class="language-plaintext highlighter-rouge">x</code> in the optimized <code class="language-plaintext highlighter-rouge">store</code> function to be inaccurate. Another function <code class="language-plaintext highlighter-rouge">load</code> can now be compiled to access <code class="language-plaintext highlighter-rouge">newProp</code> from <code class="language-plaintext highlighter-rouge">x</code>:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">function</span> <span class="nf">load</span><span class="p">()</span> <span class="p">{</span>
 <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">newProp</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>The optimized <strong>load</strong> will assume <strong>x</strong> to have a new map with <strong>newProp</strong> as a property. If the optimized <strong>store</strong> is now used to store an object with the old map back to <strong>x</strong>, the next time <strong>load</strong> is called, a type confusion will occur because load still assumes <strong>x</strong> has the new map.</p>
+<p>The optimized <code class="language-plaintext highlighter-rouge">load</code> will assume <code class="language-plaintext highlighter-rouge">x</code> to have a new map with <code class="language-plaintext highlighter-rouge">newProp</code> as a property. If the optimized <code class="language-plaintext highlighter-rouge">store</code> is now used to store an object with the old map back to <code class="language-plaintext highlighter-rouge">x</code>, the next time <code class="language-plaintext highlighter-rouge">load</code> is called, a type confusion will occur because load still assumes <code class="language-plaintext highlighter-rouge">x</code> has the new map.</p>
 
 <h2 id="vulnerability-exploitation">Vulnerability Exploitation</h2>
 
-<p>Using this bug, we can create a <strong>type confusion</strong> between 2 kinds of Javascript array. Because Javascript arrays have differently sized backing stores for different element kinds, a confusion between an <strong>SMI</strong> array (element size <strong>4</strong>) and a <strong>double</strong> array (element size <strong>8</strong>) will lead to out-of-bounds read and write in a Javascript array.</p>
+<p>Using this bug, we can create a <code class="language-plaintext highlighter-rouge">type confusion</code> between 2 kinds of Javascript array. Because Javascript arrays have differently sized backing stores for different element kinds, a confusion between an <code class="language-plaintext highlighter-rouge">SMI</code> array (element size <code class="language-plaintext highlighter-rouge">4</code>) and a <code class="language-plaintext highlighter-rouge">double</code> array (element size <code class="language-plaintext highlighter-rouge">8</code>) will lead to out-of-bounds read and write in a Javascript array.</p>
 
 <p>Below is the Proof of Concept (PoC) that triggers OOB read and write:</p>
 
@@ -341,11 +341,11 @@
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">oobRead</span><span class="p">()</span> <span class="p">{</span>
-<span class="k">return</span> <span class="err">\</span><span class="p">[</span><span class="nx">x</span><span class="err">\</span><span class="p">[</span><span class="mi">20</span><span class="err">\</span><span class="p">],</span><span class="nx">x</span><span class="err">\</span><span class="p">[</span><span class="mi">24</span><span class="err">\</span><span class="p">]</span><span class="err">\</span><span class="p">];</span>
+<span class="k">return</span> <span class="p">[</span><span class="nx">x</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span><span class="nx">x</span><span class="p">[</span><span class="mi">24</span><span class="p">]];</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">oobWrite</span><span class="p">(</span><span class="nx">addr</span><span class="p">)</span> <span class="p">{</span>
-<span class="nx">x</span><span class="err">\</span><span class="p">[</span><span class="mi">24</span><span class="err">\</span><span class="p">]</span> <span class="o">=</span> <span class="nx">addr</span><span class="p">;</span>
+<span class="nx">x</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span> <span class="o">=</span> <span class="nx">addr</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">//All have same map, SMI elements, MapA</span>
@@ -359,11 +359,11 @@
 <span class="p">...</span>
 <span class="c1">//Optimize foo</span>
 <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">19321</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">19319</span><span class="p">)</span> <span class="nx">arr2</span><span class="err">\</span><span class="p">[</span><span class="mi">0</span><span class="err">\</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="mi">19319</span><span class="p">)</span> <span class="nx">arr2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
 <span class="nx">foo</span><span class="p">(</span><span class="nx">arr1</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">x</span><span class="err">\</span><span class="p">[</span><span class="mi">0</span><span class="err">\</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
+<span class="nx">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
 
 <span class="c1">//optimize oobRead</span>
 <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">20000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -380,15 +380,14 @@
 <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="nx">oobRead</span><span class="p">();</span>
 <span class="nx">oobWrite</span><span class="p">(</span><span class="mh">0x41414141</span><span class="p">);</span></code></pre></figure>
 
-<p>When <strong>oobRead</strong> and <strong>oobWrite</strong> are optimized, <strong>x</strong> now has <strong>MapB</strong>, which is a stable map with <strong>HOLEY_DOUBLE_ELEMENTS</strong>. This means that, for example, when writing to the 24th element (<strong>x[24]</strong>) in <strong>oobWrite</strong>, the offset used by the optimized code to access elements will be calculated with double element width, which is 8, so an offset of <strong>8 * 24</strong> is used. However, when <strong>foo(arr)</strong> is used to set <strong>x</strong> back to <strong>arr</strong>, the element store for arr is of type <strong>HOLEY_SMI_ELEMENTS</strong>, which has a width of 4, meaning that the backing store is only <strong>4 * 30</strong> bytes long, which is way smaller than <strong>8 * 24</strong>. A write to the offset <strong>8 * 24</strong> thus causes an out-of-bounds write in the backing store.</p>
+<p>When <code class="language-plaintext highlighter-rouge">oobRead</code> and <code class="language-plaintext highlighter-rouge">oobWrite</code> are optimized, <code class="language-plaintext highlighter-rouge">x</code> now has <code class="language-plaintext highlighter-rouge">MapB</code>, which is a stable map with <code class="language-plaintext highlighter-rouge">HOLEY_DOUBLE_ELEMENTS</code>. This means that, for example, when writing to the 24th element (<code class="language-plaintext highlighter-rouge">x[24]</code>) in <code class="language-plaintext highlighter-rouge">oobWrite</code>, the offset used by the optimized code to access elements will be calculated with double element width, which is 8, so an offset of <code class="language-plaintext highlighter-rouge">8 * 24</code> is used. However, when <code class="language-plaintext highlighter-rouge">foo(arr)</code> is used to set <code class="language-plaintext highlighter-rouge">x</code> back to <code class="language-plaintext highlighter-rouge">arr</code>, the element store for arr is of type <code class="language-plaintext highlighter-rouge">HOLEY_SMI_ELEMENTS</code>, which has a width of 4, meaning that the backing store is only <code class="language-plaintext highlighter-rouge">4 * 30</code> bytes long, which is way smaller than <code class="language-plaintext highlighter-rouge">8 * 24</code>. A write to the offset <code class="language-plaintext highlighter-rouge">8 * 24</code> thus causes an out-of-bounds write in the backing store.</p>
 
-<p>Using this <strong>OOB</strong> read/write on JS array, we can get an arbitrary read/write primitive. The final step in obtaining code execution is to make use of the fact that <strong>wasm</strong> (WebAssembly) stores its compiled code in an RWX region and the address of the compiled code is stored as a compressed pointer in the <strong>WebAssembly.Instance</strong> object. Then, by using the arbitrary absolute address write primitive, we were able write shell code to this region and have it executed when we kicked off the compiled <strong>wasm</strong> code.</p>
+<p>Using this <code class="language-plaintext highlighter-rouge">OOB</code> read/write on JS array, we can get an arbitrary read/write primitive. The final step in obtaining code execution is to make use of the fact that <code class="language-plaintext highlighter-rouge">wasm</code> (WebAssembly) stores its compiled code in an RWX region and the address of the compiled code is stored as a compressed pointer in the <code class="language-plaintext highlighter-rouge">WebAssembly.Instance</code> object. Then, by using the arbitrary absolute address write primitive, we were able write shell code to this region and have it executed when we kicked off the compiled <code class="language-plaintext highlighter-rouge">wasm</code> code.</p>
 
 <h2 id="timeline">Timeline</h2>
 
-<p>10/29/2021: Exploit submitted to Pwn2Own Competition</p>
-
-<p>11/01/2021: Submission got rejected due to the usage of n-day</p>
+<p>10/29/2021: Exploit submitted to Pwn2Own Competition<br />
+11/01/2021: Submission got rejected due to the usage of n-day</p>
 
         
       </section>
@@ -438,45 +437,6 @@
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
         
           
 
@@ -553,7 +513,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+    <p class="archive__item-excerpt" itemprop="description">Vulnerability Summary
 
 </p>
   </article>
@@ -569,7 +529,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/research/2021/09/17/weak-rsa-in-realworld-vietnamese.html" rel="permalink">[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào
+        <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
 </a>
       
     </h2>
@@ -587,14 +547,55 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          2 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. TÓM TẮT
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html" rel="permalink">[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
 
 </p>
   </article>

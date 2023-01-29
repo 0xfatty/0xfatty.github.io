@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>[English] How I faked tons of COVID passes — Weak Key Cryptography in real world - iam.chi</title>
-<meta name="description" content="I. SUMMARY">
+<meta name="description" content="Vulnerability Summary">
 
 
   <meta name="author" content="Chi Tran">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://localhost:4000/research/2021/09/29/weak-key-cryptography-in-real-world-english.html">
 
 
-  <meta property="og:description" content="I. SUMMARY">
+  <meta property="og:description" content="Vulnerability Summary">
 
 
 
@@ -249,7 +249,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="[English] How I faked tons of COVID passes — Weak Key Cryptography in real world">
-    <meta itemprop="description" content="I. SUMMARY">
+    <meta itemprop="description" content="Vulnerability Summary">
     <meta itemprop="datePublished" content="2021-09-29T00:00:00-05:00">
     
 
@@ -284,40 +284,35 @@
 
       <section class="page__content" itemprop="text">
         
-        <h3 id="i-summary">I. SUMMARY</h3>
+        <h2 id="vulnerability-summary">Vulnerability Summary</h2>
 
 <p>Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.</p>
 
-<h3 id="ii-analysis">II. ANALYSIS</h3>
+<h2 id="vulnerability-analysis">Vulnerability Analysis</h2>
+<p><strong><em>1. QR Data:</em></strong></p>
 
-<p><strong>1.</strong> <strong>QR DATA</strong> Through news channels and social medias, we were able to find a sample COVID pass as below:</p>
+<p>Through news channels and social medias, we were able to find a sample COVID pass as below:</p>
 
-<p>1 - Vehicle type</p>
+<p>1 - Vehicle type<br />
+2 - License plate<br />
+3 - Seat #<br />
+4 - Vehicle operator<br />
+5 - Citizen ID<br />
+6 - Authorized zone<br />
+7 - Valid from/to (date)<br />
+8 - Valid from/to (time)</p>
 
-<p>2 - License plate</p>
-
-<p>3 - Seat #</p>
-
-<p>4 - Vehicle operator</p>
-
-<p>5 - Citizen ID</p>
-
-<p>6 - Authorized zone</p>
-
-<p>7 - Valid from/to (date)</p>
-
-<p>8 - Valid from/to (time)</p>
-
-<p><img src="/images/1.jpg" alt="" /> Source: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html">https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html</a></p>
+<p><img src="/images/1.jpg" alt="" /><br />
+Source: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html">https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html</a></p>
 
 <p>As the QR code was not hidden, we were able to decode its information:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4\_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 </code></pre></div></div>
-<p>The decoded string above contains information about the requester, zone ID/passes provider (i.e. <strong>10505</strong>). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.</p>
+<p>The decoded string above contains information about the requester, zone ID/passes provider (i.e. <code class="language-plaintext highlighter-rouge">10505</code>). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.</p>
 
-<p><strong>2.</strong> <strong>VALIDATION METHOD</strong></p>
+<p><strong><em>2. Validation</em></strong></p>
 
-<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named “<strong>Kiểm soát đi đường</strong>” a.k.a “<strong>Vehicle Operating Control</strong>” (Translated as best as I can)</p>
+<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named <code class="language-plaintext highlighter-rouge">Kiểm soát đi đường</code> a.k.a <code class="language-plaintext highlighter-rouge">Vehicle Operating Control</code> in English.</p>
 
 <blockquote>
   <p><strong><em>Download link (now removed)</em></strong>: <a href="https://play.google.com/store/apps/details?id=com.qrca">https://play.google.com/store/apps/details?id=com.qrca</a></p>
@@ -331,15 +326,17 @@
 
 <p>Not validating the data on server side means one thing: If the Private Key from one (1) zone was leaked, anyone would be able to generate valid passes.</p>
 
-<p><strong>3.</strong> <strong>DEEPER DIVE INTO THE WORKFLOW</strong> The original data was retrieved from the QR:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4\_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+<p><strong><em>3. Deep dive into the workflow</em></strong></p>
+
+<p>The original data was retrieved from the QR:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 </code></pre></div></div>
-<p>This contains: “<strong>10505</strong>”” - zone ID/passes provider, named “<strong>Police Department</strong>”.</p>
+<p>This contains: <code class="language-plaintext highlighter-rouge">10505</code> - zone ID/passes provider, named <code class="language-plaintext highlighter-rouge">Police Department</code>.</p>
 
 <p>Once the application received the QR data, it would take the data string from zone ID to the end, then do the following steps:</p>
 
 <ul>
-  <li>Removing <strong>“|”,</strong></li>
+  <li>Removing <code class="language-plaintext highlighter-rouge">|</code></li>
   <li>Removing special characters</li>
   <li>English Alphabetized Vietnamese chars (i.e.: ê -&gt; e)</li>
   <li>Lowercase transformation</li>
@@ -347,24 +344,22 @@
 
 <p><img src="/images/3.jpg" alt="" /></p>
 
-<p>Input string process</p>
+<p><strong><em>4. Processing string input</em></strong></p>
 
 <p>The data became:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**10505**3060907090809090910091109120913091409150916091709180919092009**4\_phongcanhsatgiaothong**02439424451**29g139189**vung1**nguyenanhngoc**09002000
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**10505**3060907090809090910091109120913091409150916091709180919092009**4_phongcanhsatgiaothong**02439424451**29g139189**vung1**nguyenanhngoc**09002000
 </code></pre></div></div>
-<p>Next, the data was hashed using a custom hashing algorithm developed by <strong>lachongtech.</strong> The algorithm pseudocode is below:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**Hashcode** = 0
+<p>Next, the data was hashed using a custom hashing algorithm developed by <code class="language-plaintext highlighter-rouge">lachongtech</code>. The algorithm pseudocode is below:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hashcode = 0
 Count = 0
 For char in String:
 Count += 1
-**Hashcode** += char \* Count
-**Hashcode** = (1988 \* **Hashcode** — 1910) / 2
+Hashcode += char * Count
+Hashcode = (1988 * Hashcode — 1910) / 2
 </code></pre></div></div>
-<p>Once the data went through above hashing process, it then became a new format: “<strong>682673275</strong>”</p>
+<p>Once the data went through above hashing process, it then became a new format: <code class="language-plaintext highlighter-rouge">682673275</code></p>
 
-<ul>
-  <li>This is the first cons in the application workflow. The fact that the above hashcode was quite easy to reproduce led to possible Collision attacks, meaning there could be other strings having the same hashcode.</li>
-</ul>
+<p>This is the first cons in the application workflow. The fact that the above hashcode was quite easy to reproduce led to possible Collision attacks, meaning there could be other strings having the same hashcode.</p>
 
 <p><img src="/images/4.jpg" alt="" /></p>
 
@@ -386,18 +381,18 @@ Count += 1
 
 <p>Although the code was provided, we took around 2 days to get this running since the code was written back in 2015. Some libraries are not currently supported forced us to make several changes on the code. The project was then running smoothly.</p>
 
-<h3 id="iii-state-of-the-art">III. STATE OF THE ART</h3>
+<h2 id="state-of-the-art">State of the Art</h2>
 
 <p>The most interesting thing, I believe, not about the bug, but about setting up cracking environment.</p>
 
 <h3 id="1-setting-up-the-environment">1. Setting up the environment</h3>
 
-<ul>
-  <li>As I mentioned above, the code was written back in 2015 by a group of Professors and Researchers from the University of Pennsylvania. A 7 years old tool, in fact, is no longer compatible with current libraries and software versions. Hence, it took time to setup and dry-run. Most of the time we spent on debugging, finding compatible libraries versions.</li>
-  <li>The result came back great as we were able to crack a sample 100 chars length RSA.</li>
-</ul>
+<p>As I mentioned above, the code was written back in 2015 by a group of Professors and Researchers from the University of Pennsylvania. A 7 years old tool, in fact, is no longer compatible with current libraries and software versions. Hence, it took time to setup and dry-run. Most of the time we spent on debugging, finding compatible libraries versions.</p>
 
-<p><img src="/images/6.jpg" alt="" /> Setting up EC2 instances</p>
+<p>The result came back great as we were able to crack a sample 100 chars length RSA.</p>
+
+<p><img src="/images/6.jpg" alt="" /><br />
+Setting up EC2 instances</p>
 
 <h3 id="2-cracking-the-real-key">2. Cracking the real key</h3>
 
@@ -421,15 +416,13 @@ Count += 1
 
 <p>Once we got the key factors, we were able to calculate the original Private Key and generate several valid COVID passes.</p>
 
-<h3 id="iv-demo">IV. DEMO</h3>
+<h2 id="demo">Demo</h2>
 
-<h3><img src="/images/10.png" alt="" /></h3>
+<p><img src="/images/10.png" alt="" />  <br />
+Generating QR Code</p>
 
-<p>Generating QR Code</p>
-
-<p><img src="/images/11.png" alt="" /></p>
-
-<p>Valid COVID pass</p>
+<p><img src="/images/11.png" alt="" /><br />
+Valid COVID pass</p>
 
         
       </section>
@@ -460,7 +453,7 @@ Count += 1
       
   <nav class="pagination">
     
-      <a href="/research/2021/09/17/weak-rsa-in-realworld-vietnamese.html" class="pagination--pager" title="[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào
+      <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" class="pagination--pager" title="[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
 ">Previous</a>
     
     
@@ -479,45 +472,6 @@ Count += 1
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
         
           
 
@@ -610,7 +564,7 @@ Count += 1
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/research/2021/09/17/weak-rsa-in-realworld-vietnamese.html" rel="permalink">[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào
+        <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
 </a>
       
     </h2>
@@ -628,14 +582,55 @@ Count += 1
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          2 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. TÓM TẮT
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html" rel="permalink">[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
 
 </p>
   </article>

