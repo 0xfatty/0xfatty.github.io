@@ -37,6 +37,9 @@ plugins:
   - jekyll-include-cache
 
 search: true
+# Reading Files
+include:
+  - _pages
 
 # Site Author
 author:
@@ -69,3 +72,19 @@ defaults:
       comments: false
       share: true
       related: true
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+      read_time: false
+      comments: false
+
+
+
+
+
+
+
+
