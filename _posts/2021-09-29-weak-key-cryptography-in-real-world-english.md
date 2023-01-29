@@ -2,7 +2,7 @@
 title: "[English] How I faked tons of COVID passes — Weak Key Cryptography in real world"
 date: "2021-09-29"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Vulnerability Summary
 

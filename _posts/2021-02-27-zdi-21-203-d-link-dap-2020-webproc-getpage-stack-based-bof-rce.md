@@ -2,7 +2,7 @@
 title: "[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE"
 date: "2021-02-27"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Overview
 

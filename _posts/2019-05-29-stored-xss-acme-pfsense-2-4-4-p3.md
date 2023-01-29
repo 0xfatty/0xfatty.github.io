@@ -2,7 +2,7 @@
 title: "CVE-2019-12347: Stored Cross-site Scripting on pfSense 2.4.4-RELEASE-p3"
 date: "2019-05-29"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Overview
 

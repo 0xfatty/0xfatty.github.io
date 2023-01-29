@@ -2,7 +2,7 @@
 title: "Arbitrary Command Execution in latest OrangeHRM platform"
 date: "2019-06-12"
 categories: 
-  - "research"
+  - "Research"
 ---
 
 ## Overview

@@ -2,7 +2,7 @@
 title: "CVE-2019-10016: GForge Advanced Server Input validation error in 'commonsearch.php'"
 date: "2019-03-25"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Overview
 

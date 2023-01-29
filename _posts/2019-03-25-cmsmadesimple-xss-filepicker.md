@@ -2,7 +2,7 @@
 title: "CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension"
 date: "2019-03-25"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Overview
 

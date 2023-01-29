@@ -2,7 +2,7 @@
 title: "Pwning the Samsung TV"
 date: "2022-01-28"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Overview
 

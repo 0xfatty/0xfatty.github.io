@@ -1,8 +1,6 @@
 ---
-layout: single
 permalink: /about
 title: About
-author_profile: true
 ---
 Yooo! What’s up? If you are reading this, thank you for checking this blog out. Let me introduce myself a bit and that would be great if we can become friends.
 

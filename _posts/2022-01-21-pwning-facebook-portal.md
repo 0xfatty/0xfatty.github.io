@@ -2,7 +2,7 @@
 title: "Pwning the Facebook Portal"
 date: "2022-01-21"
 categories: 
-  - "research"
+  - "Research"
 ---
 ## Overview
 
