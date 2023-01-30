@@ -65,10 +65,10 @@ var store = [{
         "url": "/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html",
         "teaser": null
       },{
-        "title": "[English] How I faked tons of COVID passes — Weak Key Cryptography in real world",
+        "title": "How I faked tons of COVID passes — Weak Key Cryptography in real world",
         "excerpt":"Vulnerability Summary Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes. Vulnerability Analysis 1. QR Data: Through news channels and social medias,...","categories": ["Research"],
         "tags": [],
-        "url": "/research/2021/09/29/weak-key-cryptography-in-real-world-english.html",
+        "url": "/research/2021/09/29/weak-key-cryptography-in-real-world.html",
         "teaser": null
       },{
         "title": "Pwning the Facebook Portal",
