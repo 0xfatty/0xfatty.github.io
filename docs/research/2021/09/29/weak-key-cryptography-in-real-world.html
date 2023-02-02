@@ -330,7 +330,7 @@
 
 <p><strong><em>2. Validation</em></strong></p>
 
-<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named <code class="language-plaintext highlighter-rouge">Vehicle Operating Control</code> in English which had been removed after the research.</p>
+<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named <code class="language-plaintext highlighter-rouge">Vehicle Operating Control</code> which had been removed after the research.</p>
 
 <p>Let’s go through the application workflow:</p>
 
@@ -361,9 +361,9 @@
 <p><strong><em>4. Processing string input</em></strong></p>
 
 <p>The data became:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**10505**3060907090809090910091109120913091409150916091709180919092009**4_phongcanhsatgiaothong**02439424451**29g139189**vung1**nguyenanhngoc**09002000
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**10505**3060907090809090910091109120913091409150916091709180919092009**4_localauthority**02439424451**29g139189**vung1**nguyenanhngoc**09002000
 </code></pre></div></div>
-<p>Next, the data was hashed using a custom hashing algorithm developed by <code class="language-plaintext highlighter-rouge">lachongtech</code>. The algorithm pseudocode is below:</p>
+<p>Next, the data was hashed using a custom hashing algorithm. The algorithm pseudocode is below:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hashcode = 0
 Count = 0
 For char in String:

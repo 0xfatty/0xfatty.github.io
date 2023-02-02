@@ -32,7 +32,7 @@ The decoded string above contains information about the requester, zone ID/passe
 
 ***2. Validation***
 
-It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named `Vehicle Operating Control` in English which had been removed after the research.
+It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named `Vehicle Operating Control` which had been removed after the research.
 
 Let's go through the application workflow:
 
@@ -63,9 +63,9 @@ Once the application received the QR data, it would take the data string from zo
 
 The data became:
 ```
-**10505**3060907090809090910091109120913091409150916091709180919092009**4_phongcanhsatgiaothong**02439424451**29g139189**vung1**nguyenanhngoc**09002000
+**10505**3060907090809090910091109120913091409150916091709180919092009**4_localauthority**02439424451**29g139189**vung1**nguyenanhngoc**09002000
 ```
-Next, the data was hashed using a custom hashing algorithm developed by `lachongtech`. The algorithm pseudocode is below:
+Next, the data was hashed using a custom hashing algorithm. The algorithm pseudocode is below:
 ```
 Hashcode = 0
 Count = 0
