@@ -128,8 +128,3 @@ We spent ~$250 USD to crack 2 RSA 512-bits keys in 9 hours (+ sample key - 100 c
 ### 4. Generating QR code using found Private Key
 
 Once we got the key factors, we were able to calculate the original Private Key and generate several valid COVID passes.
-
-## Demo
-
-![](/images/10.png)    
-Generating QR Code
