@@ -305,7 +305,7 @@
         
         <h2 id="vulnerability-summary">Vulnerability Summary</h2>
 
-<p>Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.</p>
+<p>A Non-US Goverment agency was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.</p>
 
 <h2 id="vulnerability-analysis">Vulnerability Analysis</h2>
 <p><strong><em>1. QR Data:</em></strong></p>
@@ -321,21 +321,16 @@
 7 - Valid from/to (date)<br />
 8 - Valid from/to (time)</p>
 
-<p><img src="/images/1.jpg" alt="" /><br />
-Source: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html">https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html</a></p>
+<p><img src="/images/1.jpg" alt="" /></p>
 
 <p>As the QR code was not hidden, we were able to decode its information:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_[LOCAL_NON_US_GOVENMENT_AGENCY_NAME_]]|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 </code></pre></div></div>
 <p>The decoded string above contains information about the requester, zone ID/passes provider (i.e. <code class="language-plaintext highlighter-rouge">10505</code>). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.</p>
 
 <p><strong><em>2. Validation</em></strong></p>
 
-<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named <code class="language-plaintext highlighter-rouge">Kiểm soát đi đường</code> a.k.a <code class="language-plaintext highlighter-rouge">Vehicle Operating Control</code> in English.</p>
-
-<blockquote>
-  <p><strong><em>Download link (now removed)</em></strong>: <a href="https://play.google.com/store/apps/details?id=com.qrca">https://play.google.com/store/apps/details?id=com.qrca</a></p>
-</blockquote>
+<p>It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named <code class="language-plaintext highlighter-rouge">Vehicle Operating Control</code> in English which had been removed after the research.</p>
 
 <p>Let’s go through the application workflow:</p>
 
@@ -348,16 +343,16 @@ Source: <a href="https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau
 <p><strong><em>3. Deep dive into the workflow</em></strong></p>
 
 <p>The original data was retrieved from the QR:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_[LOCAL_NON_US_GOVENMENT_AGENCY_NAME_]]|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 </code></pre></div></div>
-<p>This contains: <code class="language-plaintext highlighter-rouge">10505</code> - zone ID/passes provider, named <code class="language-plaintext highlighter-rouge">Police Department</code>.</p>
+<p>This contains: <code class="language-plaintext highlighter-rouge">10505</code> - zone ID/passes provider, named <code class="language-plaintext highlighter-rouge">Local Authority Department</code>.</p>
 
 <p>Once the application received the QR data, it would take the data string from zone ID to the end, then do the following steps:</p>
 
 <ul>
   <li>Removing <code class="language-plaintext highlighter-rouge">|</code></li>
   <li>Removing special characters</li>
-  <li>English Alphabetized Vietnamese chars (i.e.: ê -&gt; e)</li>
+  <li>English Alphabetized all chars (i.e.: ê -&gt; e)</li>
   <li>Lowercase transformation</li>
 </ul>
 
@@ -439,9 +434,6 @@ Setting up EC2 instances</p>
 
 <p><img src="/images/10.png" alt="" />  <br />
 Generating QR Code</p>
-
-<p><img src="/images/11.png" alt="" /><br />
-Valid COVID pass</p>
 
         
       </section>

@@ -6,7 +6,7 @@ categories:
 ---
 ## Vulnerability Summary
 
-Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.
+A Non-US Goverment agency was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.
 
 ## Vulnerability Analysis
 ***1. QR Data:***
@@ -23,19 +23,16 @@ Through news channels and social medias, we were able to find a sample COVID pas
 8 - Valid from/to (time)
 
 ![](/images/1.jpg)  
-Source: [https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html](https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html)
 
 As the QR code was not hidden, we were able to decode its information:
 ```
-**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_[LOCAL_NON_US_GOVENMENT_AGENCY_NAME_]]|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 ```
 The decoded string above contains information about the requester, zone ID/passes provider (i.e. `10505`). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.
 
 ***2. Validation***
 
-It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named `Kiểm soát đi đường` a.k.a `Vehicle Operating Control` in English.
-
-> **_Download link (now removed)_**: [https://play.google.com/store/apps/details?id=com.qrca](https://play.google.com/store/apps/details?id=com.qrca)
+It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named `Vehicle Operating Control` in English which had been removed after the research.
 
 Let's go through the application workflow:
 
@@ -49,15 +46,15 @@ Not validating the data on server side means one thing: If the Private Key from 
 
 The original data was retrieved from the QR:
 ```
-D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_[LOCAL_NON_US_GOVENMENT_AGENCY_NAME_]]|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 ```
-This contains: `10505` - zone ID/passes provider, named `Police Department`.
+This contains: `10505` - zone ID/passes provider, named `Local Authority Department`.
 
 Once the application received the QR data, it would take the data string from zone ID to the end, then do the following steps:
 
 - Removing `|`
 - Removing special characters
-- English Alphabetized Vietnamese chars (i.e.: ê -> e)
+- English Alphabetized all chars (i.e.: ê -> e)
 - Lowercase transformation
 
 ![](/images/3.jpg)
@@ -136,6 +133,3 @@ Once we got the key factors, we were able to calculate the original Private Key 
 
 ![](/images/10.png)    
 Generating QR Code
-
-![](/images/11.png)  
-Valid COVID pass

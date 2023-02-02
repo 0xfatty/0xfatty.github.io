@@ -66,7 +66,7 @@ var store = [{
         "teaser": null
       },{
         "title": "How I faked tons of COVID passes — Weak Key Cryptography in real world",
-        "excerpt":"Vulnerability Summary Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes. Vulnerability Analysis 1. QR Data: Through news channels and social medias,...","categories": ["Research"],
+        "excerpt":"Vulnerability Summary A Non-US Goverment agency was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes. Vulnerability Analysis 1. QR Data: Through news channels and social...","categories": ["Research"],
         "tags": [],
         "url": "/research/2021/09/29/weak-key-cryptography-in-real-world.html",
         "teaser": null

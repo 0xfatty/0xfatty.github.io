@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-01T21:51:04-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Pwning the Samsung TV</title><link href="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html" rel="alternate" type="text/html" title="Pwning the Samsung TV" /><published>2022-01-28T00:00:00-06:00</published><updated>2022-01-28T00:00:00-06:00</updated><id>http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv</id><content type="html" xml:base="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-02T15:46:03-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Pwning the Samsung TV</title><link href="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html" rel="alternate" type="text/html" title="Pwning the Samsung TV" /><published>2022-01-28T00:00:00-06:00</published><updated>2022-01-28T00:00:00-06:00</updated><id>http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv</id><content type="html" xml:base="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 
 &lt;p&gt;Next, following up on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;failed&lt;/code&gt; Pwn2Own 2021 series, this blog post will be talking about the vulnerability found on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Samsung TV&lt;/code&gt; - a Pwn2Own 2021 target.&lt;/p&gt;
 
@@ -187,7 +187,7 @@
 &lt;p&gt;10/29/2021: Exploit submitted to Pwn2Own Competition&lt;br /&gt;
 11/01/2021: Submission got rejected due to the usage of n-day&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry><entry><title type="html">How I faked tons of COVID passes — Weak Key Cryptography in real world</title><link href="http://localhost:4000/research/2021/09/29/weak-key-cryptography-in-real-world.html" rel="alternate" type="text/html" title="How I faked tons of COVID passes — Weak Key Cryptography in real world" /><published>2021-09-29T00:00:00-05:00</published><updated>2021-09-29T00:00:00-05:00</updated><id>http://localhost:4000/research/2021/09/29/weak-key-cryptography-in-real-world</id><content type="html" xml:base="http://localhost:4000/research/2021/09/29/weak-key-cryptography-in-real-world.html">&lt;h2 id=&quot;vulnerability-summary&quot;&gt;Vulnerability Summary&lt;/h2&gt;
 
-&lt;p&gt;Hanoi Police Department was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.&lt;/p&gt;
+&lt;p&gt;A Non-US Goverment agency was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.&lt;/p&gt;
 
 &lt;h2 id=&quot;vulnerability-analysis&quot;&gt;Vulnerability Analysis&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;1. QR Data:&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -203,21 +203,16 @@
 7 - Valid from/to (date)&lt;br /&gt;
 8 - Valid from/to (time)&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/1.jpg&quot; alt=&quot;&quot; /&gt;&lt;br /&gt;
-Source: &lt;a href=&quot;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html&quot;&gt;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-ngay-dau-ha-noi-thuc-hien-gian-cach-xa-hoi-phan-vung-187326.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As the QR code was not hidden, we were able to decode its information:&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_[LOCAL_NON_US_GOVENMENT_AGENCY_NAME_]]|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;The decoded string above contains information about the requester, zone ID/passes provider (i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10505&lt;/code&gt;). Additionally, there is a signature string at the beginning of this decoded QR - signed by RSA - SHA 256.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;2. Validation&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Kiểm soát đi đường&lt;/code&gt; a.k.a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vehicle Operating Control&lt;/code&gt; in English.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;&lt;em&gt;Download link (now removed)&lt;/em&gt;&lt;/strong&gt;: &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.qrca&quot;&gt;https://play.google.com/store/apps/details?id=com.qrca&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;It was not hard for us to find out the application on Google Play Store (now removed). However, due to countries restriction, we had to use VPN to download the application named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vehicle Operating Control&lt;/code&gt; in English which had been removed after the research.&lt;/p&gt;
 
 &lt;p&gt;Let’s go through the application workflow:&lt;/p&gt;
 
@@ -230,16 +225,16 @@ Source: &lt;a href=&quot;https://thanhtra.com.vn/xa-hoi/doi-song/ghi-nhan-trong-
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;3. Deep dive into the workflow&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;The original data was retrieved from the QR:&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_PHÒNG CẢNH SÁT GIAO THÔNG|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**D9LOgcTFAS1MeC3kD4J+5PmAW5C4mOrPcbwbynsY6GEuGNkpe/dwIM5cr0MS/a+LT1y9z+8sKJA9UaPZTmYJwQ==|**10505|3|06/09;07/09;08/09;09/09;10/09;11/09;12/09;13/09;14/09;15/09;16/09;17/09;18/09;19/09;20/09|4_[LOCAL_NON_US_GOVENMENT_AGENCY_NAME_]]|02439424451|29G1–391.89| |Vùng 1|Nguyễn Ánh Ngọc||09:00–20:00
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;This contains: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10505&lt;/code&gt; - zone ID/passes provider, named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Police Department&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This contains: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10505&lt;/code&gt; - zone ID/passes provider, named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Local Authority Department&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Once the application received the QR data, it would take the data string from zone ID to the end, then do the following steps:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Removing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;|&lt;/code&gt;&lt;/li&gt;
   &lt;li&gt;Removing special characters&lt;/li&gt;
-  &lt;li&gt;English Alphabetized Vietnamese chars (i.e.: ê -&amp;gt; e)&lt;/li&gt;
+  &lt;li&gt;English Alphabetized all chars (i.e.: ê -&amp;gt; e)&lt;/li&gt;
   &lt;li&gt;Lowercase transformation&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -320,10 +315,7 @@ Setting up EC2 instances&lt;/p&gt;
 &lt;h2 id=&quot;demo&quot;&gt;Demo&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/10.png&quot; alt=&quot;&quot; /&gt;  &lt;br /&gt;
-Generating QR Code&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/11.png&quot; alt=&quot;&quot; /&gt;&lt;br /&gt;
-Valid COVID pass&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Vulnerability Summary</summary></entry><entry><title type="html">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE</title><link href="http://localhost:4000/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="alternate" type="text/html" title="[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE" /><published>2021-08-21T00:00:00-05:00</published><updated>2021-08-21T00:00:00-05:00</updated><id>http://localhost:4000/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce</id><content type="html" xml:base="http://localhost:4000/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+Generating QR Code&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Vulnerability Summary</summary></entry><entry><title type="html">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE</title><link href="http://localhost:4000/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html" rel="alternate" type="text/html" title="[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE" /><published>2021-08-21T00:00:00-05:00</published><updated>2021-08-21T00:00:00-05:00</updated><id>http://localhost:4000/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce</id><content type="html" xml:base="http://localhost:4000/research/2021/08/21/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Discoverer: Chi Tran &amp;amp; phieulang93 &amp;amp; chung96vn&lt;/li&gt;
