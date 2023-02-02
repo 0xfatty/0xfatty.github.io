@@ -45,7 +45,7 @@ include:
 author:
   name             : "Chi Tran"
   avatar           : "/images/bio-photo.jpg"
-  bio              : "Hey! I am Chi Tran &#124; Father of 2 &#124; Security Engineer &#124; I love cooking and making spicy noodles."
+  bio              : "Hey! I am Chi Tran &#124; Father of 2 &#124; Security Engineer &#124; I love cooking and making spicy noodles. | Posts in this blog are my own research in my own words. I do not represent anyone or any companies"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
