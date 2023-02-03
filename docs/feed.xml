@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-02T15:53:43-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Pwning the Samsung TV</title><link href="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html" rel="alternate" type="text/html" title="Pwning the Samsung TV" /><published>2022-01-28T00:00:00-06:00</published><updated>2022-01-28T00:00:00-06:00</updated><id>http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv</id><content type="html" xml:base="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-02T18:05:09-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">iam.chi</title><subtitle>Security Research | Writeups | Words are my own.</subtitle><author><name>Chi Tran</name></author><entry><title type="html">Pwning the Samsung TV</title><link href="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html" rel="alternate" type="text/html" title="Pwning the Samsung TV" /><published>2022-01-28T00:00:00-06:00</published><updated>2022-01-28T00:00:00-06:00</updated><id>http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv</id><content type="html" xml:base="http://localhost:4000/research/2022/01/28/pwning-the-samsung-tv.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 
 &lt;p&gt;Next, following up on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;failed&lt;/code&gt; Pwn2Own 2021 series, this blog post will be talking about the vulnerability found on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Samsung TV&lt;/code&gt; - a Pwn2Own 2021 target.&lt;/p&gt;
 
@@ -399,94 +399,7 @@ Setting up EC2 instances&lt;/p&gt;
 &lt;h2 id=&quot;report-timeline&quot;&gt;Report Timeline&lt;/h2&gt;
 
 &lt;p&gt;2021-03-12 - Vulnerability reported to vendor (through Zero Day Initiative)&lt;br /&gt;
-2021-08-18 - Coordinated public release of advisory&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry><entry><title type="html">[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE</title><link href="http://localhost:4000/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html" rel="alternate" type="text/html" title="[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE" /><published>2021-02-27T00:00:00-06:00</published><updated>2021-02-27T00:00:00-06:00</updated><id>http://localhost:4000/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce</id><content type="html" xml:base="http://localhost:4000/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Discoverer: Chi Tran &amp;amp; phieulang93 &amp;amp; chung96vn&lt;/li&gt;
-  &lt;li&gt;Vendor &amp;amp; Product: D-Link&lt;/li&gt;
-  &lt;li&gt;Version: DAP-2020 A1&lt;/li&gt;
-  &lt;li&gt;Zero Day Initiative: &lt;a href=&quot;https://www.zerodayinitiative.com/advisories/ZDI-21-203/&quot;&gt;ZDI-21-203&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;CVE Reference: &lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-27248&quot;&gt;CVE-2021-27248&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;vulnerability-detail&quot;&gt;Vulnerability Detail&lt;/h2&gt;
-
-&lt;p&gt;This vulnerability allows network-adjacent attackers to execute arbitrary code on affected installations of D-Link DAP-2020 Wi-Fi access points. Authentication is not required to exploit this vulnerability. The specific flaw exists within the processing of CGI scripts. When parsing the getpage parameter, the process does not properly validate the length of user-supplied data prior to copying it to a fixed-length stack-based buffer. An attacker can leverage this vulnerability to execute code in the context of root.&lt;/p&gt;
-
-&lt;p&gt;After analyzing the DAP-2020 A1 Router, a Stack Buffer-overflow vulnerability was found on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mini_httpd&lt;/code&gt; service via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;var:menu&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;var:page&lt;/code&gt; parameter, which exist in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WEB_GetCgiVars()&lt;/code&gt; function in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/www/cgi-bin/webproc&lt;/code&gt; binary.&lt;/p&gt;
-
-&lt;p&gt;The following is part of decompiled code of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/www/cgi-bin/webproc&lt;/code&gt; binary, the buffer overflow vulnerability was discovered in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WEB_GetCgiVars()&lt;/code&gt;` function (See below)&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 00402cf0 WEB_GetCgiVars - /usr/www/cgi-bin/webproc&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;WEB_GetCgiVars&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ST_NAME_VAL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ppstCgiVal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;...[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TRUNCATED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]...&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;iVar3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iVar1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;kv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;local_30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;local_30&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;__s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;local_30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strchr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x3d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;OM_ValAppend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ppstCgiVal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;\0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;OM_ValSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ppstCgiVal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strcmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;var:menu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;strcpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;szMenu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Stack BOF&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;WEB_Trace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[zym]szMenu=%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;szMenu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strcmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;var:page&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;strcpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Stack BOF&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;WEB_Trace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[zym]szPage=%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;OM_ValDel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;local_30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;iVar3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iVar3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iVar3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iVar1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;free&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s_00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;free&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__delim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;My_getenv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;HTTP_COOKIE&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;__s_00&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strstr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__s1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;We were able to build a test environment for this vulnerability (See below). Additionally, either &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;var:menu&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;var:page&lt;/code&gt; parameter can be used to trigger the Buffer Overflow vulnerability.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Screen-Shot-2021-02-26-at-8.29.02-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The application crashed after an attack data was sent where we were able to control &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$PC, $A2&lt;/code&gt;, some registers as well as content on the stack (See below)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Screen-Shot-2021-02-26-at-8.30.06-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;More importantly, ASLR is not enabled on physical devices and the stack is executable (See below). We were able to control the memory where it is pointed by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$a2&lt;/code&gt; register which is executable in the context of the stack segment.&lt;/p&gt;
-
-&lt;p&gt;In fact, if we can control the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$PC&lt;/code&gt; register to point to the shell-code in memory, we will be able to achieve Remote Code Execution on the affected device.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Screen-Shot-2021-02-26-at-8.31.26-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We managed to use gadget &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;move $t9, $a2 ; jalr $t9&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/lib/libuClibc-0.9.30.so&lt;/code&gt; (ASLR is disabled) to control &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$PC&lt;/code&gt; register to point to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$a2&lt;/code&gt; register (part of cookie value)(See below)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Screen-Shot-2021-02-26-at-8.32.33-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;impact&quot;&gt;Impact&lt;/h2&gt;
-
-&lt;p&gt;When a memory buffer overflow occurs and data is written outside the buffer, the running program may become unstable, crash or return corrupt information. The overwritten parts of memory may have contained other important data for the running application which is now overwritten and not available to the program anymore. Buffer overflows can even run other (malicious) programs or commands and result in arbitrary code execution&lt;/p&gt;
-
-&lt;p&gt;Proof of Concept:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/Screen-Shot-2021-02-26-at-8.34.40-PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;report-timeline&quot;&gt;Report Timeline&lt;/h2&gt;
-
-&lt;p&gt;2020-08-21 - Vulnerability reported to vendor (through Zero Day Initiative)&lt;br /&gt;
-2021-02-24 - Coordinated public release of advisory&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry><entry><title type="html">[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow</title><link href="http://localhost:4000/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html" rel="alternate" type="text/html" title="[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow" /><published>2020-02-13T00:00:00-06:00</published><updated>2020-02-13T00:00:00-06:00</updated><id>http://localhost:4000/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow</id><content type="html" xml:base="http://localhost:4000/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+2021-08-18 - Coordinated public release of advisory&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry><entry><title type="html">[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow</title><link href="http://localhost:4000/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html" rel="alternate" type="text/html" title="[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow" /><published>2020-02-13T00:00:00-06:00</published><updated>2020-02-13T00:00:00-06:00</updated><id>http://localhost:4000/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow</id><content type="html" xml:base="http://localhost:4000/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Author: Chi Tran&lt;/li&gt;
@@ -711,4 +624,58 @@ emailConfigurationForm%5B\_csrf\_token%5D=426bbe900f93c903be83b3c6d4d1bcd0&amp;a
 06/12/2019: Reported to Vendor&lt;br /&gt;
 06/13/2019: Vendor confirmed&lt;br /&gt;
 06/14/2019: Vendor released a fix&lt;br /&gt;
-06/15/2019: CVE ID assigned&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry></feed>
+06/15/2019: CVE ID assigned&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry><entry><title type="html">CVE-2019-12347: Stored Cross-site Scripting on pfSense 2.4.4-RELEASE-p3</title><link href="http://localhost:4000/research/2019/05/29/stored-xss-acme-pfsense-2-4-4-p3.html" rel="alternate" type="text/html" title="CVE-2019-12347: Stored Cross-site Scripting on pfSense 2.4.4-RELEASE-p3" /><published>2019-05-29T00:00:00-05:00</published><updated>2019-05-29T00:00:00-05:00</updated><id>http://localhost:4000/research/2019/05/29/stored-xss-acme-pfsense-2-4-4-p3</id><content type="html" xml:base="http://localhost:4000/research/2019/05/29/stored-xss-acme-pfsense-2-4-4-p3.html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Author: Chi Tran&lt;/li&gt;
+  &lt;li&gt;Vendor: NetGate&lt;/li&gt;
+  &lt;li&gt;Product: NetGate PfSense&lt;/li&gt;
+  &lt;li&gt;Version: 2.4.4-RELEASE-p3&lt;/li&gt;
+  &lt;li&gt;CVE Reference: CVE-2019-12347&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;about-pfsense&quot;&gt;About PfSense&lt;/h2&gt;
+
+&lt;p&gt;pfSense® software is a free, open source customized distribution of FreeBSD specifically tailored for use as a firewall and router that is entirely managed via web interface. In addition to being a powerful, flexible firewalling and routing platform, it includes a long list of related features and a package system allowing further expandability without adding bloat and potential security vulnerabilities to the base distribution.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-detail&quot;&gt;Vulnerability Detail&lt;/h2&gt;
+
+&lt;p&gt;What is ACME? The ACME Package for pfSense interfaces with Let’s Encrypt to handle the certificate generation, validation, and renewal processes. (&lt;a href=&quot;https://docs.netgate.com/pfsense/en/latest/certificates/acme-package.html&quot;&gt;https://docs.netgate.com/pfsense/en/latest/certificates/acme-package.html&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Stored-XSS Vulnerability&lt;/strong&gt; occurs due to an input validation error which allows attackers inject payload into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Description&lt;/code&gt; field via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;acme_accountkeys_edit.php&lt;/code&gt; action&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;MISC&lt;/strong&gt;: &lt;a href=&quot;https://redmine.pfsense.org/issues/9554&quot;&gt;https://redmine.pfsense.org/issues/9554&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Cause:&lt;/strong&gt; The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;acme_accountkey.php&lt;/code&gt; script does not properly filter HTML code from user-supplied input in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Description&lt;/code&gt; parameters before displaying the input. A remote user can create a specially crafted URL that, when loaded by a target user, will cause arbitrary scripting code to be executed by the target user’s browser. The code will originate from the site running the Acme v0.5.7_1 . As a result, the code will be able to access the target user’s cookies (including authentication cookies), if any, associated with the site, access data recently submitted by the target user via web form to the site, or take actions on the site acting as the target user.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Code audit&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/codeaudit.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Proof of Concepts:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;1 - Navigate to https://192.168.1.1/acme/acme_accountkeys.php&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/ACME1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2 - Input the following payload into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Description&lt;/code&gt; field:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&amp;gt;&amp;lt;svg/onload=alert(1)&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Stored-XSS.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;impact&quot;&gt;Impact&lt;/h2&gt;
+
+&lt;p&gt;Stored-XSS attack could be used to perform several attack purposes such as session hijacking, client browser corruption, etc. Victim retrieves the malicious script from the server when it requests the stored information.&lt;/p&gt;
+
+&lt;h2 id=&quot;remediation&quot;&gt;Remediation&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/pfsense/FreeBSD-ports/commit/504909564079e540689dbdbed3a579483c614275&quot;&gt;https://github.com/pfsense/FreeBSD-ports/commit/504909564079e540689dbdbed3a579483c614275&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;report-timeline&quot;&gt;Report Timeline&lt;/h2&gt;
+
+&lt;p&gt;05.26.2019 - Bug reported &amp;amp; Vendor confirmed&lt;br /&gt;
+05.27.2019 - CVE ID Assigned&lt;br /&gt;
+05.28.2019 - Vendor released a fix&lt;/p&gt;</content><author><name>Chi Tran</name></author><category term="Research" /><summary type="html">Overview</summary></entry></feed>

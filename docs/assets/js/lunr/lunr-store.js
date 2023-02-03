@@ -53,12 +53,6 @@ var store = [{
         "url": "/research/2020/02/13/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow.html",
         "teaser": null
       },{
-        "title": "[ZDI-21-203] D-Link DAP-2020 webproc getpage Stack-based BOF RCE",
-        "excerpt":"Overview Discoverer: Chi Tran &amp; phieulang93 &amp; chung96vn Vendor &amp; Product: D-Link Version: DAP-2020 A1 Zero Day Initiative: ZDI-21-203 CVE Reference: CVE-2021-27248 Vulnerability Detail This vulnerability allows network-adjacent attackers to execute arbitrary code on affected installations of D-Link DAP-2020 Wi-Fi access points. Authentication is not required to exploit this vulnerability....","categories": ["Research"],
-        "tags": [],
-        "url": "/research/2021/02/27/zdi-21-203-d-link-dap-2020-webproc-getpage-stack-based-bof-rce.html",
-        "teaser": null
-      },{
         "title": "[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE",
         "excerpt":"Overview Discoverer: Chi Tran &amp; phieulang93 &amp; chung96vn Vendor &amp; Product: D-Link Version: DAP-2020 A1 Zero Day Initiative: ZDI-21-977 CVE Reference: CVE-2021-34861 Vulnerability Detail This vulnerability allows network-adjacent attackers to execute arbitrary code on affected installations of D-Link DAP-2020 routers. Authentication is not required to exploit this vulnerability. The specific...","categories": ["Research"],
         "tags": [],
