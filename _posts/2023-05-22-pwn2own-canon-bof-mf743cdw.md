@@ -48,7 +48,7 @@ LABEL_8:
     while ( v10 < dword_45CF9DC0 && dword_45CF9F5C[v10] != v12 )
       ++v10;
 
-{% end highlight %}
+{% endhighlight %}
 
 As we can see, this function takes a word from IPP request packet. This word is used as a length parameter without checking to copy data to stack-based variable `dest`. This variable `dest`'s size is just 4 bytes. This leads to stack buffer overflow and we can redirect the PC register to our code. 
 
