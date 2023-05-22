@@ -6,9 +6,7 @@ categories:
 ---
 ## Overview
 
-In December 2022, I participated and got a success in Pwn2Own Toronto 2022 targeting Canon Printer category. 
-
-[Check it out here](https://twitter.com/thezdi/status/1601243187393298435)
+In December 2022, I participated and got a success in Pwn2Own Toronto 2022 targeting Canon Printer category. [Check it out here](https://twitter.com/thezdi/status/1601243187393298435)
 
 ![](/images/BunBo.jpg)
 
@@ -17,7 +15,7 @@ The Canon imageClass MF743Cdw's IPP service is vulnerable to a stack-based buffe
 ## Analysis
 There is a function at address `0x41BD138C` named `sub_41BD138C`. This function is called when printer handles IPP request packet that has an attribute named `number-up`.  
 
-{% highlight javascript %}
+{% highlight c %}
 int __fastcall sub_41BD138C(int a1, int a2, int a3, int a4)
 {
   int v4; // r4
