@@ -6,11 +6,9 @@ categories:
 ---
 ## Overview
 
-In December 2022, I participated and got a success in Pwn2Own Toronto 2022 targeting Canon Printer category. 
+In December 2022, I participated and got a success in Pwn2Own Toronto 2022 targeting Canon Printer category. Check it out: twitter https://twitter.com/thezdi/status/1601243187393298435
 
-<div class='jekyll-twitter-plugin' align="center">
-    {% twitter https://twitter.com/thezdi/status/1601243187393298435 %}
-</div>
+![](/images/BunBo.jpg)
 
 The Canon imageClass MF743Cdw's IPP service is vulnerable to a stack-based buffer overflow using the `number-up` attribute. This allows an unauthenticated attacker to execute arbitrary code on the device. 
 
