@@ -62,5 +62,5 @@ The complete attack scenario will include these steps:
 
 ## References
 
-ZDI: https://www.zerodayinitiative.com/advisories/ZDI-23-555/
+ZDI: https://www.zerodayinitiative.com/advisories/ZDI-23-555
 
