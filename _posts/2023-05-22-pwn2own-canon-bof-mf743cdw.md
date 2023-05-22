@@ -6,7 +6,9 @@ categories:
 ---
 ## Overview
 
-In December 2022, I participated and got a success in Pwn2Own Toronto 2022 targeting Canon Printer category. Check it out: twitter https://twitter.com/thezdi/status/1601243187393298435
+In December 2022, I participated and got a success in Pwn2Own Toronto 2022 targeting Canon Printer category. 
+
+[Check it out here](https://twitter.com/thezdi/status/1601243187393298435)
 
 ![](/images/BunBo.jpg)
 
