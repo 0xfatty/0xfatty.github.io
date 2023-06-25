@@ -153,6 +153,8 @@ And....
 
 ![](/images/scammer4.png)
 
+This is enough to play with. I stopped here and posted a message to the community for awareness. 
+
 ## Because I am a good person...
 
 Since this is a fight with scammers, not the fight with whoever created this. I have brought this to the vendor and meanwhile requesting a CVE for this software.
