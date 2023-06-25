@@ -72,7 +72,7 @@ Now, I'm sure some of you are dying to know the domain name of this criminal. Bu
 
 Also, since the code is long, I will break that down into several parts. Let's unwrap this first part of enigmatic JavaScript parcel, shall we?
 
-This function, `loadCookie`, does exactly what its name implies: it loads cookies from a website. It first checks the current URL of the selected tab. If it's the default new tab page `(chrome://newtab)`, it sets currentUrl to "https://www.facebook.com".
+This function, `loadCookie`, does exactly what its name implies: it loads cookies from a website. It first checks the current URL of the selected tab. If it's the default new tab page `(chrome://newtab)`, it sets currentUrl to `https://www.facebook.com`.
 
 Next, it checks if currentUrl contains `chat.zalo.me` - Zalo is a popular Vietnamese chat app, which suggests this extension is not just after Facebook data. It collects all the cookies from the site and makes a special note of those containing `zalo` in their domain.
 
@@ -123,7 +123,11 @@ Coming next,
           });
 {% endhighlight %}
 
-This behavior is concentrated in the `$("#btnGetAccessToken").click` function, which appears to retrieve an access token from Facebook, possibly without the user's consent or knowledge. The access token is fetched using the Facebook OAuth dialog with a pre-specified client id. And lastly, it begins to compile a complex object that includes everything from the user's Facebook ID (cuser) and the captured access token to crafted session cookies, ready for dispatch. The JSON object is then converted into a base64 encoded string (a favourite technique amongst cyber villains to mask their ill-gotten gains), before being sent to the rogue server via yet another URL. The URL is ingeniously designed to look like a part of a legitimate service (http://[redacted]/?access_token_v2=), further deepening the deception.
+This behavior is concentrated in the `$("#btnGetAccessToken").click` function, which appears to retrieve an access token from Facebook, possibly without the user's consent or knowledge. 
+
+The access token is fetched using the Facebook OAuth dialog with a pre-specified client id. And lastly, it begins to compile a complex object that includes everything from the user's Facebook ID (cuser) and the captured access token to crafted session cookies, ready for dispatch. 
+
+The JSON object is then converted into a base64 encoded string (a favourite technique amongst cyber villains to mask their ill-gotten gains), before being sent to the rogue server via yet another URL. The URL is ingeniously designed to look like a part of a legitimate service (`http://[redacted]/?access_token_v2=`), further deepening the deception.
 
 This treacherous code is as much a work of art as it is a menace. By executing it, the users unwittingly surrender their Facebook session cookies, giving the scammer free rein over their Facebook account. It’s like leaving your house keys under the doormat, with a neon sign saying "Come on in!"
 
@@ -163,5 +167,6 @@ Last but not least, as a bonus, several Stored Cross-site scripting vulnerabilit
 ## References
 
 [1] https://uhelp.spruko.com/index.html
+
 [2] https://codecanyon.net/item/uhelp-support-ticketing-system/36331368
 
