@@ -10,6 +10,8 @@ What's more riveting than the unexpected? Picture this: it's a lazy Friday night
 
 The bait was a browser extension promising Facebook cookie extraction faster than a cheetah on a caffeine high. Facebook and I share the bond of casual strangers, but this... this was a mystery screaming to be solved. Shouted to my buddy "Don't touch that!", then rolled up my digital sleeves and got cracking.
 
+![](/images/scammer4.png)
+
 ## Javascript, and it's funny
 
 JavaScript was the innocuous-looking vehicle driving this extension. Now, JS has the guileless facade of a doe-eyed, purring kitten. But I've seen kittens scratch, and this one was no different. For your perusal:
