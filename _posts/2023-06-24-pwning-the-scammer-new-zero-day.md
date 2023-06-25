@@ -8,7 +8,7 @@ categories:
 
 What's more riveting than the unexpected? Picture this: it's a lazy Friday night. Lovely wifey and the kids are watching TV shows. Me? I'm diving headfirst into the murky waters of a potential scam, tipped off by a curious friend.
 
-The bait was a browser extension promising Facebook cookie extraction faster than a cheetah on a caffeine high. Facebook and I share the bond of casual strangers, but this... this was a mystery screaming to be solved. Shouted to my buddy "Don't touch that!" to my buddy, then rolled up my digital sleeves and got cracking.
+The bait was a browser extension promising Facebook cookie extraction faster than a cheetah on a caffeine high. Facebook and I share the bond of casual strangers, but this... this was a mystery screaming to be solved. Shouted to my buddy "Don't touch that!", then rolled up my digital sleeves and got cracking.
 
 ## Javascript, and it's funny
 
@@ -145,7 +145,7 @@ Worth to note, scammers' mindset is to use whatever they found on the internet, 
 
 A bit more about this application, this application is Uhelp, a helpdesk ticket system that was developed by an India company. The vulnerability occurs when a user creates a new ticket or replies to an existing ticket via `/customer/imageupload` endpoint. Web front-end did a great job blocking all other extensions than imgages coming in. But the back-end logic destroyed it all. It allows an attacker (or a scam fighter in my case) to arbitrarily upload files. 
 
-Say less now, a backdoor as wide open as a barn gate. Seizing the opportunity, I uploaded a web shell and seized control of the scammer’s server. It was like being handed the control room keys to the Death Star.
+Say less now, an entry as wide open as a barn gate. Seizing the opportunity, I uploaded a web shell and seized control of the scammer’s server. It was like being handed the control room keys to the Death Star.
 
 ![](/images/scammer3.png)
 
@@ -165,13 +165,11 @@ Last but not least, as a bonus, several Stored Cross-site scripting vulnerabilit
 
 ## What happened to the scammer and their website
 
-I have reported the scamming scheme to the Internet Crime Complaint Center (IC3) (see reference [3]) and reported their domain name to the organization that controls its top-level domain extension for a take down.
+I have reported the scamming scheme to the community and reported their domain name to the organization that controls its top-level domain extension for a take down.
 
 ## References
 
 [1] https://uhelp.spruko.com/index.html
 
 [2] https://codecanyon.net/item/uhelp-support-ticketing-system/36331368
-
-[3] https://www.ic3.gov/Home/FileComplaint
 
