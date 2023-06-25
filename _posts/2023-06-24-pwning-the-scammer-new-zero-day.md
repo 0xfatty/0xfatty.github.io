@@ -6,7 +6,7 @@ categories:
 ---
 ## Friday night @ 9PM....
 
-What's more riveting than the unexpected? Picture this: it's a lazy Friday night. Lovely wifey and the kids are watching TV shows. Me? I'm diving headfirst into the murky waters of a potential scam, tipped off by a curious friend.
+What's more riveting than the unexpected? Picture this: it's a lazy Friday night. Lovely wifey and the kids are watching TV shows. Me? I'm diving headfirst into the murky waters of a potential scam from an oversea bad actor, tipped off by a curious friend.
 
 The bait was a browser extension promising Facebook cookie extraction faster than a cheetah on a caffeine high. Facebook and I share the bond of casual strangers, but this... this was a mystery screaming to be solved. Shouted to my buddy "Don't touch that!", then rolled up my digital sleeves and got cracking.
 
