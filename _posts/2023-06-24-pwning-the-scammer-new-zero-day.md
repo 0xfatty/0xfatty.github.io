@@ -163,6 +163,9 @@ Last but not least, as a bonus, several Stored Cross-site scripting vulnerabilit
 
 ![](/images/scammer6.png)
 
+## What happened to the scammer and their website
+
+I have reported the scamming scheme to the Internet Crime Complaint Center (IC3) (see reference [3]) and reported their domain name to the organization that controls its top-level domain extension for a take down.
 
 ## References
 
