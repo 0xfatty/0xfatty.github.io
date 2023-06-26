@@ -86,7 +86,7 @@ Lastly, if the site is Facebook, it's executing a series of scripts to extract a
 
 Phew, that's quite the cookie heist! This code effectively allows the extension to collect users' cookies from websites, extract unique identifiers, and potentially access users' accounts on these sites - definitely a danger to user privacy and security. Stay tuned for more insights into this code in the next parts!
 
-Coming next,
+## Coming next
 
 {% highlight javascript %}
 //truncated
