@@ -12,7 +12,7 @@ categories:
 - CVE Reference: [CVE-2019-10017](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-10017)  
 - Original Entry Date: March 24, 2019  
 - Affected Version(s): 2.2.10
-
+<script>alert(1)</script>
 ## Vulnerability Details
 
 **Cause:** The `moduleinterface.php` uploader class script does not properly filter HTML code from user-supplied input in the `Name` field before listing the Profile. A remote authenticated user can create a specially crafted an malicious entry that, when loaded by a target users, will cause arbitrary scripting code to be executed by the target user's browser. The code will originate from the site running the CMS Made Simple software and will run in the security context of that site. As a result, the code will be able to access the target user's cookies (including authentication cookies), if any.
