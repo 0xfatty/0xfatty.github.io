@@ -31,4 +31,4 @@ Along my journey, there were some CVEs assigned to my research, below are some t
 <h1><b>Hall of Fame</b></h1>
 Responsible Disclosure is what we all want to to. With that in mind, I was honored to get my name to a few
 
-Oracle, Google, Microsoft, CERT-EU, Siemens, Department of Defense, F-Secure, Accenture, BMW, Trend Micro, United Nations, Bosch, Harvard, Apple, Facebook, Tenable, Proofpoint, Cigna, Palo Alto
+Oracle, Google, Microsoft, CERT-EU, Siemens, Department of Defense, F-Secure, Accenture, BMW, Trend Micro, United Nations, Bosch, Harvard, Apple, Facebook, Tenable, Proofpoint, Cigna, Broadcom, Palo Alto
