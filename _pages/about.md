@@ -28,7 +28,7 @@ Along my journey, there were some CVEs assigned to my research, below are some t
 
 **2023**: CVE-2023-0855 (ZDI-23-555)
 
-**2024**: CVE-2024-37014
+**2024**: CVE-2024-37014, CVE-2024-46911
 
 <h1><b>Hall of Fame</b></h1>
 Responsible Disclosure is what we all want to to. With that in mind, I was honored to get my name to a few
