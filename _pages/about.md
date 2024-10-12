@@ -2,13 +2,13 @@
 permalink: /about
 title: About
 ---
-Yooo! What’s up? If you are reading this, thank you for checking this blog out. Let me introduce myself a bit and that would be great if we can become friends.
+Yooo! What’s up? If you're reading this, thank you for checking out my blog. Let me introduce myself a bit, and it would be awesome if we could become friends.
 
-My name is Chi. But my wife always call me `Mr. Fatty`. I had been a cook for about 6 years in a Vietnamese restaurant before turning into tech industry. I had an opportunity to get my feets wet in Security in late 2018 after I got an internship from a Healthcare company. My passion started there.
+My name is Chi, but my wife always calls me `Fatty` (thus my underground alias `0xfatty`). I was a cook for about six years at a Vietnamese restaurant before transitioning into the tech industry. I had the chance to dip my toes into security in late 2018 when I got an internship with a healthcare company, and that’s when my passion for it began.
 
-As a newcomer to the Security field, I love to learn from everyone and share what I have learned and done. Through this blog, I would love to share to the community some security research that are part of my learning journey.
+As someone new to the security field, I love learning from everyone and sharing what I’ve learned along the way. Through this blog, I’d love to share some security research that’s part of my learning journey.
 
-If you like to chat, I am here on Twitter @imspicynoodles (yes, I used to own a Vietnamese spicy noodles restaurant).
+If you'd like to chat, you can find me on Twitter @imspicynoodles (yes, I used to own a Vietnamese spicy noodles restaurant).
 
 <h1><b>Certifications</b></h1>
 
