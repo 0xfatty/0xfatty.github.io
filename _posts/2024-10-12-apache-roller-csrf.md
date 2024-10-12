@@ -7,7 +7,7 @@ categories:
 
 ## Overview
 
-Apache Roller [1], an open-source blog server platform, has long been favored for managing and publishing content on the web. However, like many web-based applications, it can be subject to vulnerabilities that pose security risks. This blog post discusses the details of the vulnerabilities recently addressed in Apache Roller and assigned `CVE-2024-46911`. The report focuses on the security flaws, their impact, remediation steps taken, the limitations of the fixes, and future recommendations for enhancing Roller’s security posture.
+Apache Roller [1](https://github.com/apache/roller), an open-source blog server platform, has long been favored for managing and publishing content on the web. However, like many web-based applications, it can be subject to vulnerabilities that pose security risks. This blog post discusses the details of the vulnerabilities recently addressed in Apache Roller and assigned [CVE-2024-46911](https://www.openwall.com/lists/oss-security/2024/10/12/1). The report focuses on the security flaws, their impact, remediation steps taken, the limitations of the fixes, and future recommendations for enhancing Roller’s security posture.
 
 
 ## Vulnerability Details
@@ -51,14 +51,14 @@ An attacker could lure an authenticated administrator to visit a malicious site 
 
 Following my initial report, Apache Roller addressed the vulnerability in version `6.1.4` by introducing two key measures:
 
-- Weblog Content Sanitization: By default, weblog content now undergoes sanitization, preventing arbitrary HTML and JavaScript injections in user-generated content.
+- `Weblog Content Sanitization`: By default, weblog content now undergoes sanitization, preventing arbitrary HTML and JavaScript injections in user-generated content.
 
-- Salt Value Binding: The system now binds the salt value—used as a security mechanism—to the authenticated admin user, preventing its reuse across different users or sessions. This ties the salt value to a single session and reduces its exposure, minimizing the potential for replay attacks.
+- `Salt Value Binding`: The system now binds the salt value—used as a security mechanism—to the authenticated admin user, preventing its reuse across different users or sessions. This ties the salt value to a single session and reduces its exposure, minimizing the potential for replay attacks.
 However, despite these improvements, a new vulnerability was uncovered that still allows attackers to compromise Site Admin privileges by stealing the salt value through an administrative endpoint.
 
 ### Follow-up Report: CSRF Vulnerability via Administrative Endpoint
 
-With the fix in my previous report, it is a bit more challenging since salt-value is now tied to a specific user. Then another approach is to find a way to `steal` Admin's salt. In the follow-up to the original vulnerability, I identified a new security flaw in the Web Analytics configuration feature accessible to admin users. This vulnerability exposes a salt value to attackers who can craft malicious requests to extract sensitive data. The exploit works by leveraging the `XMLHttpRequest (XHR)`` object, which can retrieve and relay the salt value without the admin's knowledge.
+With the fix in my previous report, it is a bit more challenging since salt-value is now tied to a specific user. Then another approach is to find a way to `steal` Admin's salt. In the follow-up to the original vulnerability, I identified a new security flaw in the Web Analytics configuration feature accessible to admin users. This vulnerability exposes a salt value to attackers who can craft malicious requests to extract sensitive data. The exploit works by leveraging the `XMLHttpRequest (XHR)` object, which can retrieve and relay the salt value without the admin's knowledge.
 
 - Affected Component:
 Endpoint: `/roller/roller-ui/admin/globalConfig.rol` (Admin Endpoint), only accessible to admin users
@@ -70,7 +70,7 @@ The Apache Roller Admin endpoint exposes a sensitive salt value embedded within 
 <input type="hidden" name="salt" value="nHmPrUUmY6gOrmt7I4yc" id="globalConfig_salt"/><h3>Site Settings</h3>
 ```
 
-An attacker with lower privileges can exploit this flaw by tricking an admin into visiting a malicious weblog or external site controlled by the attacker. Using an `XMLHttpRequest (XHR)`` object or similar mechanism, the attacker can silently make a GET request to `/roller/roller-ui/admin/globalConfig.rol`, retrieve the salt from the response, and forward it to an attacker-controlled server.
+An attacker with lower privileges can exploit this flaw by tricking an admin into visiting a malicious weblog or external site controlled by the attacker. Using an `XMLHttpRequest (XHR)` object or similar mechanism, the attacker can silently make a GET request to `/roller/roller-ui/admin/globalConfig.rol`, retrieve the salt from the response, and forward it to an attacker-controlled server.
 
 Once the attacker has obtained the salt, they can utilize it to perform unauthorized actions, such as privilege escalation or further compromising the system by impersonating the admin in future requests.
 
@@ -160,3 +160,5 @@ Kudos to Apache Roller's creators!
 ## References
 
 [1] https://github.com/apache/roller
+[2] https://www.openwall.com/lists/oss-security/2024/10/12/1
+[3] https://www.cve.org/CVERecord?id=CVE-2024-46911
