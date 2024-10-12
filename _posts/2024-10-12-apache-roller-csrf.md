@@ -7,7 +7,7 @@ categories:
 
 ## Overview
 
-Apache Roller [1](https://github.com/apache/roller), an open-source blog server platform, has long been favored for managing and publishing content on the web. However, like many web-based applications, it can be subject to vulnerabilities that pose security risks. This blog post discusses the details of the vulnerabilities recently addressed in Apache Roller and assigned [CVE-2024-46911](https://www.openwall.com/lists/oss-security/2024/10/12/1). The report focuses on the security flaws, their impact, remediation steps taken, the limitations of the fixes, and future recommendations for enhancing Roller’s security posture.
+[Apache Roller](https://github.com/apache/roller), an open-source blog server platform, has long been favored for managing and publishing content on the web. However, like many web-based applications, it can be subject to vulnerabilities that pose security risks. This blog post discusses the details of the vulnerabilities recently addressed in Apache Roller and assigned [CVE-2024-46911](https://www.openwall.com/lists/oss-security/2024/10/12/1). The report focuses on the security flaws, their impact, remediation steps taken, the limitations of the fixes, and future recommendations for enhancing Roller’s security posture.
 
 
 ## Vulnerability Details
@@ -160,5 +160,7 @@ Kudos to Apache Roller's creators!
 ## References
 
 [1] https://github.com/apache/roller
+
 [2] https://www.openwall.com/lists/oss-security/2024/10/12/1
+
 [3] https://www.cve.org/CVERecord?id=CVE-2024-46911
