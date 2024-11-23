@@ -36,6 +36,8 @@ Here, the `uuid.NewUUID()` function generates a UUID Version 1 token. While this
 
 #### Implementation
 
+- Reference: https://github.com/google/uuid/blob/master/version1.go
+
 {% highlight go %}
 
 // NewUUID returns a Version 1 UUID based on the current NodeID and clock
