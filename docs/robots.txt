@@ -1,1 +1,1 @@
-Sitemap: http://localhost:4444/sitemap.xml
+Sitemap: https://0xfatty.github.io/sitemap.xml

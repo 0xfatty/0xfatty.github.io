@@ -4,7 +4,7 @@ locale                   : "en-US"
 title                    : "iam.chi"
 title_separator          : "|"
 name                     : "Chi Tran"
-email                    : research@ctrsec.io
+email                    : iam.trchi@gmail.com
 description              : >-
   Security research and writeups by Chi Tran. Words are my own.
 baseurl                  : ""
@@ -96,7 +96,7 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:research@ctrsec.io"
+      url: "mailto:iam.trchi@gmail.com"
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/iam-trchi/"
