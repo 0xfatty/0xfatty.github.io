@@ -83,12 +83,12 @@ author:
   name             : "Chi Tran"
   avatar           : "/images/bio-photo.jpg"
   bio              : >-
-    Senior Security Researcher, dad of two, and a former line cook who never
+    Senior Security Researcher at Amazon Inspector, dad of two, and a former line cook who never
     stopped loving spicy noodles. I write up the vulnerabilities and other
     rabbit holes I stumble into.
 
 
-    *Opinions and research here are my own — not my employer's, past or present.*
+    *Opinions here are my own — not my employer's, past or present.*
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
