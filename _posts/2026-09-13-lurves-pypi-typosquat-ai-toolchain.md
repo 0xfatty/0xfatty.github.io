@@ -8,6 +8,10 @@ mermaid: true
 header:
   teaser: /images/lurve-thumbnail.jpeg
   og_image: /images/lurve-thumbnail.jpeg
+  og_image_width: 1200
+  og_image_height: 669
+  og_image_type: image/jpeg
+  og_image_alt: "Three Injections and a Rootkit — cracked Python logo beside a terminal listing the typosquats ollamaa, langgrap, transfomers and openaii, with the three injection points"
 ---
 
 *`ollamaa`, `langgrap`, `transfomers`, `openaii` — one payload, `.pth` startup execution, and a C2 whose every MCP tool description is a command*
