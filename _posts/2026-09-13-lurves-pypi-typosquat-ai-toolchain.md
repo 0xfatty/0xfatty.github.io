@@ -5,7 +5,9 @@ categories:
   - "Research"
 excerpt: "ollamaa, langgrap, transfomers, openaii — one payload, .pth startup execution, and a C2 whose every MCP tool description is a command."
 mermaid: true
-thumbnail: "/images/lurve-thumbnail.jpeg"
+header:
+  teaser: /images/lurve-thumbnail.jpeg
+  og_image: /images/lurve-thumbnail.jpeg
 ---
 
 *`ollamaa`, `langgrap`, `transfomers`, `openaii` — one payload, `.pth` startup execution, and a C2 whose every MCP tool description is a command*
