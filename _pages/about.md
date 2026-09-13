@@ -7,15 +7,17 @@ Yooo! What's up? If you're reading this, thank you for checking out my blog. Let
 
 My name is Chi, but my wife always calls me `Fatty` (hence my underground alias `0xfatty`). I cooked at a Vietnamese restaurant for about six years before moving into tech. I got my first taste of security in late 2018 during an internship at a healthcare company, and that's where the passion started.
 
-I'm still learning every day, so I love picking things up from everyone and sharing what I find along the way. This blog is where I write up the security research that comes out of that journey.
+I'm still learning every day, so I love picking things up from everyone and sharing what I find along the way. My focus these days is supply chain/open source security and cloud security, and this blog is where I write up what comes out of that journey.
 
 If you'd like to chat, you can find me on Twitter at [@imspicynoodles](https://twitter.com/imspicynoodles) (yes, I used to own a Vietnamese spicy noodle restaurant).
 
-## Certifications
+## Certifications & Patents
 
 Over the years I've earned a few certs that pushed me to dig deeper into security and how things work.
 
 As of today: OSCP &#124; OSCE &#124; OSWE &#124; GPEN
+
+I also hold a few pending patents from research along the way.
 
 ## CVEs & Advisories
 
