@@ -15,22 +15,24 @@
 <meta charset="utf-8">
 
 
-<!-- begin _includes/seo.html --><title>iam.chi</title>
-<meta name="description" content="Security research and writeups by Chi Tran. Words are my own.">
+<!-- begin _includes/seo.html --><title>CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension | iam.chi</title>
+<meta name="description" content="Overview">
 
 
   <meta name="author" content="Chi Tran">
   
+  <meta property="article:author" content="Chi Tran">
+  
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="iam.chi">
-<meta property="og:title" content="iam.chi">
-<meta property="og:url" content="http://localhost:4444/">
+<meta property="og:title" content="CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension">
+<meta property="og:url" content="http://localhost:4444/research/cmsmadesimple-xss-filepicker/">
 
 
-  <meta property="og:description" content="Security research and writeups by Chi Tran. Words are my own.">
+  <meta property="og:description" content="Overview">
 
 
 
@@ -40,9 +42,9 @@
 
 
   <meta name="twitter:site" content="@imspicynoodles">
-  <meta name="twitter:title" content="iam.chi">
-  <meta name="twitter:description" content="Security research and writeups by Chi Tran. Words are my own.">
-  <meta name="twitter:url" content="http://localhost:4444/">
+  <meta name="twitter:title" content="CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension">
+  <meta name="twitter:description" content="Overview">
+  <meta name="twitter:url" content="http://localhost:4444/research/cmsmadesimple-xss-filepicker/">
 
   
     <meta name="twitter:card" content="summary">
@@ -58,28 +60,17 @@
 
 
 
+  <meta property="article:published_time" content="2019-03-25T00:00:00-04:00">
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4444/">
+
+<link rel="canonical" href="http://localhost:4444/research/cmsmadesimple-xss-filepicker/">
 
 
 
-  <link rel="next" href="http://localhost:4444/page2/">
-
-
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-    "name": "Chi Tran",
-    "url": "http://localhost:4444/",
-    "sameAs": ["https://twitter.com/imspicynoodles","https://www.linkedin.com/in/iam-trchi/","https://github.com/0xfatty","https://ctrsec.io"]
-}
-</script>
 
 
 
@@ -120,7 +111,7 @@
 
   </head>
 
-  <body class="layout--home">
+  <body class="layout--single">
     
 <nav class="skip-links" aria-label="Skip links">
   <ul>
@@ -180,6 +171,8 @@
 
     <div class="initial-content">
       
+
+
 
 
 
@@ -315,31 +308,193 @@
 
 
 
-  <div class="archive">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension">
+    <meta itemprop="description" content="Overview">
+    <meta itemprop="datePublished" content="2019-03-25T00:00:00-04:00">
     
-      <h1 id="page-title" class="page__title"></h1>
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4444/research/cmsmadesimple-xss-filepicker/" itemprop="url">CVE-2019-10017: CMS Made Simple 2.2.10 XSS via File Picker Extension
+</a>
+          </h1>
+          
+
+
+  <p class="page__meta">
     
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2019-03-25T00:00:00-04:00">March 25, 2019</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc" aria-label="Table of contents">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#overview">Overview</a></li><li><a href="#vulnerability-details">Vulnerability Details</a></li><li><a href="#impact">Impact</a></li><li><a href="#remediation">Remediation</a></li></ul>
+            </nav>
+          </aside>
+        
+        <h2 id="overview">Overview</h2>
+
+<ul>
+  <li>Author: Chi Tran</li>
+  <li>Vendor: CMS Made Simple</li>
+  <li>Product: CMS Made Simple™ 2.2.10 “Spuzzum”</li>
+  <li>CVE Reference: <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-10017">CVE-2019-10017</a></li>
+  <li>Original Entry Date: March 24, 2019</li>
+  <li>Affected Version(s): 2.2.10</li>
+</ul>
+
+<h2 id="vulnerability-details">Vulnerability Details</h2>
+
+<p><strong>Cause:</strong> The <code class="language-plaintext highlighter-rouge">moduleinterface.php</code> uploader class script does not properly filter HTML code from user-supplied input in the <code class="language-plaintext highlighter-rouge">Name</code> field before listing the Profile. A remote authenticated user can create a specially crafted an malicious entry that, when loaded by a target users, will cause arbitrary scripting code to be executed by the target user’s browser. The code will originate from the site running the CMS Made Simple software and will run in the security context of that site. As a result, the code will be able to access the target user’s cookies (including authentication cookies), if any.</p>
+
+<p><strong>Proof of Concepts:</strong></p>
+
+<p>1 - Navigate to Admin Dashboard -&gt; Click on Extension -&gt; File Picker</p>
+
+<p><code class="language-plaintext highlighter-rouge">http://site.com/web/admin/moduleinterface.php?mact=FilePicker,m1_,defaultadmin,0</code></p>
+
+<p><img src="/images/CVE1.png" alt="" /></p>
+
+<p>2 - Click on “Add a new Profile” -&gt; In <code class="language-plaintext highlighter-rouge">Name</code> field, input the following payload:</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;svg/onload=alert("XSS")&gt;</code></p>
+
+<p><img src="/images/CVE2.png" alt="" /></p>
+
+<p>3 - After clicking Submit, malicious scripts will be executed every time we refresh <code class="language-plaintext highlighter-rouge">File Picker</code> page:</p>
+
+<p><img src="/images/CVE3.png" alt="" /></p>
+
+<h2 id="impact">Impact</h2>
+
+<p>An attacker will be able to take over an account as well as cookies hijacking.</p>
+
+<h2 id="remediation">Remediation</h2>
+
+<p>Not yet available. The fixes should be available on the next releases.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+  
+
+  
     
 
 
 
-<h3 class="archive__subtitle">Recent posts</h3>
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#research" class="page__taxonomy-item p-category" rel="tag">Research</a>
+    
+    </span>
+  </p>
 
 
-
-
-<div class="entries-list">
   
 
 
+        
+
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2019-03-25T00:00:00-04:00">March 25, 2019</time></p>
+
+
+      </footer>
+
+      
+<section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=imspicynoodles&text=CVE-2019-10017%3A+CMS+Made+Simple+2.2.10+XSS+via+File+Picker+Extension%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fcmsmadesimple-xss-filepicker%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fcmsmadesimple-xss-filepicker%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4444/research/cmsmadesimple-xss-filepicker/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=CVE-2019-10017%3A+CMS+Made+Simple+2.2.10+XSS+via+File+Picker+Extension%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fcmsmadesimple-xss-filepicker%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+
+  <nav class="pagination" aria-label="Post pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/research/gforge-advanced-server-xss-commonsearch-php/" class="pagination--pager" title="CVE-2019-10016: GForge Advanced Server Input validation error in ‘commonsearch.php’">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
 
 
 
 
-
-
-
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc p-name" itemprop="headline">
@@ -355,7 +510,7 @@
     
       
       <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
         
         <time datetime="2024-11-23T00:00:00-05:00">November 23, 2024</time>
       </span>
@@ -368,7 +523,7 @@
       
 
       <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
         
           4 minute read
         
@@ -382,11 +537,14 @@
   </article>
 </div>
 
+    
+      
+      
 
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc p-name" itemprop="headline">
@@ -402,7 +560,7 @@
     
       
       <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
         
         <time datetime="2024-10-12T00:00:00-04:00">October 12, 2024</time>
       </span>
@@ -415,9 +573,9 @@
       
 
       <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          6 minute read
         
       </span>
     
@@ -429,11 +587,14 @@
   </article>
 </div>
 
+    
+      
+      
 
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc p-name" itemprop="headline">
@@ -449,7 +610,7 @@
     
       
       <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
         
         <time datetime="2023-06-24T00:00:00-04:00">June 24, 2023</time>
       </span>
@@ -462,7 +623,7 @@
       
 
       <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
         
           6 minute read
         
@@ -476,11 +637,14 @@
   </article>
 </div>
 
+    
+      
+      
 
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc p-name" itemprop="headline">
@@ -496,7 +660,7 @@
     
       
       <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
         
         <time datetime="2023-05-22T00:00:00-04:00">May 22, 2023</time>
       </span>
@@ -509,7 +673,7 @@
       
 
       <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
         
           1 minute read
         
@@ -523,338 +687,12 @@
   </article>
 </div>
 
-
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
-      
-        <a class="u-url" href="/research/pwning-the-samsung-tv/" rel="permalink">Pwning the Samsung TV
-</a>
-      
-    </h2>
-    
-
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-01-28T00:00:00-05:00">January 28, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
-</p>
-  </article>
-</div>
-
-
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
-      
-        <a class="u-url" href="/research/pwning-facebook-portal/" rel="permalink">Pwning the Facebook Portal
-</a>
-      
-    </h2>
-    
-
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-01-21T00:00:00-05:00">January 21, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          4 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
-</p>
-  </article>
-</div>
-
-
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
-      
-        <a class="u-url" href="/research/weak-key-cryptography-in-real-world/" rel="permalink">How I faked tons of COVID passes — Weak Key Cryptography in real world
-</a>
-      
-    </h2>
-    
-
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2021-09-29T00:00:00-04:00">September 29, 2021</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          4 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt p-summary" itemprop="description">Vulnerability Summary
-</p>
-  </article>
-</div>
-
-
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
-      
-        <a class="u-url" href="/research/zdi-21-977-d-link-dap-2020-webproc-stack-based-bof-rce/" rel="permalink">[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE
-</a>
-      
-    </h2>
-    
-
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2021-08-21T00:00:00-04:00">August 21, 2021</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
-</p>
-  </article>
-</div>
-
-
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
-      
-        <a class="u-url" href="/research/cve-2020-8962-d-link-dir-842-stack-based-buffer-overflow/" rel="permalink">[CVE-2020-8962] D-LINK DIR-842 Stack-based Buffer-overflow
-</a>
-      
-    </h2>
-    
-
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2020-02-13T00:00:00-05:00">February 13, 2020</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
-</p>
-  </article>
-</div>
-
-
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
-      
-        <a class="u-url" href="/research/cve-2020-7237-remote-code-execution-in-cacti-rrdtool/" rel="permalink">[CVE-2020-7237] Remote Code Execution in Cacti RRDTool
-</a>
-      
-    </h2>
-    
-
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2020-01-26T00:00:00-05:00">January 26, 2020</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
-</p>
-  </article>
-</div>
-
-</div>
-
-
-
-  
-    
-
-<nav class="pagination" aria-label="Pagination">
-  
-  
-  <ul>
-    
-    
-    <li><a href="#" class="disabled"><span aria-hidden="true">Previous</span></a></li>
-    
-
-    
-    
-      <li><a href="#" class="disabled current">1</a></li>
-    
-
-    
-    
-
-    
-    
-    
-
-    
-
-    
-    
-
-    
-      <li><a href="/page2/">2</a></li>
-    
-
-    
-    
-      <li><a href="/page2/">Next</a></li>
-    
-  </ul>
-</nav>
-
-
-  
-
-
-
   </div>
+</div>
+
+  
+  
 </div>
 
       

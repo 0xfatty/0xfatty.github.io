@@ -1,67 +1,130 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
+repository               : 0xfatty/0xfatty.github.io
+locale                   : "en-US"
+title                    : "iam.chi"
+title_separator          : "|"
+name                     : "Chi Tran"
+email                    : research@ctrsec.io
+description              : >-
+  Security research and writeups by Chi Tran. Words are my own.
+baseurl                  : ""
+url                      : "https://0xfatty.github.io"
+destination              : ./docs
 
-repository: 0xfatty/0xfatty.github.io
+# Theme
+remote_theme             : "mmistakes/minimal-mistakes@4.28.1"
+minimal_mistakes_skin    : "dark"
 
-title: iam.chi
-email: research@ctrsec.io
-description: >- # this means to ignore newlines until "baseurl:"
-  Security Research | Writeups | Words are my own.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://0xfatty.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: imspciynoodles
-github_username:  0xfatty
-destination: ./docs
+# Social / SEO
+twitter:
+  username               : imspicynoodles
+og_image                 : "/images/site-preview.png"
+social:
+  type                   : Person
+  name                   : "Chi Tran"
+  links:
+    - "https://twitter.com/imspicynoodles"
+    - "https://www.linkedin.com/in/iam-trchi/"
+    - "https://github.com/0xfatty"
+    - "https://ctrsec.io"
 
 # Build settings
-remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 plugins:
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-remote-theme
 
-search: true
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  syntax_highlighter: rouge
+
+# The remote theme's own Sass (main.scss entry point plus bundled susy/breakpoint
+# vendor code) uses syntax Dart Sass is deprecating (@import, slash division,
+# red()/green()/blue()). quiet_deps silences dependency warnings; silence_deprecations
+# additionally covers the @import warning from the theme's own entry stylesheet.
+sass:
+  quiet_deps: true
+  silence_deprecations: ["import"]
+
+permalink: /:categories/:title/
+timezone: America/New_York
+future: false
+
+# Search
+search                   : true
+search_full_content      : true
+
+# Pagination
+paginate                 : 10
+paginate_path            : /page:num/
+
+# Archives
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+
 # Reading Files
 include:
   - _pages
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - docs
 
 # Site Author
 author:
   name             : "Chi Tran"
   avatar           : "/images/bio-photo.jpg"
-  bio              : "Hey! I am Chi Tran &#124; Father of 2 &#124; Security Engineer &#124; I love cooking and making spicy noodles. &#124; Disclaimer: The opinions expressed here and all the research are my own and do not represent those of current or past employers."
+  bio              : >-
+    Senior Security Researcher, dad of two, and a former line cook who never
+    stopped loving spicy noodles. I write up the vulnerabilities and other
+    rabbit holes I stumble into.
+
+
+    *Opinions and research here are my own — not my employer's, past or present.*
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:iam.trchi@gmail.com"
-    - label: "Linkedin"
-      icon: "fas fa-fw fa-link"
+      url: "mailto:research@ctrsec.io"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/iam-trchi/"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/imspicynoodles"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/0xfatty"
     - label: "Resume"
-      icon: "fas fa-fw fa-link"
+      icon: "fas fa-fw fa-file-pdf"
       url: "/files/Chi_Tran_Resume.pdf"
     - label: "Homepage"
-      icon: "fas fa-fw fa-link"
+      icon: "fas fa-fw fa-home"
       url: "https://ctrsec.io"
+
+# Footer
+footer:
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/imspicynoodles"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/0xfatty"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/iam-trchi/"
 
 # Defaults
 defaults:
@@ -75,6 +138,9 @@ defaults:
       comments: false
       share: true
       related: true
+      show_date: true
+      toc: true
+      toc_sticky: true
   - scope:
       path: ""
       type: pages
@@ -83,11 +149,3 @@ defaults:
       author_profile: true
       read_time: false
       comments: false
-
-
-
-
-
-
-
-

