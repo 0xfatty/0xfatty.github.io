@@ -2,6 +2,6 @@ main:
   - title: "About"
     url: /about
   - title: "All Posts"
-    url: https://ctrsec.io
+    url: /posts/
   - title: "Categories"
     url: /categories/

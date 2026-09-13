@@ -3,6 +3,7 @@ title: "CVE-2019-10016: GForge Advanced Server Input validation error in 'common
 date: "2019-03-25"
 categories: 
   - "Research"
+excerpt: "XSS in GForge Advanced Server 6.4.4 through the unfiltered words parameter in commonsearch.php."
 ---
 ## Overview
 

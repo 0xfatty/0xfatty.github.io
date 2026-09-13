@@ -3,6 +3,7 @@ title: "[Pwn2Own 2022] CVE-2023-0855: Canon imageClass MF743CDW IPP BOF"
 date: "2023-05-22"
 categories: 
   - "Research"
+excerpt: "My Pwn2Own Toronto 2022 entry: an unauthenticated stack buffer overflow in the Canon imageClass MF743Cdw's IPP number-up attribute."
 ---
 ## Overview
 

@@ -3,6 +3,7 @@ title: "[ZDI-21-977] D-Link DAP-2020 webproc Stack-based BOF RCE"
 date: "2021-08-21"
 categories: 
   - "Research"
+excerpt: "An unauthenticated stack buffer overflow in D-Link DAP-2020's webproc CGI that gives network-adjacent attackers code execution."
 ---
 ## Overview
 

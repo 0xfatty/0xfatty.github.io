@@ -3,6 +3,7 @@ title: "CVE-2024-46911: Uncovering CSRF vulnerabilities in Apache Roller"
 date: "2024-10-12"
 categories: 
   - "Research"
+excerpt: "Input validation errors combined with CSRF in Apache Roller let an attacker act as a lured administrator, changing settings or credentials."
 ---
 
 ## Overview

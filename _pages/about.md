@@ -9,7 +9,7 @@ My name is Chi, but my wife always calls me `Fatty` (hence my underground alias 
 
 I'm still learning every day, so I love picking things up from everyone and sharing what I find along the way. My focus these days is supply chain/open source security and cloud security, and this blog is where I write up what comes out of that journey.
 
-If you'd like to chat, you can find me on Twitter at [@imspicynoodles](https://twitter.com/imspicynoodles) (yes, I used to own a Vietnamese spicy noodle restaurant).
+If you'd like to chat, you can find me on X at [@imspicynoodles](https://x.com/imspicynoodles) (yes, I used to own a Vietnamese spicy noodle restaurant).
 
 ## Certifications & Patents
 
@@ -23,7 +23,7 @@ I also hold a few pending patents from research along the way.
 
 A number of CVEs have been assigned to my research over the years. Here are the ones I can remember:
 
-CVE-2019-10016 &#124; CVE-2019-10017 &#124; CVE-2019-10105 &#124; CVE-2019-10106 &#124; CVE-2019-10107 &#124; CVE-2019-10674 &#124; CVE-2019-12347 &#124; CVE-2019-12584 &#124; CVE-2019-12585 &#124; CVE-2019-12829 &#124; CVE-2020-7058 &#124; CVE-2020-7106 &#124; CVE-2020-7237 &#124; CVE-2020-8962 &#124; CVE-2020-13951 &#124; CVE-2020-14534 &#124; CVE-2020-14716 &#124; CVE-2020-14717 &#124; CVE-2020-14822 &#124; CVE-2020-14831 &#124; CVE-2020-14833 &#124; CVE-2020-14834 &#124; CVE-2020-14849 &#124; CVE-2020-14850 &#124; CVE-2020-14851 &#124; CVE-2020-14856 &#124; CVE-2020-14857 &#124; CVE-2020-18921 &#124; CVE-2020-18922 &#124; CVE-2020-18923 &#124; CVE-2020-18924 &#124; CVE-2020-18925 &#124; CVE-2020-18926 &#124; CVE-2020-18927 &#124; CVE-2020-18928 &#124; CVE-2020-18929 &#124; CVE-2020-18930 &#124; CVE-2020-18931 &#124; CVE-2020-18932 &#124; CVE-2020-18933 &#124; CVE-2020-18934 &#124; CVE-2020-18935 &#124; CVE-2021-2026 &#124; CVE-2021-2027 &#124; CVE-2021-27576 &#124; CVE-2021-28428 &#124; CVE-2021-34861 &#124; CVE-2023-0855 (ZDI-23-555) &#124; CVE-2024-37014 &#124; CVE-2024-45719 &#124; CVE-2024-46911 &#124; GHSA-443w-3rq3-5m5h &#124; CVE-2026-44503
+{% for id in site.data.cves %}<span style="white-space:nowrap">{{ id }}</span>{% unless forloop.last %} · {% endunless %}{% endfor %}
 
 ## Hall of Fame
 

@@ -3,6 +3,7 @@ title: "How I nabbed a new CVE from a Cookie-Munching, Scam-Slinging Browser Ext
 date: "2023-06-24"
 categories: 
   - "Research"
+excerpt: "Pulling apart a Facebook cookie-stealing scam browser extension on a Friday night, and coming away with a new CVE."
 ---
 ## Friday night @ 9PM....
 

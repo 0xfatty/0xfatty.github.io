@@ -3,11 +3,12 @@ title: "CVE-2024-45719: Predictable Authorization Token Vulnerability in Apache 
 date: "2024-11-23"
 categories: 
   - "Research"
+excerpt: "Apache Answer used predictable UUIDv1 values as authorization tokens, letting attackers brute-force valid tokens and hijack sessions."
 ---
 
 ## Overview
 
-`CVE-20240-45719` highlights a critical vulnerability in Apache Answer, where UUID Version 1 (UUIDv1) is used as an authorization token. Due to the predictable nature of UUIDv1, attackers can predict and brute force valid tokens, enabling session hijacking and unauthorized access to user accounts.
+`CVE-2024-45719` highlights a critical vulnerability in Apache Answer, where UUID Version 1 (UUIDv1) is used as an authorization token. Due to the predictable nature of UUIDv1, attackers can predict and brute force valid tokens, enabling session hijacking and unauthorized access to user accounts.
 
 This vulnerability has been validated through real-world testing, demonstrating that an attacker with minimal privileges can exploit this flaw to hijack future user sessions at scale. Immediate remediation is essential to protect user accounts and system integrity.
 

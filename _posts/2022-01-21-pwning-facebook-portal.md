@@ -3,6 +3,7 @@ title: "Pwning the Facebook Portal"
 date: "2022-01-21"
 categories: 
   - "Research"
+excerpt: "Code execution on the Facebook Portal through its outdated captive-portal webview and a V8 1-day (CVE-2021-30632)."
 ---
 ## Overview
 

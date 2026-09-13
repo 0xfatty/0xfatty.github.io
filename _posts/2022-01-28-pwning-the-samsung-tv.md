@@ -3,6 +3,7 @@ title: "Pwning the Samsung TV"
 date: "2022-01-28"
 categories: 
   - "Research"
+excerpt: "Exploiting a Samsung Smart TV's outdated Chromium-based browser with a V8 1-day (CVE-2020-6383)."
 ---
 ## Overview
 

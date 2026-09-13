@@ -8,22 +8,22 @@ email                    : iam.trchi@gmail.com
 description              : >-
   Security research and writeups by Chi Tran. Words are my own.
 baseurl                  : ""
-url                      : "https://0xfatty.github.io"
-destination              : ./docs
+url                      : "https://ctrsec.io"
 
 # Theme
 remote_theme             : "mmistakes/minimal-mistakes@4.28.1"
 minimal_mistakes_skin    : "dark"
+enable_copy_code_button  : true
 
 # Social / SEO
 twitter:
   username               : imspicynoodles
-og_image                 : "/images/site-preview.png"
+og_image                 : "/images/bio-photo.jpg"
 social:
   type                   : Person
   name                   : "Chi Tran"
   links:
-    - "https://twitter.com/imspicynoodles"
+    - "https://x.com/imspicynoodles"
     - "https://www.linkedin.com/in/iam-trchi/"
     - "https://github.com/0xfatty"
     - "https://ctrsec.io"
@@ -68,9 +68,6 @@ paginate_path            : /page:num/
 category_archive:
   type: liquid
   path: /categories/
-tag_archive:
-  type: liquid
-  path: /tags/
 
 # Reading Files
 include:
@@ -80,7 +77,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
-  - docs
 
 # Site Author
 author:
@@ -100,25 +96,22 @@ author:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/iam-trchi/"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/imspicynoodles"
+    - label: "X"
+      icon: "fab fa-fw fa-x-twitter"
+      url: "https://x.com/imspicynoodles"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/0xfatty"
     - label: "Resume"
       icon: "fas fa-fw fa-file-pdf"
       url: "/files/Chi_Tran_Resume.pdf"
-    - label: "Homepage"
-      icon: "fas fa-fw fa-home"
-      url: "https://ctrsec.io"
 
 # Footer
 footer:
   links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/imspicynoodles"
+    - label: "X"
+      icon: "fab fa-fw fa-x-twitter"
+      url: "https://x.com/imspicynoodles"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/0xfatty"

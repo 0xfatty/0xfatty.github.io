@@ -3,10 +3,11 @@ title: "How I faked tons of COVID passes — Weak Key Cryptography in real world
 date: "2021-09-29"
 categories: 
   - "Research"
+excerpt: "A government COVID pass QR system relied on a weak signing key, so anyone could generate valid passes."
 ---
 ## Vulnerability Summary
 
-A Non-US Goverment agency was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.
+A Non-US Government agency was using a QR generation system to provide COVID passes for its citizens to go out. The system was vulnerable to a weak key cryptography attack which may allow COVID patients to self-generate passes.
 
 ## Vulnerability Analysis
 ***1. QR Data:***
